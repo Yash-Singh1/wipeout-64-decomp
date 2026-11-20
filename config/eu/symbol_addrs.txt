@@ -31,6 +31,9 @@ StringAlloc = 0x80015FB4; // type:func size:0x60
 StringFree = 0x80016014; // type:func size:0x2C
 SetTransMatrix = 0x8001BD44; // type:func
 SetRotMatrix = 0x8001BD6C; // type:func
+OpenWadFile = 0x8001FF50; // type:func size:0x2BC
+CloseWadFile = 0x8002020C; // type:func size:0x2C
+ReadNextWadFile = 0x80020238; // type:func size:0x50
 MulMatrix0 = 0x80020430; // type:func
 NewSkeleton = 0x800206C0; // type:func
 SetSkeletonPosition = 0x80020748; // type:func
@@ -40,9 +43,16 @@ SetSkeletonDirectionRPH = 0x80020A84; // type:func
 GetSkeletonMatrix = 0x80020C20; // type:func
 MatrixToN64Mtx = 0x80020D6C; // type:func
 SetSkeletonTransform = 0x80020E94; // type:func size:0x38
+SquareRoot0 = 0x80020ED0; // type:func size:0x98
+SceneRadiusCheck = 0x80020F68; // type:func size:0x538
+SceneRadiusCheck2 = 0x800214A0; // type:func size:0x6A4
 main = 0x80067920; // type:func
 InitTvTiming = 0x80067988; // type:func
-DmaRead = 0x80067EBC; // type:func
+IdleThreadEntry = 0x800679B0; // type:func size:0x188
+MainThreadEntry = 0x80067B38; // type:func size:0x354
+N64InitHelper_80066100 = 0x80067E8C; // type:func size:0x30
+DmaRead = 0x80067EBC; // type:func size:0xA4
+InitN64Hardware = 0x80067F60; // type:func size:0x2CC
 
 // libultra 2.0H / libnaudio / gu / libc functions
 alUnlink = 0x80075E40; // type:func
