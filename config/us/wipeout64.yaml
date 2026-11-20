@@ -58,7 +58,10 @@ segments:
     subalign: 1
     subsegments:
       - [0x10F4, rodatabin, crt0_rodata]
-      - [0x1100, rodata, main_rodata_pre_skeleton]
+      - [0x1100, rodata, main_rodata_pre_error]
+      - [0x1640, .rodata, error]
+      - [0x1648, rodatabin, error_rodata_pad]
+      - [0x1650, rodata, main_rodata_pre_skeleton]
       - [0x1C28, .rodata, skeleton]
       - [0x1C33, rodatabin, skeleton_rodata_pad]
       - [0x1C40, rodata, main_rodata_post_skeleton]
@@ -71,7 +74,9 @@ segments:
       - [0x9848, textbin, assert_pad]
       - [0x9850, asm, game_code_pre_heap]
       - [0xF51C, textbin, pad_f51c]
-      - [0xF520, asm, game_code_pre_skeleton]
+      - [0xF520, asm, game_code_pre_error]
+      - [0xFD20, c, error]
+      - [0xFE20, asm, game_code_pre_skeleton]
       - [0x1A380, c, skeleton]
       - [0x1AB8C, textbin, skeleton_text_pad]
       - [0x1AB90, asm, radscn]

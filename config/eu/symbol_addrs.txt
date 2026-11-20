@@ -14,6 +14,12 @@ gspS2DEX_fifoTextStart = 0x80006D60;
 // Game functions
 __assert = 0x8000FA70; // type:func size:0x8
 DAlloc = 0x800157B0; // type:func
+DFree = 0x80015AB4; // type:func
+Error = 0x80015F40; // type:func size:0xC
+StringCopy = 0x80015F4C; // type:func size:0x1C
+StringCat = 0x80015F68; // type:func size:0x4C
+StringAlloc = 0x80015FB4; // type:func size:0x60
+StringFree = 0x80016014; // type:func size:0x2C
 SetTransMatrix = 0x8001BD44; // type:func
 SetRotMatrix = 0x8001BD6C; // type:func
 MulMatrix0 = 0x80020430; // type:func
@@ -32,6 +38,7 @@ InitTvTiming = 0x80067988; // type:func
 osCreateThread = 0x80076410; // type:func
 osStartThread = 0x80076610; // type:func
 osInitialize = 0x80078CC0; // type:func
+strlen = 0x8007D8DC; // type:func
 
 // RSP microcode data
 n_aspMainDataStart = 0x80087AB0;
