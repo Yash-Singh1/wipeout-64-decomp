@@ -78,7 +78,7 @@ def count_version(ver):
             )
             if m:
                 total_obj_bytes = int(m.group(1), 16)
-                # Subtract any INCLUDE_ASM stub bytes in this file
+                # Subtract any active INCLUDE_ASM stub bytes in this file (for this version)
                 stub_bytes = 0
                 stub_funcs = 0
                 for ln in (ROOT / src_rel).read_text(encoding="utf-8").splitlines():
@@ -89,13 +89,20 @@ def count_version(ver):
                             snf, snb = scan_s(sp)
                             stub_funcs += snf
                             stub_bytes += snb
+                asm_funcs += stub_funcs
+                asm_bytes += stub_bytes
                 # Count defined function labels in this object inside map
                 blk_m = re.search(
                     rf"^\s*\.text\s+0x[0-9a-fA-F]+\s+0x[0-9a-fA-F]+\s+{re.escape(obj_marker)}\s*\n((?:\s+0x[0-9a-fA-F]+\s+\S+\s*\n)*)",
                     map_text,
                     re.M,
                 )
-                n_syms = len(blk_m.group(1).splitlines()) if blk_m else 0
+                n_syms = 0
+                if blk_m:
+                    for sln in blk_m.group(1).splitlines():
+                        parts = sln.split()
+                        if len(parts) >= 2 and not parts[1].startswith(".") and not parts[1].endswith(".NON_MATCHING"):
+                            n_syms += 1
                 c_funcs += max(0, n_syms - stub_funcs)
                 c_bytes += max(0, total_obj_bytes - stub_bytes)
 

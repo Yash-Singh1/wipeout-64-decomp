@@ -176,15 +176,111 @@ def compile_c_to_obj_bytes(src_text, src_dir, version, opt, extra_cc1, extra_cpp
     return elf_bytes
 
 
-def assemble_stub_bytes(asm_path):
-    asm_bytes = Path(asm_path).read_bytes()
+def elf_section_size_and_syms(elf_bytes, sym_prefix=None):
+    """Return (rodata_size, {name: st_value}) from a big-endian 32-bit ELF object."""
+    import struct
+    e_shoff = struct.unpack(">I", elf_bytes[32:36])[0]
+    e_shentsize, e_shnum, e_shstrndx = struct.unpack(">HHH", elf_bytes[46:52])
+    shdrs = []
+    for i in range(e_shnum):
+        off = e_shoff + i * e_shentsize
+        shdrs.append(struct.unpack(">10I", elf_bytes[off:off + 40]))
+    shstr_off = shdrs[e_shstrndx][4]
+
+    def _cstr(base, idx):
+        end = elf_bytes.index(b"\x00", base + idx)
+        return elf_bytes[base + idx:end].decode("ascii", errors="replace")
+
+    ro_size = 0
+    symtab = None
+    strtab_off = 0
+    for sh in shdrs:
+        nm = _cstr(shstr_off, sh[0])
+        if nm in (".rodata", ".rdata"):
+            ro_size = sh[5]
+        elif sh[1] == 2:  # SHT_SYMTAB
+            symtab = sh
+            strtab_off = shdrs[sh[6]][4]
+    syms = {}
+    if sym_prefix and symtab:
+        sym_off, sym_sz, sym_ent = symtab[4], symtab[5], symtab[9]
+        for p in range(sym_off, sym_off + sym_sz, sym_ent):
+            st_name, st_value = struct.unpack(">II", elf_bytes[p:p + 8])
+            nm = _cstr(strtab_off, st_name)
+            if nm.startswith(sym_prefix):
+                syms[nm] = st_value
+    return ro_size, syms
+
+
+def _fix_rdata_align3_in_s(s_text, ro_len, assemble_fn):
+    """When a C chunk's .rdata starts at ro_len % 8 == 4, replace .align 3 inside .rdata
+    with exact 4-byte-phase-aware padding (.align 2 [+ .word 0])."""
+    if ro_len % 8 == 0:
+        return s_text
+
+    # Find all .align 3 lines that occur while inside .rdata
+    lines = s_text.splitlines(keepends=True)
+    in_rdata = False
+    al3_indices = []
+    for i, ln in enumerate(lines):
+        m_sec = re.match(r'^\s*\.(text|rdata|data|sdata|bss|section)\b', ln)
+        if m_sec:
+            in_rdata = (m_sec.group(1) == "rdata")
+        elif in_rdata and re.match(r'^\s*\.align\s+3\b', ln):
+            al3_indices.append(i)
+    if not al3_indices:
+        return s_text
+
+    # Probe pass: replace each .align 3 with .align 2 + marker label
+    probe_lines = list(lines)
+    for k, idx in enumerate(al3_indices):
+        probe_lines[idx] = f"\t.align\t2\n\t.globl\t__wo64_al3_{k}\n__wo64_al3_{k}:\n"
+    probe_elf = assemble_fn("".join(probe_lines))
+    _, syms = elf_section_size_and_syms(probe_elf, "__wo64_al3_")
+
+    # Compute exact padding needed at each .align 3 for true offset (ro_len + v + extra) % 8 == 0
+    extra = 0
+    final_lines = list(lines)
+    for k, idx in enumerate(al3_indices):
+        v = syms[f"__wo64_al3_{k}"]
+        if (ro_len + v + extra) % 8 != 0:
+            final_lines[idx] = "\t.align\t2\n\t.word\t0\n"
+            extra += 4
+        else:
+            final_lines[idx] = "\t.align\t2\n"
+    return "".join(final_lines)
+
+
+def assemble_stub_bytes(asm_path, version, ro_len=0):
+    asm_path = Path(asm_path)
+    asm_text = asm_path.read_text(encoding="utf-8")
+    # Ensure .text is active (spimdisasm nonmatchings/*.s files omit .section .text)
+    if ".section" not in asm_text and "\n.text" not in asm_text:
+        asm_text = '.include "macro.inc"\n.set noat\n.set noreorder\n.set gp=64\n.section .text, "ax"\n' + asm_text
+    for ro_path in (
+        asm_path.with_suffix(".rodata.s"),
+        ROOT / "config" / "rodata_stubs" / version / f"{asm_path.stem}.rodata.s",
+    ):
+        if ro_path.is_file():
+            ro_text = ro_path.read_text(encoding="utf-8")
+            ro_text = re.sub(r'^\s*\.include\s+"macro\.inc"\s*$', "", ro_text, flags=re.M)
+            if ro_len % 8 == 4 and re.search(r'^\s*\.section\s+\.rodata\s*\n\s*\.balign\s+8\b', ro_text, re.M):
+                ro_text = re.sub(
+                    r'(^\s*\.section\s+\.rodata\s*\n)\s*\.balign\s+8\b',
+                    r'\1.word 0',
+                    ro_text,
+                    count=1,
+                    flags=re.M,
+                )
+            asm_text = asm_text + "\n" + ro_text + "\n"
+            break
     return docker_exec(
         'd=$(mktemp -d) && trap "rm -rf $d" EXIT && '
         'cat > "$d/in.s" && '
         'mips-linux-gnu-as -EB -march=vr4300 -mtune=vr4300 -mabi=32 '
         '-no-pad-sections -G0 -I/work/include -o "$d/out.o" "$d/in.s" && '
         'cat "$d/out.o"',
-        input_bytes=asm_bytes,
+        input_bytes=asm_text.encode("utf-8"),
     )
 
 
@@ -225,27 +321,16 @@ def strip_empty_dummy_and_split_s(s_text, dummy_markers):
     return chunks
 
 
-def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_cpp, save_asm=False):
-    raw_lines = src_path.read_text(encoding="utf-8").splitlines(keepends=True)
-    stubs = {}
-    rewritten = []
-    idx = 0
-    for ln in raw_lines:
-        m = INCLUDE_ASM_RE.match(ln)
-        if m:
-            folder, func_name = m.group(1), m.group(2)
-            marker = f"__WO64_INCLUDE_ASM_{idx}__"
-            stubs[marker] = ROOT / "asm" / version / folder / f"{func_name}.s"
-            if not stubs[marker].is_file():
-                raise FileNotFoundError(f"INCLUDE_ASM target not found: {stubs[marker]}")
-            rewritten.append(f"void {marker}(void) {{}}\n")
-            idx += 1
-        else:
-            rewritten.append(ln)
+INCLUDE_ASM_CPP_RE = re.compile(
+    r'__WO64_INCLUDE_ASM_CALL__\s*\(\s*"([^"]+)"\s*,\s*([A-Za-z0-9_.$]+)\s*\)\s*;?'
+)
 
-    if not stubs:
+
+def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_cpp, save_asm=False):
+    raw_text = src_path.read_text(encoding="utf-8")
+    if "INCLUDE_ASM" not in raw_text:
         elf_bytes = compile_c_to_obj_bytes(
-            "".join(raw_lines),
+            raw_text,
             src_path.parent,
             version,
             opt,
@@ -257,14 +342,15 @@ def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_
         out_path.write_bytes(elf_bytes)
         return
 
-    # Compile rewritten C once through cppn64 + cc1n64, then split assembly around markers
+    # Preprocess first so #ifdef VERSION_EU / #ifdef NON_MATCHING select active INCLUDE_ASM stubs
     ver_def = "-DVERSION_US" if version == "us" else "-DVERSION_EU"
     with tempfile.TemporaryDirectory(prefix="wo64mix_") as tmp:
         tmp_p = Path(tmp)
         c_path = tmp_p / "in.c"
+        i_raw_path = tmp_p / "in_raw.i"
         i_path = tmp_p / "in.i"
         s_path = tmp_p / "out.s"
-        c_path.write_text("".join(rewritten), encoding="utf-8")
+        c_path.write_text(raw_text, encoding="utf-8")
 
         libreultra_inc = TOOLCHAIN / "libreultra" / "include" / "2.0I"
         extra_inc = [f"-I{libreultra_inc}"] if libreultra_inc.is_dir() else []
@@ -273,9 +359,42 @@ def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_
             "-D__GNUC__=2", "-D_MIPS_SZLONG=32", "-D_MIPS_SZINT=32",
             "-D_LANGUAGE_C", "-DLANGUAGE_C", "-Dmips", "-D__mips__",
             "-DMIPSEB", "-D_MIPSEB", "-DF3DEX_GBI", ver_def,
+            "-DINCLUDE_ASM(f,n)=__WO64_INCLUDE_ASM_CALL__(f,n)",
             f"-I{ROOT / 'include'}", *extra_inc, f"-I{src_path.parent}",
-            *extra_cpp, str(c_path), str(i_path),
+            *extra_cpp, str(c_path), str(i_raw_path),
         ])
+
+        pre_text = i_raw_path.read_text(encoding="utf-8")
+        stubs = {}
+        idx = 0
+
+        def _repl_stub(m):
+            nonlocal idx
+            folder, func_name = m.group(1), m.group(2)
+            marker = f"__WO64_INCLUDE_ASM_{idx}__"
+            stub_p = ROOT / "asm" / version / folder / f"{func_name}.s"
+            if not stub_p.is_file():
+                raise FileNotFoundError(f"INCLUDE_ASM target not found: {stub_p}")
+            stubs[marker] = stub_p
+            idx += 1
+            return f"void {marker}(void) {{}}"
+
+        rewritten_i = INCLUDE_ASM_CPP_RE.sub(_repl_stub, pre_text)
+        if not stubs:
+            elf_bytes = compile_c_to_obj_bytes(
+                raw_text,
+                src_path.parent,
+                version,
+                opt,
+                extra_cc1,
+                extra_cpp,
+                save_prefix=str(out_path) if save_asm else None,
+            )
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_bytes(elf_bytes)
+            return
+
+        i_path.write_text(rewritten_i, encoding="utf-8")
         run_host([
             str(WIBO), str(CC1), "-quiet", opt, "-G0",
             "-mips3", "-mcpu=4300", "-mgas", "-meb",
@@ -285,37 +404,84 @@ def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_
         if save_asm:
             Path(f"{out_path}.s").write_text(s_text, encoding="utf-8")
 
+        # Promote $LC<N> labels so string-pooled .rodata references resolve across split chunks
+        lc_defs = set(re.findall(r'^(\$LC\d+):', s_text, re.M))
         chunks = strip_empty_dummy_and_split_s(s_text, stubs)
-        # Assemble each chunk in order, then ld -r in container
+        if len(chunks) > 1 and lc_defs:
+            # Find which $LC labels are referenced in a different chunk than defined
+            def_chunk = {}
+            for ci, (kind, payload) in enumerate(chunks):
+                if kind == "c_s":
+                    for lbl in re.findall(r'^(\$LC\d+):', payload, re.M):
+                        def_chunk[lbl] = ci
+            cross_lc = set()
+            for ci, (kind, payload) in enumerate(chunks):
+                if kind == "c_s":
+                    for lbl in re.findall(r'\$LC\d+', payload):
+                        if lbl in def_chunk and def_chunk[lbl] != ci:
+                            cross_lc.add(lbl)
+            if cross_lc:
+                new_chunks = []
+                for ci, (kind, payload) in enumerate(chunks):
+                    if kind == "c_s":
+                        for lbl in cross_lc:
+                            glbl = f"__wo64_lc_{lbl[3:]}"
+                            payload = re.sub(
+                                rf'^{re.escape(lbl)}:',
+                                f'\t.globl\t{glbl}\n{glbl}:',
+                                payload,
+                                flags=re.M,
+                            )
+                            payload = re.sub(rf'{re.escape(lbl)}\b', glbl, payload)
+                    new_chunks.append((kind, payload))
+                chunks = new_chunks
+
+        # Assemble each chunk in order (tracking cumulative .rodata offset for .align 3 phase),
+        # then ld -r in container
         part_objs = []
+        ro_len = 0
+
+        def _assemble_c_s(ci_tag, asm_str):
+            ps = tmp_p / f"p{ci_tag}.s"
+            po = tmp_p / f"p{ci_tag}.obj"
+            ps.write_text(asm_str, encoding="utf-8", newline="\r\n")
+            run_host([str(WIBO), str(ASN), "-q", "-G0", "-o", str(po), str(ps)])
+            return docker_exec(
+                f'd=$(mktemp -d) && trap "rm -rf $d" EXIT && '
+                f'cat > "$d/in.obj" && '
+                f'{POP_IN_CONTAINER} "$d/in.obj" -b -o "$d/out.o" >/dev/null && '
+                f'mips-linux-gnu-objcopy --rename-section .rdata=.rodata "$d/out.o" "$d/out2.o" && '
+                f'cat "$d/out2.o"',
+                input_bytes=po.read_bytes(),
+            )
+
         for ci, (kind, payload) in enumerate(chunks):
+            ro_start = (ro_len + 3) & ~3
             if kind == "c_s":
-                # Skip chunks that have no directives/instructions besides blank lines/comments
                 if not any(
                     l.strip() and not l.strip().startswith("#")
                     for l in payload.splitlines()
                 ):
                     continue
-                ps = tmp_p / f"p{ci}.s"
-                po = tmp_p / f"p{ci}.obj"
-                # Ensure .text is active if chunk starts with a label/func after a split
                 prefix = "\t.text\n" if (ci > 0 and not re.match(r'^\s*\.(text|rdata|data|sdata|bss|comm|lcomm)\b', payload.lstrip())) else ""
-                ps.write_text(prefix + payload, encoding="utf-8")
-                run_host([str(WIBO), str(ASN), "-q", "-G0", "-o", str(po), str(ps)])
-                elf_b = docker_exec(
-                    f'd=$(mktemp -d) && trap "rm -rf $d" EXIT && '
-                    f'cat > "$d/in.obj" && '
-                    f'{POP_IN_CONTAINER} "$d/in.obj" -b -o "$d/out.o" >/dev/null && '
-                    f'mips-linux-gnu-objcopy --rename-section .rdata=.rodata "$d/out.o" "$d/out2.o" && '
-                    f'cat "$d/out2.o"',
-                    input_bytes=po.read_bytes(),
+                full_s = _fix_rdata_align3_in_s(
+                    prefix + payload,
+                    ro_start,
+                    lambda s_probe, _ci=ci: _assemble_c_s(f"{_ci}_probe", s_probe),
                 )
+                elf_b = _assemble_c_s(str(ci), full_s)
+                ro_sz, _ = elf_section_size_and_syms(elf_b)
+                if ro_sz:
+                    ro_len = ro_start + ro_sz
                 part_objs.append(elf_b)
             else:
-                part_objs.append(assemble_stub_bytes(stubs[payload]))
+                elf_b = assemble_stub_bytes(stubs[payload], version, ro_len=ro_start)
+                ro_sz, _ = elf_section_size_and_syms(elf_b)
+                if ro_sz:
+                    ro_len = ro_start + ro_sz
+                part_objs.append(elf_b)
 
-    # Relocatably link all part_objs in exact order inside container
-    # Pass via tar stream on stdin for zero host-mount staleness issues
+    # Relocatably link all part_objs in exact order inside container and localize __wo64_lc_*
     import io, tarfile
     tar_buf = io.BytesIO()
     names = []
@@ -330,8 +496,12 @@ def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_
     merged = docker_exec(
         f'd=$(mktemp -d) && trap "rm -rf $d" EXIT && '
         f'tar -xf - -C "$d" && cd "$d" && '
+        f'for f in {args_str}; do '
+        f'  mips-linux-gnu-objcopy --set-section-alignment .text=4 --set-section-alignment .rodata=4 "$f" "$f.a" && mv "$f.a" "$f"; '
+        f'done && '
         f'mips-linux-gnu-ld -EB -r -o merged.o {args_str} && '
-        f'cat merged.o',
+        f'mips-linux-gnu-objcopy -w -L "__wo64_lc_*" merged.o merged2.o && '
+        f'cat merged2.o',
         input_bytes=tar_buf.getvalue(),
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)

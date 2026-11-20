@@ -6,6 +6,11 @@
  */
 #include "error.h"
 
+/* Sets the global error-status flag (first function in Error.c). */
+void SetErrorFlag(void) {
+    g_errorFlag = 1;
+}
+
 /* Original Psy-Q N64 Error() invokes an inline SN64 debugger breakpoint. */
 void Error(const char *msg, s16 errorLevel) {
     __asm__("break 0x407");

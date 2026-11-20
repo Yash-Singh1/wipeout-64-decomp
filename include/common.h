@@ -20,6 +20,8 @@
  * disassembled assembly stubs from asm/<version>/<folder>/<name>.s.
  * tools/cc.py splices the compiled C chunks and assembled stubs in order.
  */
+#ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME)
+#endif
 
 #endif /* WIPEOUT64_COMMON_H */
