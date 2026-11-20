@@ -90,7 +90,7 @@ segments:
       - [0x20B48, textbin, pad_20b48]
       - [0x20B50, c, wadfile]
       - [0x20E88, textbin, pad_20e88]
-      - [0x20E90, asm, math_atan2]
+      - [0x20E90, c, math_atan2]
       - [0x21024, textbin, pad_21024]
       - [0x21030, c, matrix]
       - [0x212C0, c, skeleton]
