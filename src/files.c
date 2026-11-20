@@ -1,3 +1,9 @@
+/*
+ * files.c — Cartridge ROM file-table lookup and synchronous PI DMA loading.
+ *
+ * Resolves relative file offsets against _romFilesBase (USA 0xB03CDF10,
+ * Europe 0xB03CD4D0) and streams asset files into the dynamic heap.
+ */
 #include "files.h"
 
 void InitFileSystem(void) {

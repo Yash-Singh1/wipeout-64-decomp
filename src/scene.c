@@ -1,3 +1,10 @@
+/*
+ * Scene.c — PRM 3D model loader, instancing, and F3DEX display-list compiler.
+ *
+ * Parses Wipeout PRM object files (byte-swapping big-endian fields, scaling
+ * normals, registering animated track props) and compiles PS1-style polygon
+ * primitives into batched N64 F3DEX display lists and environment-mapped meshes.
+ */
 #include "scene.h"
 
 #ident "$Revision: 1.17 $"

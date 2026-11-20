@@ -1,3 +1,9 @@
+/*
+ * font.c — 6x6 S2DEX sprite font renderer, button prompts, and name tables.
+ *
+ * Renders small menu/HUD text, controller button icons, and right/center
+ * aligned strings, and maps race class and track IDs to display names.
+ */
 #include "font.h"
 
 char *GetClassName(s16 classIdx) {

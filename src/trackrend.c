@@ -1,3 +1,9 @@
+/*
+ * trackrend.c — Sky dome, scrolling cloud ring, and gradient horizon renderer.
+ *
+ * Initializes per-track sky vertex color gradients and renders the textured
+ * cloud dome and horizon cylinder around the active camera skeleton.
+ */
 #include "trackrend.h"
 
 #ident "$Revision: 1.34 $"

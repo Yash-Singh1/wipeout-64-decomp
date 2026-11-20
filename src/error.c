@@ -1,3 +1,9 @@
+/*
+ * Error.c — Fatal error trap and string utility routines.
+ *
+ * Error() executes the SN64 debugger trap (`break 0x407`); StringCopy and
+ * small string helpers live in the same translation unit.
+ */
 #include "error.h"
 
 /* Original Psy-Q N64 Error() invokes an inline SN64 debugger breakpoint. */

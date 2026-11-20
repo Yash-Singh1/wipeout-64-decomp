@@ -1,3 +1,10 @@
+/*
+ * shipctrl.c — Per-frame ship update dispatch, race sorting, and player flight.
+ *
+ * Sorts ships by race progress (preserving Wipeout XL's tie-break behavior),
+ * runs start-grid countdowns and launch boosts, and integrates player analog
+ * steering, thrust, pitch, and airbrakes (scaled for 50 Hz PAL in Europe).
+ */
 #include "shipctrl.h"
 
 #ident "$Revision: 1.17 $"

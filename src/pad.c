@@ -1,3 +1,9 @@
+/*
+ * pad.c — N64 controller input polling, control presets, and button labels.
+ *
+ * Translates raw OSContPad button/stick state into per-player PadInfo structs
+ * using the 4 controller presets and maps action IDs to N64 button names.
+ */
 #include "pad.h"
 
 void InitPad(void) {

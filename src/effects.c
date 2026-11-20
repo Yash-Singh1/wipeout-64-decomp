@@ -1,3 +1,10 @@
+/*
+ * effects.c — Start boom, countdown lights, camera shake, rumble, and overlays.
+ *
+ * Manages trackside start droids/lights, ship combat visual effects, camera
+ * shake decay, and Rumble Pak pulse scheduling. Linked in early_game in Europe,
+ * where US helper DrawEffects2 is merged directly into DrawEffects.
+ */
 #include "effects.h"
 
 void SetDisplayListPrimColour(Gfx *gfx, s32 r, s32 g, s32 b, s32 a, s32 count) {

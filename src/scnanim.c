@@ -1,3 +1,10 @@
+/*
+ * scnanim.c — Scenery object prefix dispatch and landscape visibility renderer.
+ *
+ * Evaluates track camera facing direction and queues visible trackside PRM
+ * objects (matching prefix tags B_, A_, D_, C_, V_, Z_, H_, J_ for waving,
+ * rotating, glowing, and translucent scenery) into the scenery render lists.
+ */
 #include "scnanim.h"
 
 u8 TrackDirection(TrackCamera *camera, s32 *angleOut) {

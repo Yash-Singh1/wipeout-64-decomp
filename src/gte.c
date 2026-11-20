@@ -1,3 +1,11 @@
+/*
+ * gte.c — PS1 GTE fixed-point math compatibility layer and PlayNote SFX stub.
+ *
+ * Provides fixed-point trig (ratan2, rsin, rcos), 3D cross product, and matrix
+ * transforms (SetRotMatrix, SetTransMatrix, ApplyMatrix, RotTrans) ported from
+ * Wipeout XL's PS1 GTE calls, plus PlayNote (preserving the retail quirk where
+ * its local musHandle is read uninitialized from $a1).
+ */
 #ident "$Revision: 7.27 $"
 #ident "$Revision: 1.5 $"
 #ident "$Revision: 1.34 $"

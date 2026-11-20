@@ -1,3 +1,10 @@
+/*
+ * control.c — AI drone ship flight, racing-line following, and overtaking.
+ *
+ * Drives all non-player ships (catch-up thrust tables, pit-lane recovery,
+ * overtaking heuristics, shield difficulty scaling, and PAL 50 Hz angular /
+ * acceleration scaling under VERSION_EU).
+ */
 #include "control.h"
 
 #ifdef VERSION_EU

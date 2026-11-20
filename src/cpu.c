@@ -1,3 +1,11 @@
+/*
+ * cpu.c — Main CPU frame loop, RSP/RDP task builders, and track animators.
+ *
+ * Coordinates the top-level game state machine, 1P-4P F3DLX 3D display-list
+ * tasks, per-track scenery animations (carts, steam vents, claws, flames), and
+ * NTSC vs PAL task scheduling (USA submits a separate gspL3DEX_fifo task for
+ * 3D lines; Europe removes L3DEX and expands GLIST_LEN from 0x880 to 0x900).
+ */
 #ident "$Revision: 1.17 $"
 #ident "$Revision: 7.27 $"
 #ident "$Revision: 1.5 $"

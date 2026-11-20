@@ -141,7 +141,7 @@
 #define previousPlayerDamage             D_80091608
 #define g_pitFade                        D_80091944
 #define g_unk800923F9                    D_800919A9
-#define D_80094F7E                       D_8009452E
+#define g_superComboUnlocked             D_8009452E
 #define nextParticleSlot                 D_80095FC0
 #define shieldSfx                        D_800968A8
 #define g_pitSfxHandle                   D_800968AC
@@ -168,7 +168,7 @@
 #define pauseRequests                    D_800B75F0
 #define attractMode                      D_800B7600
 #define gameType                         D_800B7604
-#define D_800AA088                       D_800B7660
+#define g_attractMode                    D_800B7660
 #define ships                            D_800B767C
 #define playerPosition                   D_800B7682
 #define particleSlots                    D_800B7698
@@ -187,7 +187,7 @@
 #define reboundTarget                    D_800BAD5C
 #define D_800AD78F                       D_800BAD5F
 #define g_fadeColour                     D_800BAD60
-#define D_800AD820                       D_80097D10
+#define g_weaponLockFlag                 D_80097D10
 #define weaponRenderList                 D_800C48C0
 #define g_perfectLap                     D_800914B4
 #define g_logoSprite                     D_800CE1E0
@@ -323,7 +323,7 @@
 #define previousPlayerDamage             D_80091FD8
 #define g_pitFade                        D_80092394
 #define g_unk800923F9                    D_800923F9
-#define D_80094F7E                       D_80094F7E
+#define g_superComboUnlocked             D_80094F7E
 #define nextParticleSlot                 D_80096A08
 #define shieldSfx                        D_800972F8
 #define g_pitSfxHandle                   D_800972FC
@@ -350,7 +350,7 @@
 #define pauseRequests                    D_800AA010
 #define attractMode                      D_800AA020
 #define gameType                         D_800AA024
-#define D_800AA088                       D_800AA088
+#define g_attractMode                    D_800AA088
 #define ships                            D_800AA0A4
 #define playerPosition                   D_800AA0C0
 #define particleSlots                    D_800AA0C4
@@ -369,7 +369,7 @@
 #define reboundTarget                    D_800AD78C
 #define D_800AD78F                       D_800AD78F
 #define g_fadeColour                     D_800AD790
-#define D_800AD820                       D_800AD820
+#define g_weaponLockFlag                 D_800AD820
 #define weaponRenderList                 D_800C4580
 #define g_perfectLap                     D_80091E84
 #define g_logoSprite                     D_800CDEA0
@@ -741,7 +741,7 @@ typedef struct WeaponData {
 
 #define IS_PLAYER(n) ((n) == ownShip || (n) == ownShip2 || (n) == ownShip3 || (n) == ownShip4)
 
-extern u8 D_355F90[];
+extern u8 _startupDataFile[];
 extern s32 g_demoShip;
 extern s32 g_multiPlayer;
 extern s16 cheatfade;
@@ -777,7 +777,7 @@ extern s32 previousPlayerDamage3;
 extern s32 previousPlayerDamage4;
 extern s32 g_pitFade;
 extern u8 g_unk800923F9;
-extern u8 D_80094F7E;
+extern u8 g_superComboUnlocked;
 extern s32 nextParticleSlot;
 extern s32 shieldSfx;
 extern s32 g_pitSfxHandle;
@@ -804,7 +804,7 @@ extern s32 ownShip4;
 extern s32 pauseRequests[4];
 extern u8 attractMode;
 extern s32 gameType;
-extern s32 D_800AA088;
+extern s32 g_attractMode;
 extern ShipData *ships;
 extern u16 playerPosition;
 extern SParticle *particleSlots;
@@ -822,7 +822,7 @@ extern s16 fadeRed[4];
 extern s32 shieldGreen[NO_OF_SHIPS];
 extern s32 reboundTarget;
 extern FadeColour g_fadeColour[4];
-extern s32 D_800AD820;
+extern s32 g_weaponLockFlag;
 extern RenderList weaponRenderList;
 extern FrontendOptions frontendOptions_g;
 extern TrackData *track;

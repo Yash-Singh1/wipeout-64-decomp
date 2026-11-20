@@ -1,3 +1,10 @@
+/*
+ * shipefx.c — Player airbrake, view toggle, fire/ditch input, and cheat codes.
+ *
+ * Processes player weapon firing (including cyclone charge timing: 60 frames
+ * USA vs 50 frames Europe), weapon ditching, camera view toggling, menu key
+ * decoding, and frontend/in-game cheat button sequences.
+ */
 #include "shipefx.h"
 
 #ifdef VERSION_EU

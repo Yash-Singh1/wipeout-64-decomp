@@ -1,3 +1,10 @@
+/*
+ * Skeleton.c — Hierarchical 3D transform skeleton (position, rotation, N64 Mtx).
+ *
+ * Allocates and updates parent-child Skeleton transforms, builds 4.12 rotation
+ * matrices (XYZ, HPR, RPH), and converts fixed-point MATRIX structs into N64
+ * RSP Mtx format.
+ */
 #include "skeleton.h"
 
 #define rsin(a) (g_sinTable[(a) & 0xFFF])

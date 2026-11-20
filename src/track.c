@@ -1,3 +1,10 @@
+/*
+ * Track.c — Track geometry loader (TRF/TRV/TRS), view lists, and track renderer.
+ *
+ * Loads track vertices, faces, sections, and visibility lists from track WADs
+ * (Europe omits the legacy CheckVersion() check and shifts DAlloc lines by +1),
+ * compiles per-section F3DEX display lists, and renders visible road segments.
+ */
 #include "track.h"
 
 #ident "$Revision: 1.34 $"

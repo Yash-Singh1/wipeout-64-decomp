@@ -47,10 +47,14 @@ def count_version(ver):
                     cur = None
         return nf, nb
 
-    # Count assembly-only game files and nonmatchings
-    for p in sorted(asm_dir.rglob("*.s")):
+    # Count assembly-only game files and library files actually referenced by the linker script
+    asm_objs = sorted(set(re.findall(rf"build/{ver}/(asm/{ver}/[^\s(]+\.s)\.o", ld_text)))
+    for rel_s in asm_objs:
+        p = ROOT / rel_s
+        if not p.is_file():
+            continue
         rel = p.relative_to(asm_dir).as_posix()
-        if rel in ("header.s", "crt0.s") or rel.startswith(("data/", "matchings/")):
+        if rel in ("header.s", "crt0.s") or rel.startswith(("data/", "matchings/", "nonmatchings/")):
             continue
         nf, nb = scan_s(p)
         if any(k in rel for k in ("libultra", "libmus", "libgcc")):

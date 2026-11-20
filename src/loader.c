@@ -1,3 +1,10 @@
+/*
+ * loader.c — Loading screen S2DEX 2D task and Rumble Pak insertion prompt.
+ *
+ * Renders the F5000 Anti-Gravity Racing League loading screen, prompts for
+ * Rumble Pak insertion when not detected, and drives the 3D background task
+ * during loads (GLIST_LEN 0x880 USA vs 0x900 Europe).
+ */
 #include "loader.h"
 
 #ident "$Revision: 1.17 $"

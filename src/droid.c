@@ -1,3 +1,10 @@
+/*
+ * droid.c — Rescue droid AI, ship tow physics, and fly-in animation.
+ *
+ * Controls the trackside rescue droid that recovers out-of-bounds ships and
+ * switches the player camera during recovery. Europe rescales tow velocity
+ * and thrust step for 50 Hz PAL.
+ */
 #include "droid.h"
 
 #ifdef VERSION_EU

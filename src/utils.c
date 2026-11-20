@@ -1,3 +1,10 @@
+/*
+ * utils.c — Core vector math, track-section search, and PRNG utilities.
+ *
+ * Provides SectionSearch, FindNearestSection, 3D dot/cross/magnitude/angle
+ * helpers, arccos table lookup, symmetric shift (sar), angle wrap (ang), and
+ * the game's fast LCG/XOR PRNG (newRand).
+ */
 #include "utils.h"
 
 s32 SectionSearch(ShipData *playerShip) {

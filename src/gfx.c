@@ -1,3 +1,10 @@
+/*
+ * gfx.c — Framebuffer/Z-buffer initialization and RSP/RDP task submission.
+ *
+ * Allocates the static graphics segment, builds the 6 precomputed F3DLX
+ * render-mode init display lists (Europe enables Z_CMP on mode 1 and uses
+ * GLIST_LEN 0x900 vs USA 0x880), and submits frame tasks to the scheduler.
+ */
 #include "gfx.h"
 
 static const char rcsid[] = "$Revision: 1.17 $";

@@ -1,3 +1,9 @@
+/*
+ * Tim.c — Standalone and WAD-backed TIM texture file loaders.
+ *
+ * Reads TIM texture blobs from cartridge ROM or open WAD archives into the
+ * dynamic heap and hands them off to NewLoadTexture().
+ */
 #include "tim.h"
 
 Texture *LoadTexture(u32 fileOffset, s16 translucent) {

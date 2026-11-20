@@ -1,3 +1,9 @@
+/*
+ * Wadfile.c — WAD archive directory reader and sequential entry loader.
+ *
+ * Opens compressed/uncompressed WAD containers from cartridge ROM via PI DMA
+ * and streams individual sub-entries into caller-supplied heap buffers.
+ */
 #include "wadfile.h"
 
 WADFILE *OpenWadFile(u32 fileOffset) {

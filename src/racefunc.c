@@ -1,3 +1,11 @@
+/*
+ * Racefunc.c — Race completion, pause dispatch, restarts, and ghost replays.
+ *
+ * Handles ship destruction cameras (simplified in Europe to use a single
+ * destroyed-camera handler), restart/quit flows, league/challenge completion
+ * progression, pause/race-complete display-list buffers, and ghost recording
+ * and playback (200-frame start delay USA vs 166-frame PAL Europe).
+ */
 #include "racefunc.h"
 
 /*
@@ -145,7 +153,7 @@ void CheckForButtonPress(void) {
         }
     }
 
-    if (g_raceContext != 1 && D_800AA020 == 2) {
+    if (g_raceContext != 1 && g_attractFlag == 2) {
         if (buttons == 0) {
             g_idleTimer++;
         } else {
@@ -160,13 +168,13 @@ void Restart(RaceResetData *reset, s32 mode) {
 
     StopRumbleAll(-1);
 
-    D_800AD820 = 0;
+    g_weaponLockFlag = 0;
     g_superWeaponActive1 = 0;
     g_superWeaponActive2 = 0;
-    D_800CDE90 = 0;
-    D_800CE6B8 = 0;
-    D_800CE6BC = 0;
-    D_800CE6C0 = 0;
+    g_checkTimer = 0;
+    g_checkTimer2 = 0;
+    g_checkTimer3 = 0;
+    g_checkTimer4 = 0;
 
     for (i = 0; i < 6; i++) {
         reset->checkPoints[i].reached = -1;
@@ -190,9 +198,9 @@ void Restart(RaceResetData *reset, s32 mode) {
     }
 
     if (g_gameType == 1 || (g_gameType == 6 && frontendOptions_g.challengeMode == 2)) {
-        D_80091CD4 = -1;
-        D_80091CD8 = 0;
-        D_80091CD0 = 0;
+        g_ttLapCount = -1;
+        g_ghostLoaded = 0;
+        g_showSplitDelta = 0;
         if (g_gameType == 1) {
             InitGhostShip(reset->config, reset->ships, 0);
         }
@@ -212,11 +220,11 @@ void Restart(RaceResetData *reset, s32 mode) {
     }
 
     for (i = 0; i < 15; i++) {
-        D_8009BCE0[i] = 0;
+        g_shipDamage[i] = 0;
         g_shipDeathCount[i] = -1;
     }
 
-    func_80069CF8();
+    InitElectric();
     InitExplode();
     InitRing();
 
@@ -235,47 +243,47 @@ void Restart(RaceResetData *reset, s32 mode) {
         InitCamera(&cameras[3], ships[ownShip4].nearTrkSect);
     }
 
-    D_80096990 = 0;
+    g_cameraSwitchFlag = 0;
     g_restartRaceFlag = 0;
-    D_80091C94 = 0;
+    g_cameraShakeCount = 0;
     g_raceCompleteFlag = 0;
     g_linkMyState = 0;
     g_raceEndState = 0;
     g_hudShowPause = 0;
-    D_80096990 = 0;
-    D_80091E70 = 0;
+    g_cameraSwitchFlag = 0;
+    g_weaponActiveCount = 0;
 
     for (i = 0; i < 4; i++) {
-        D_80091E88[i] = 0;
-        D_80091E84[i] = 0;
+        g_perfectLapTimer[i] = 0;
+        g_perfectLapFlag[i] = 0;
         g_raceOutcome[i] = 0;
         pauseRequests[i] = 0;
-        func_8004986C(i, 1);
-        D_8009204C[i] = 0;
-        D_80096730[i] = 1;
+        ResetRumbleEffects(i, 1);
+        g_effectResetFlag[i] = 0;
+        g_skyVisible[i] = 1;
         gameData.raceInfo[i] = 0;
     }
 
     g_droneSwitchStep = 0;
     g_continueAnimFrame = 0;
     g_idleTimer = 0;
-    D_8008A982 = 0;
-    D_8008A984 = 0;
+    g_raceModeFlag = 0;
+    g_linkPartnerState = 0;
 
     if (!(mode & 2)) {
-        D_80091CBC = 0;
+        g_prevLapRecord = 0;
     }
 
     g_trackNameScroll = 480;
     InitScoreTabData(&g_scoreData);
     g_perfectLap = 0;
-    D_800AD048 = 60;
+    g_flareCount = 60;
 
     if (g_engineSfxPlaying != 0) {
         StopEngineSfx();
         g_engineSfxPlaying = 0;
-        StopSfx(&D_800972F8);
-        StopSfx(&D_800972FC);
+        StopSfx(&g_shieldSfxHandle);
+        StopSfx(&g_weaponSfxHandle);
         StopSfx(&g_droidVoice);
         StopSfx(&g_chargeSfxHandle);
     }
@@ -287,33 +295,33 @@ void Restart(RaceResetData *reset, s32 mode) {
     g_podiumShips[0] = -1;
     g_podiumShips[1] = -1;
     g_podiumShips[2] = -1;
-    D_800969DC[0] = -1;
-    D_800969DC[1] = -1;
-    D_800969DC[2] = -1;
-    D_80091F00 = 0;
-    D_80091E04 = 0;
+    g_podiumLocked[0] = -1;
+    g_podiumLocked[1] = -1;
+    g_podiumLocked[2] = -1;
+    g_quakeWaveState = 0;
+    g_challengeMedalLevel = 0;
 }
 
 void QuitGame(void) {
     StopRumbleAll(-1);
     ResumeAudio();
     StopAudio();
-    func_8004986C(0, 1);
-    func_8004986C(1, 1);
-    func_8004986C(2, 1);
-    func_8004986C(3, 1);
+    ResetRumbleEffects(0, 1);
+    ResetRumbleEffects(1, 1);
+    ResetRumbleEffects(2, 1);
+    ResetRumbleEffects(3, 1);
     StopEngineSfx();
     g_engineSfxPlaying = 0;
-    StopSfx(&D_800972F8);
-    StopSfx(&D_800972FC);
+    StopSfx(&g_shieldSfxHandle);
+    StopSfx(&g_weaponSfxHandle);
     StopSfx(&g_droidVoice);
     StopSfx(&g_chargeSfxHandle);
-    D_800AA020 = 2;
+    g_attractFlag = 2;
     if (g_gameType != 4) {
         g_gameType = 99;
     }
     g_gameState = 4;
-    D_8008A9DC = 0;
+    g_pauseExitFlag = 0;
 }
 
 u8 CheckAttractQuit(RaceConfigData *config) {
@@ -349,8 +357,8 @@ Gfx *RaceComplete(void *screen, void *unused, RaceConfigData *config, s16 *choic
     allRaceInfo = 1;
     isLeague = 0;
 
-    D_8009204C[player] = 0;
-    func_8004986C(player, 1);
+    g_effectResetFlag[player] = 0;
+    ResetRumbleEffects(player, 1);
 
     xstick = g_padInfo[frontendOptions_g.contPort[0]].xstickPad;
     if (xstick & 0x10) {
@@ -453,7 +461,7 @@ Gfx *RaceComplete(void *screen, void *unused, RaceConfigData *config, s16 *choic
                 glistp = DeSelectScreen(screen, glistp, 0);
                 glistp = CentreText("YOU DID NOT QUALIFY", 60, 36, 8, 1, glistp);
                 if (g_continuesLeft > 0) {
-                    DisplayContinues(D_800AB548, 176, 168);
+                    DisplayContinues(g_raceCompleteFlag2, 176, 168);
                     if (g_continueAnimFrame == 0) {
                         if (GetMenuKey(0, pad)) {
                             PlayNote(26, 255, 15, 15, 256);
@@ -509,7 +517,7 @@ Gfx *RaceComplete(void *screen, void *unused, RaceConfigData *config, s16 *choic
                     g_continueAnimFrame++;
                 }
             }
-        } else if (D_800AA020 == 2) {
+        } else if (g_attractFlag == 2) {
             if ((g_sixTracks == 1 && g_sixXPlayed == 0) ||
                 (g_eightTracks == 1 && g_eightXPlayed == 0)) {
                 g_raceEndState = 1;
@@ -635,7 +643,7 @@ Gfx *RaceComplete(void *screen, void *unused, RaceConfigData *config, s16 *choic
             allDone = 0;
         }
         glistp = DisplayRaceInfo(config, score, shipArr, glistp, player);
-        D_80092244 = 0;
+        g_hudRestartFlag = 0;
     } else {
         if (config->highScore) {
             if (!allDone) {
@@ -655,7 +663,7 @@ Gfx *RaceComplete(void *screen, void *unused, RaceConfigData *config, s16 *choic
                     }
                     g_linkMyState = 3;
                     g_raceEndState = 2;
-                    func_800518C0(22);
+                    ResetFrontendMenu(22);
                     g_menuScreen = 22;
                     g_leagueResults[g_podiumShips[0]].firstCount++;
                     g_leagueResults[g_podiumShips[1]].secondCount++;
@@ -764,7 +772,7 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
 
     PauseDListPtr = PauseDList;
 
-    if (pause->selection > -1 && D_8008A982 == 0) {
+    if (pause->selection > -1 && g_raceModeFlag == 0) {
         if (*pausePlayer >= 0) {
             xstick = g_padInfo[frontendOptions_g.contPort[*pausePlayer]].xstickPad;
             pad = g_padInfo[frontendOptions_g.contPort[*pausePlayer]].xpad;
@@ -835,7 +843,7 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                     (pause->selection == 1 || pause->selection == 2) &&
                     g_scoreData.gotHiScore != 0) {
                     g_scoreData.displayScore = 1;
-                    D_8008A9CC = 1;
+                    g_enteringHiScore = 1;
                     if (ships[ownShip].update == UpdatePlayerShipStart) {
                         ships[ownShip].update = UpdateDroneShipStart;
                     } else {
@@ -861,10 +869,10 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                         pause->command = 1;
                         if (g_gameType == 4) {
                             g_droneSwitchStep = 1;
-                            D_80091CA8 = 1;
+                            g_effectFlashTimer = 1;
                         } else {
                             g_restartRaceFlag = 1;
-                            D_80091CA8 = 1;
+                            g_effectFlashTimer = 1;
                         }
                         break;
                     case 2:
@@ -877,7 +885,7 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                             }
                             g_linkMyState = 3;
                             g_raceEndState = 2;
-                            func_800518C0(22);
+                            ResetFrontendMenu(22);
                             g_menuScreen = 22;
                             pause->selection = -1;
                             *pausePlayer = -1;
@@ -901,7 +909,7 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                         *pausePlayer = -1;
                         pause->command = 2;
                         if (g_gameType == 3) {
-                            func_800518C0(1);
+                            ResetFrontendMenu(1);
                             g_menuScreen = 1;
                         }
                         if (pause->stage == 2) {
@@ -924,7 +932,7 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                     pause->command = 0;
                     pause->selection = -1;
                     *pausePlayer = -1;
-                    D_80091CA8 = 1;
+                    g_effectFlashTimer = 1;
                 }
             }
         }
@@ -942,8 +950,8 @@ void ResetRace(RaceResetData *reset, RacePauseMenu *pause, s32 mode) {
     }
     InitAttractMode(mode, ships);
     gameData.complete = 0;
-    func_80020160();
-    D_800AD048 = 60;
+    SetUpFirstCheckPoint();
+    g_flareCount = 60;
 }
 
 Gfx *AppendPauseDList(Gfx *glistp) {
@@ -1007,9 +1015,9 @@ void InitGhostShip(RaceConfigData *config, RaceShipData *shipArr, s32 fromLap) {
         shipArr[g_ghostShip].update = UpdatePlayerShip;
         shipArr[g_ghostShip].weapon = 9;
         if (fromLap == 0) {
-            D_80091CD8 = 1;
-            g_ghostBestLapTime = D_800A9E9C;
-            g_ghostLapTime0 = D_800A9E9C;
+            g_ghostLoaded = 1;
+            g_ghostBestLapTime = g_raceQuitState;
+            g_ghostLapTime0 = g_raceQuitState;
         }
         g_ghostActive = fromLap;
     } else {

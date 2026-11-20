@@ -1,3 +1,9 @@
+/*
+ * sfx.c — Looping engine/scrape/turbulence SFX controller over libmus.
+ *
+ * Modulates engine pitch and volume from player ship speed/thrust across 1P-4P
+ * split-screen and wraps libmus effect start/stop/volume/frequency handles.
+ */
 #include "sfx.h"
 
 static const char rcsid[] = "$Revision: 1.17 $";

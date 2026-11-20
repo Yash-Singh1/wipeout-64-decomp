@@ -1,3 +1,9 @@
+/*
+ * quat.c — Axis-angle to quaternion and quaternion to fixed-point matrix math.
+ *
+ * Used by weapon trails, explosions, and billboarded 3D effects to orient
+ * geometry toward the active player camera.
+ */
 #include "quat.h"
 
 void AxisAngleToQuat(Quat *q, s32 angle, SVECTOR *axis) {

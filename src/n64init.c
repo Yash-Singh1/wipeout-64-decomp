@@ -1,3 +1,9 @@
+/*
+ * n64init.c — N64 boot entry point (main), VI/PI/scheduler init, and DMA.
+ *
+ * Sets up the idle and main OS threads, configures NTSC (USA) vs PAL (Europe)
+ * video timing, initializes the dynamic heap region, and launches the game.
+ */
 #include "n64init.h"
 
 static const char rcsid[] = "$Revision: 1.17 $";

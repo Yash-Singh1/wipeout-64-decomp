@@ -1,3 +1,9 @@
+/*
+ * mutex.c — N64 OSMesgQueue-based binary mutex (InitMutex / Lock / Unlock).
+ *
+ * Serializes access to shared SI/Controller/Rumble Pak hardware between the
+ * main thread, controller thread, and rumble thread.
+ */
 #include "mutex.h"
 
 void InitMutex(void) {

@@ -1,3 +1,9 @@
+/*
+ * pause.c — In-race pause menu, confirmation prompt, and music track names.
+ *
+ * Drives the animated pause overlay box, pause option navigation (Continue,
+ * Restart, Abort Race, Quit League, Return to Menu), and track/artist lookup.
+ */
 #include "pause.h"
 
 /*

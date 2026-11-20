@@ -1,3 +1,10 @@
+/*
+ * dynam.c — Core anti-gravity ship dynamics and track-surface physics.
+ *
+ * Computes hover spring forces, pitch/roll/heading integration, speed-up pad
+ * boosts, sky visibility culling, and track attributes. Europe rescales
+ * acceleration, pitch rate, and boost impulses by 60/50 for 50 Hz PAL.
+ */
 #include "dynam.h"
 
 #ident "$Revision: 7.27 $"

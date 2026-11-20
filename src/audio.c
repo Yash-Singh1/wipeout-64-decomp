@@ -1,3 +1,10 @@
+/*
+ * audio.c — N64 libmus audio initialization, ROM streaming, and music control.
+ *
+ * Manages the Software Creations libmus driver (20 channels NTSC USA, 24
+ * channels PAL Europe), PI DMA transfers for the pointer bank and 9 music
+ * tracks, master SFX/music volumes, and pause/resume fading.
+ */
 #include "audio.h"
 
 /* Header revision tags. Only #ident gives retail's packed, unaligned .rodata strings. */

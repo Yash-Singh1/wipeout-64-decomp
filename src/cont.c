@@ -1,3 +1,10 @@
+/*
+ * cont.c — N64 SI controller polling thread and Rumble Pak worker thread.
+ *
+ * Spawns two dedicated OS threads: the controller read thread (id 4, pri 8)
+ * waiting on the SI message queue, and the Rumble Pak worker thread (id 3,
+ * pri 9) dispatching mutex-guarded osMotorStart / osMotorStop calls.
+ */
 #include "cont.h"
 
 void ContThreadEntry(void *arg) {

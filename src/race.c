@@ -1,18 +1,28 @@
+/*
+ * Race.c — Race resource allocation and per-race setup.
+ *
+ * InitRaceResources() loads persistent ship, weapon, HUD, and start-droid
+ * assets once at boot/mode entry. ResetRaceHeaps() clears the temporary race
+ * heap between tracks, and InitRace() loads the selected track WAD, builds
+ * display lists, initializes AI/player ships, cameras, particles, trails,
+ * and challenge medals.
+ */
 #include "race.h"
 
 #ident "$Revision: 1.17 $"
 #ident "$Revision: 7.27 $"
 #ident "$Revision: 1.5 $"
 
+/* Allocates persistent race assets (ships, HUD sprites, weapons, effects, droids). */
 void InitRaceResources(void) {
     u32 i;
     SpriteImage *image;
 
-    func_80048124();
+    InitEffects();
     ships = DAlloc(g_heap, 0x1158, "Race.c", 1706);
     LoadShipShapes(0, ships, shipShapes, cameras[0].camPos);
-    func_8006F804();
-    func_8006F578();
+    InspectLoadAiShips();
+    InspectLoadAiDamage();
     for (i = 0; i < NO_OF_HUD_SPRITES; i++) {
         image = spriteTextures[spriteTextureBase + i];
         guSprite2DInit(&hudSprites[i], (u8 *)image->pixels - K0BASE, (u8 *)image->palette - K0BASE,
@@ -21,30 +31,32 @@ void InitRaceResources(void) {
     }
 
     g_startupImage = OpenWadFileNvc((u32)_startupImageFile);
-    func_8002A490(D_8009BE60, D_800A1048);
+    InitSpeedoSprites(g_hudTimers, g_hudLaps);
     g_startupImage->current += 2;
-    D_80091CAC = g_unk8008A970;
+    g_effectTexStart = g_unk8008A970;
     g_startupImage->current += 1;
-    func_80048B34(D_800AAF70, D_800AB650);
+    InitShipEffects(g_shipEffectA, g_shipEffectB);
 
     weaponShapes = DAlloc(g_heap, 0x200, "Race.c", 1777);
     weaponData = DAlloc(g_heap, 0xEC0, "Race.c", 1778);
-    func_800379D8(weaponShapes, cameras[0].camPos, weaponData, D_800AB4F8);
-    func_8004F6E4(D_800C4568, 0, 1);
-    func_8004F6E4(D_800C45C8, 0, 1);
-    func_8004F6E4(D_800C44F0, 0, 1);
-    func_8004F6E4(D_800C44A8, 0, 1);
-    func_80066B94();
+    InitWeapons(weaponShapes, cameras[0].camPos, weaponData, g_weaponTargetData);
+    InitRenderList(g_miscRenderListC, 0, 1);
+    InitRenderList(g_trailRenderList, 0, 1);
+    InitRenderList(g_miscRenderListB, 0, 1);
+    InitRenderList(g_miscRenderListA, 0, 1);
+    LoadExplodeGFX();
     LoadStartDroid(startDroidObjects, "sroid", cameras[0].camPos, checkPoints, &gameData);
     LoadStartDroid(lightGroups, "light", cameras[0].camPos, checkPoints, &gameData);
 }
 
+/* Reinitializes the temporary race heap and redirects all heap pointers to it. */
 void ResetRaceHeaps(void) {
     DInit(g_tempHeap, TEMP_HEAP_SIZE);
     g_unk8008A970 = 0;
     g_heap = g_heapA = g_heapB = g_tempHeap;
 }
 
+/* Loads the active track WAD and initializes all per-race game systems. */
 void InitRace(void) {
     s16 prmCount;
     WADFILE *startup;
@@ -67,21 +79,21 @@ void InitRace(void) {
     startup = OpenWadFileNvc((u32)_startupDataFile);
     gameData.unk2E = 1;
     tempGameData = &gameData;
-    D_8008A998 = 0;
+    g_raceSectionResetFlag = 0;
     gameData.shipClass = frontendOptions_g.teamClass;
-    D_800A10C0 = gameData.shipClass;
+    g_shipClassIndex = gameData.shipClass;
     gameData.actTrackNum = frontendOptions_g.trackNo;
     gameData.trackNum = gameData.actTrackNum - 1;
-    D_800A5E30 = gameData.trackNum;
-    if (D_800AA024 == 1) {
-        if (frontendOptions_g.trackNo != D_8009BA0C || D_8009BA10 != frontendOptions_g.teamClass ||
-            D_800AA084 != frontendOptions_g.team) {
-            D_80091CC0 = 0;
-            D_800A5E46 = 1;
+    g_trackIndex = gameData.trackNum;
+    if (g_gameType == 1) {
+        if (frontendOptions_g.trackNo != g_prevTrackNo || g_prevTeamClass != frontendOptions_g.teamClass ||
+            g_prevTeam != frontendOptions_g.team) {
+            g_ghostLapTime0 = 0;
+            g_ghostResetFlag = 1;
         }
-        D_8009BA0C = frontendOptions_g.trackNo;
-        D_8009BA10 = frontendOptions_g.teamClass;
-        D_800AA084 = frontendOptions_g.team;
+        g_prevTrackNo = frontendOptions_g.trackNo;
+        g_prevTeamClass = frontendOptions_g.teamClass;
+        g_prevTeam = frontendOptions_g.team;
     }
 
     track = DAlloc(g_heap, sizeof(TrackData), "Race.c", 2009);
@@ -90,14 +102,14 @@ void InitRace(void) {
     }
     wad = OpenWadFile(frontendOptions_g.trackFile);
     wad->current += 6;
-    D_80096994 = frontendOptions_g.numPlayers >= 2;
-    D_800C5BA0 = WADInitScene(prmObjects, &prmCount, cameras[0].camPos, &gameData, wad);
-    func_800648F0();
+    g_multiplayerFlag = frontendOptions_g.numPlayers >= 2;
+    g_sceneObjectCount = WADInitScene(prmObjects, &prmCount, cameras[0].camPos, &gameData, wad);
+    InitSky();
     textureStart = g_unk8008A970;
     wad->current = 4;
     LoadCmpFiles(WADLoadCompressedTextureSequence(wad));
-    D_800969A0 = g_unk8008A970 - textureStart;
-    func_8004F6E4(D_800C44D8, textureStart, D_800969A0);
+    g_trackTextureCount = g_unk8008A970 - textureStart;
+    InitRenderList(g_trackRenderList, textureStart, g_trackTextureCount);
     wad->current = 1;
     WADInitFaces(wad);
     WADInitSections(wad);
@@ -105,14 +117,15 @@ void InitRace(void) {
     wad->current = 0;
     WADInitVertices(wad);
     wad->current = 4;
-    func_800164C0();
+    InitTrackDisplayLists();
 
-    obj = prmObjects[D_80096998];
+    /* Temporarily splice both scenery object lists so SceneRadiusCheck2 bins them together. */
+    obj = prmObjects[g_scenePrmIndex];
     while (obj->next != NULL) {
         obj = obj->next;
     }
-    obj->next = prmObjects[D_8009699C];
-    SceneRadiusCheck2(prmObjects[D_80096998]);
+    obj->next = prmObjects[g_scene2PrmIndex];
+    SceneRadiusCheck2(prmObjects[g_scenePrmIndex]);
     obj->next = NULL;
     CloseWadFile(wad);
 
@@ -129,38 +142,39 @@ void InitRace(void) {
     }
     InitWeaponGrids(weaponGrid, track, &noWeaponGrids, &noSpecialGrids, checkPoints, &gameData);
     InitCheckPoints(checkPoints, &gameData);
-    D_800C5910 = 0;
+    g_raceLineFlags = 0;
     InitRaceLine(track, &gameData);
 
+    /* Initialize per-track animated scenery objects (carts, steam vents, claws, flames). */
     switch (frontendOptions_g.trackNo) {
         case 2:
-            func_8004EA38();
+            SetupTrack2Anim();
             break;
         case 5:
-            func_8004EE78();
+            SetupTrack5Anim();
             break;
         case 4:
-            func_8004E008();
+            SetupTrack4Anim();
             break;
         case 3:
-            func_8004D76C();
+            SetupTrack3Anim();
             break;
         case 6:
-            func_8004E188();
+            SetupTrack6Anim();
             break;
     }
 
     initShipData(track->sections, ships, &gameData);
-    if (D_800AA024 == 1) {
-        func_800146CC(ownShip);
-    } else if (D_800AA024 == 3) {
-        func_80014884();
+    if (g_gameType == 1) {
+        InitShipShadows(ownShip);
+    } else if (g_gameType == 3) {
+        InitShipRenderLists();
     } else if (ownShip >= 9 && ownShip <= 11) {
-        func_800146CC(ownShip);
+        InitShipShadows(ownShip);
     }
     InitDroidThings(startDroidObjects, "sroid", cameras[0].camPos, checkPoints, &gameData);
     InitDroidThings(lightGroups, "light", cameras[0].camPos, checkPoints, &gameData);
-    func_8001F078(ships);
+    SetUnitVectors(ships);
     for (i = 0; i < frontendOptions_g.numPlayers; i++) {
         InitRescueDroid(&rescueData[i], shipShapes, &ships[frontendOptions_g.ownShips[i]]);
     }
@@ -183,24 +197,24 @@ void InitRace(void) {
     InitRaceResetData(resetData, ships, &gameData, weaponData, weaponShapes, rescueData, shipShapes,
                       checkPoints);
     for (i = 0; i < NO_OF_DAMAGE_SLOTS; i++) {
-        D_8009BCE0[i] = 0;
+        shipDamage[i] = 0;
     }
-    func_80070F1C();
+    InitTrails();
     particleSlots = InitParticle();
     InitExplode();
     InitRing();
-    func_8003809C();
+    ResetWeapons();
     pauseData.menu = 2;
     pauseData.selection = 0;
-    func_8006E880(resetData, &pauseData, D_800AA088);
-    if (D_800AA088 == 1) {
-        func_80008E5C();
+    ResetRace(resetData, &pauseData, g_attractMode);
+    if (g_attractMode == 1) {
+        StartMusic();
     }
-    D_80091C98 = 0;
-    D_80091C9C = 0;
-    D_80091E04 = 0;
+    g_raceTimer0 = 0;
+    g_raceTimer1 = 0;
+    g_challengeMedalLevel = 0;
 
-    if (D_800AA024 == 6) {
+    if (g_gameType == 6) {
         switch (frontendOptions_g.challengeMedal) {
             case 3:
                 startup->current = 14;
@@ -215,7 +229,7 @@ void InitRace(void) {
                 startup->current = 17;
                 break;
         }
-        challengeMedalObject = WADLoadPrm(startup, D_800C45F8);
+        challengeMedalObject = WADLoadPrm(startup, g_shipRenderList);
         if (challengeMedalObject == NULL) {
             __assert("challengeMedalObject", "Race.c", 2340);
         }
@@ -224,5 +238,5 @@ void InitRace(void) {
         challengeMedalObject = NULL;
     }
     CloseWadFileNvc(startup);
-    func_80043BA0();
+    ResetEffects();
 }

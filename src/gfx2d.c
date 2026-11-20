@@ -1,3 +1,10 @@
+/*
+ * gfx2d.c — S2DEX 2D overlay task builders for race HUD and frontend menus.
+ *
+ * Draws split-screen divider borders, dispatches per-player HUD and overlay
+ * display lists during racing, and selects between plasma and frontend 2D
+ * rendering in menus (assert bound 0x4400 USA vs 0x4800 Europe).
+ */
 #include "gfx2d.h"
 
 static const char rcsid[] = "$Revision: 1.17 $";

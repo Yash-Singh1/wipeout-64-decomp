@@ -1,3 +1,10 @@
+/*
+ * hud.c — In-race HUD, speedometer, lap/checkpoint timers, and results screen.
+ *
+ * Renders the 1P-4P HUD (speedometer, shield/thrust bars, weapon icons, lap
+ * times, target warnings, checkpoint banners) and the post-race summary. PAL
+ * Europe adjusts 50 Hz timers and vertical coordinates for the 256-line display.
+ */
 #include "hud.h"
 
 static const char rcsid[] = "$Revision: 1.17 $";

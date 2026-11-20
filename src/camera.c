@@ -1,3 +1,10 @@
+/*
+ * camera.c — Race, chase, nose, rescue-droid, and attract-mode camera updates.
+ *
+ * Implements the per-player TrackCamera update callbacks. Europe retail
+ * rescales external-chase and rescue-droid camera tracking velocity by 60/50
+ * to match NTSC responsiveness at 50 Hz PAL.
+ */
 #include "camera.h"
 
 void InitCamera(TrackCamera *camera, TrackSection *section) {

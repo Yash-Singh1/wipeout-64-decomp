@@ -1,3 +1,11 @@
+/*
+ * weapon.c — Complete weapons system (pickups, projectiles, super-weapons).
+ *
+ * Implements weapon grid pickups, firing dispatch, rockets, homing missiles,
+ * plasma bolts, quake track deformation, electro-bolts, mines, cyclone, energy
+ * drain, machine gun, shield, autopilot, turbo, and team super-weapons, with
+ * PAL 50 Hz speed and lifetime rescaling under VERSION_EU.
+ */
 #include "weapon.h"
 
 #ident "$Revision: 1.17 $"
@@ -223,7 +231,7 @@ void InsertWeapon(ShipData *ship, WeaponData *weapons, s32 owner, u8 type) {
                 return;
             case WEAPON_ENERGY:
                 damage = -150;
-                if (D_80094F7E || cheatSuperCombo) {
+                if (g_superComboUnlocked || cheatSuperCombo) {
                     if (gameType == 0 || gameType == 3) {
                         if (IS_PLAYER(owner) && frontendOptions_g.superCombo) {
                             ScaleChallengeDamage(&damage, 6);
@@ -424,7 +432,7 @@ void InitWeapons(WeaponShape *shapes, Skeleton *camPos, WeaponData *weapons) {
     Object *o8;
     s32 i;
 
-    wad = OpenWadFileNvc((u32)D_355F90);
+    wad = OpenWadFileNvc((u32)_startupDataFile);
     textureStart = g_unk8008A970;
     wad->current = 18;
     LoadCmpFiles(WADLoadCompressedTextureSequence(wad));
@@ -2341,7 +2349,7 @@ Gfx *UpdateTrackTrap(ShipData *ships, WeaponShape *shapes, WeaponData *weapon, W
                     ship->speed >>= 5;
                     ship->vroll += newRand() % 250;
                     ship->ahdg = (newRand() - 16384) >> 1;
-                    D_800AD820 = 0;
+                    g_weaponLockFlag = 0;
                     PlayNote(0x41, 0xA0, 0xF, 0xF, 0x100);
                     if (i == ownShip) {
                         SetRumble(8, 0);
@@ -3018,7 +3026,7 @@ void GetNewWeapon(ShipData *shipList, s32 shipNo) {
         (frontendOptions_g.numPlayers < 2 || shipNo != ownShip2 || pauseRequests[1] == 0) &&
         (frontendOptions_g.numPlayers < 3 || shipNo != ownShip3 || pauseRequests[2] == 0) &&
         (frontendOptions_g.numPlayers != 4 || shipNo != ownShip4 || pauseRequests[3] == 0) &&
-        D_800AA088 != 1) {
+        g_attractMode != 1) {
         ship = &shipList[shipNo];
         if (shipNo == ownShip) {
             pos = playerPosition;
@@ -3309,7 +3317,7 @@ void GetNewDroneWeapon(ShipData *shipList, s32 shipNo) {
         (frontendOptions_g.numPlayers < 2 || shipNo != ownShip2 || pauseRequests[1] == 0) &&
         (frontendOptions_g.numPlayers < 3 || shipNo != ownShip3 || pauseRequests[2] == 0) &&
         (frontendOptions_g.numPlayers != 4 || shipNo != ownShip4 || pauseRequests[3] == 0) &&
-        D_800AA088 != 1) {
+        g_attractMode != 1) {
         ship = &shipList[shipNo];
         if (ship->numToSpeed > 0) {
             ship->weapon = 0;
@@ -3692,7 +3700,7 @@ void DamageCollide(s32 damageType, s32 shipNo, WeaponData *weapon) {
         (frontendOptions_g.numPlayers < 2 || shipNo != ownShip2 || pauseRequests[1] == 0) &&
         (frontendOptions_g.numPlayers < 3 || shipNo != ownShip3 || pauseRequests[2] == 0) &&
         (frontendOptions_g.numPlayers != 4 || shipNo != ownShip4 || pauseRequests[3] == 0) &&
-        D_800AA088 != 1) {
+        g_attractMode != 1) {
         switch (damageType) {
         case 0x80:
             damage = -10;
@@ -3763,7 +3771,7 @@ void DamageCollide(s32 damageType, s32 shipNo, WeaponData *weapon) {
             }
         }
 
-        if (D_80094F7E || cheatSuperCombo) {
+        if (g_superComboUnlocked || cheatSuperCombo) {
             if (gameType == 0 || gameType == 3) {
                 if (weapon != NULL && IS_PLAYER(weapon->owner) && frontendOptions_g.superCombo) {
                     ScaleChallengeDamage(&damage, damageType);
@@ -3802,7 +3810,7 @@ void DamageCollide(s32 damageType, s32 shipNo, WeaponData *weapon) {
                         g_superWeaponActive2 = 0;
                         g_weaponCharge[shipNo] = 0;
                     }
-                    if (D_800AA088 != 1) {
+                    if (g_attractMode != 1) {
                         if (frontendOptions_g.numPlayers == 1) {
                             shipDeathCount[shipNo] = DEATH_DELAY_1P;
                         } else {

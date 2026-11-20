@@ -1,3 +1,9 @@
+/*
+ * Radscn.c — Fixed-point integer square root and spatial scenery culling.
+ *
+ * Provides SquareRoot0 and precomputes per-track-section visible scenery
+ * object lists (SceneRadiusCheck / SceneRadiusCheck2) after track load.
+ */
 #include "radscn.h"
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))

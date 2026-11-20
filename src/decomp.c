@@ -1,3 +1,9 @@
+/*
+ * decomp.c — LZ/RNC bitstream decompressor for compressed texture archives.
+ *
+ * Expands compressed TIM texture sequence blobs loaded from cartridge ROM or
+ * track WAD archives before palette conversion and N64 texture setup.
+ */
 #include "common.h"
 
 void ExpandData(u8 *input, u8 *output) {

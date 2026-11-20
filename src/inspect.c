@@ -1,3 +1,10 @@
+/*
+ * inspect.c — AI ship/damage tuning table loaders and stripped debug stubs.
+ *
+ * Loads external ROM tuning tables (_aiDamageFile and _aiShipsFile) into the
+ * ship shield, weapon damage, and per-class AI thrust arrays; surrounding
+ * empty stubs remain from stripped development inspector tools.
+ */
 #include "inspect.h"
 
 #ident "$Revision: 1.17 $"

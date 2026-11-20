@@ -1,3 +1,10 @@
+/*
+ * dheap.c — Dynamic heap allocator (DInit / DAlloc / DFree / DCheckHeap).
+ *
+ * Doubly-linked free/allocated block arena ported from Wipeout XL. DAlloc
+ * records __FILE__ and __LINE__ in retail calls (used for diagnostics and
+ * proving original source TU boundaries).
+ */
 #include "dheap.h"
 
 void DInit(DHeapBlock *heap, s32 size) {

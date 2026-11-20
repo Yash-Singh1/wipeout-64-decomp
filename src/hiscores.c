@@ -1,3 +1,10 @@
+/*
+ * hiscores.c — Lap/race high-score tables, record checks, and name entry.
+ *
+ * Initializes default developer records (scaled by 60 Hz USA vs 50 Hz Europe),
+ * detects new lap/race records, renders the record table, and runs the 3-letter
+ * high-score name entry screen.
+ */
 #include "hiscores.h"
 
 #ident "$Revision: 1.17 $"

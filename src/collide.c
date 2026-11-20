@@ -1,3 +1,11 @@
+/*
+ * collide.c — Ship-to-ship and ship-to-track collision detection & response.
+ *
+ * Handles bounding-hull ship collisions (with 4-player Rumble Pak feedback and
+ * attacker attribution), track-wall nose/wing impacts, plane-line intersection,
+ * and PAL 50 Hz bounce impulse rescaling (60/50) in Ship2TrackBase and
+ * DroneShip2TrackBase.
+ */
 #include "collide.h"
 
 #ident "$Revision: 1.17 $"

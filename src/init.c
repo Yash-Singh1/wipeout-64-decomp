@@ -1,3 +1,10 @@
+/*
+ * Init.c — Scene WAD loading, texture decompression, and F3DEX texture DLs.
+ *
+ * Loads per-track scene PRM models, decompresses TIM texture sequences,
+ * converts 15-bit PS1 palettes to N64 RGBA5551, flips textures, and generates
+ * per-texture F3DEX load display lists.
+ */
 #include "init.h"
 
 s16 WADInitScene(Object **prm, s16 *prmCount, Skeleton *camPos, ConfigData *gameData, WADFILE *wad) {

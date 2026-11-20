@@ -1,3 +1,11 @@
+/*
+ * Particle.c — Sparks, explosions, rings, weapon flares, and electric arcs.
+ *
+ * Manages all pooled 3D particle and billboard effects. USA draws sparks and
+ * electric bolts via gSPLine3D (gspL3DEX_fifo); Europe converts them to thin
+ * F3DEX triangles (expanding SParticle and Electric vertex buffers), adds
+ * 0x4000 box culling, and inserts CheckParticleGuard memory-canary checks.
+ */
 #include "particle.h"
 
 #ident "$Revision: 1.17 $"

@@ -1,3 +1,10 @@
+/*
+ * Initrace.c — Checkpoint, weapon grid, attract mode, and racing-line setup.
+ *
+ * Populates checkpoint bonus times, weapon/special track grids, attract-mode
+ * timeout (1800 frames USA vs 1500 frames Europe), and the AI racing-line
+ * distance table.
+ */
 #include "initrace.h"
 
 void InitCheckPoints(CheckPoints *checkPoints, ConfigData *config) {

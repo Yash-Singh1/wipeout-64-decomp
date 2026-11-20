@@ -1,3 +1,9 @@
+/*
+ * matrix.c — 3x3 fixed-point matrix multiplication (MulMatrix0).
+ *
+ * Part of the Skeleton.c translation unit, multiplying 4.12 fixed-point
+ * rotation matrices for object hierarchy transforms.
+ */
 #include "skeleton.h"
 
 MATRIX *MulMatrix0(MATRIX *m0, MATRIX *m1, MATRIX *m2) {

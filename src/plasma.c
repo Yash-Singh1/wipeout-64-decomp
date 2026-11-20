@@ -1,3 +1,10 @@
+/*
+ * plasma.c — Procedural CI8 plasma backgrounds for frontend and effects.
+ *
+ * Generates radial distance/sine lookup tables, default blue/cyan and gold
+ * unlock RGBA5551 palettes, and renders two scrolling S2DEX plasma layers
+ * plus the in-game wave-interference plasma texture.
+ */
 #include "plasma.h"
 
 #ident "$Revision: 1.17 $"

@@ -1,3 +1,10 @@
+/*
+ * n64render.c — Texture-bucketed F3DEX display-list sorter and flusher.
+ *
+ * Groups geometry display lists by texture index to minimize TMEM texture
+ * loads, tracks modelview matrix changes, and supports negated-matrix-pointer
+ * combine-mode overrides for shaded/untextured passes.
+ */
 #include "n64render.h"
 
 void ResetRenderList(RenderList *list) {

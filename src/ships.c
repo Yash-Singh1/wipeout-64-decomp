@@ -1,3 +1,10 @@
+/*
+ * Ships.c — Ship model loading, instancing, per-class initialization, and draw.
+ *
+ * Loads team ship PRM meshes, initializes all 15 race ships (scaling thrust,
+ * drag, mass, and AI speed tables for 50 Hz PAL in Europe), computes per-player
+ * ship visibility, and renders ships, ghost ships, shields, and track shadows.
+ */
 #include "ships.h"
 
 #ident "$Revision: 7.27 $"

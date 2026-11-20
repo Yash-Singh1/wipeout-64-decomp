@@ -1,3 +1,11 @@
+/*
+ * Trail.c — Ship engine flares, missile lock reticles, and exhaust trails.
+ *
+ * Linked in early_game in Europe. USA draws lock-on reticles via gSPLine3D
+ * (5-vertex stride); Europe switches to F3DEX gSP1Triangle wedges (8-vertex
+ * stride), adds 0x4000 box culling, adjusts fade rate (14 vs 16), and enables
+ * exhaust ribbons for 2P/3P human players.
+ */
 #include "trail.h"
 
 void DrawFlare(VECTOR *pos, MATRIX *mat, Vtx *vtx, s32 ship, s32 player) {

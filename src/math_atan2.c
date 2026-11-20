@@ -1,3 +1,8 @@
+/*
+ * math_atan2.c — Fixed-point 16-bit atan2 and leading-bit helpers.
+ *
+ * Implements Atan2Fix16 and BitLength backing ratan2() in gte.c.
+ */
 #include "common.h"
 
 extern u16 g_atanTable[];
