@@ -1,0 +1,6578 @@
+{
+  "meta": {
+    "vram_offset": "0x7FFFF400",
+    "us": {
+      "rom": "orig/us/baserom.z64",
+      "code": "NWPE",
+      "sha1": "54e4795aba4fc326f79d0703ffdb51a212dd4b5c",
+      "rodata_rom": [
+        "0x010F4",
+        "0x05660"
+      ],
+      "text_rom": [
+        "0x05660",
+        "0x88910"
+      ],
+      "game_text_rom": [
+        "0x09840",
+        "0x72EF0"
+      ],
+      "libgcc_text_rom": [
+        "0x72EF0",
+        "0x73650"
+      ],
+      "libmus_text_rom": [
+        "0x73650",
+        "0x76CA0"
+      ],
+      "libultra_text_rom": [
+        "0x76CA0",
+        "0x88910"
+      ],
+      "data_rom": [
+        "0x88910",
+        "0x992F0"
+      ],
+      "bss_vram": [
+        "0x800986F0",
+        "0x800FF0E0"
+      ],
+      "game_tu_count": 51,
+      "game_func_count": 618,
+      "game_plus_libgcc_libmus_func_count": 711,
+      "text_pad_gap_count": 45,
+      "rodata_pad_gap_count": 39
+    },
+    "eu": {
+      "rom": "orig/eu/baserom.z64",
+      "code": "NWPP",
+      "sha1": "3eef8ec7d0009ee67d604aaca2bb61b7397ba862",
+      "rodata_rom": [
+        "0x010F4",
+        "0x05640"
+      ],
+      "text_rom": [
+        "0x05640",
+        "0x886B0"
+      ],
+      "early_game_text_rom": [
+        "0x08830",
+        "0x10670"
+      ],
+      "main_game_text_rom": [
+        "0x10670",
+        "0x72C90"
+      ],
+      "libgcc_text_rom": [
+        "0x72C90",
+        "0x733F0"
+      ],
+      "libmus_text_rom": [
+        "0x733F0",
+        "0x76A40"
+      ],
+      "libultra_text_rom": [
+        "0x76A40",
+        "0x886B0"
+      ],
+      "data_rom": [
+        "0x886B0",
+        "0x98890"
+      ],
+      "bss_vram": [
+        "0x80097C90",
+        "0x800F7FF0"
+      ],
+      "game_tu_count": 51,
+      "game_func_count": 617,
+      "game_plus_libgcc_libmus_func_count": 710,
+      "text_pad_gap_count": 47,
+      "rodata_pad_gap_count": 39
+    },
+    "us_eu_structural_differences": {
+      "omitted_in_eu": [
+        "gspL3DEX_fifo"
+      ],
+      "moved_to_early_game_in_eu": [
+        {
+          "id": "effects",
+          "us_text": "0x44710..0x4A550",
+          "eu_text": "0x08830..0x0E40C",
+          "us_rodata": "0x2B20..0x2BC0",
+          "eu_rodata": "0x1100..0x11A0"
+        },
+        {
+          "id": "trail",
+          "us_text": "0x70CF0..0x72EE4",
+          "eu_text": "0x0E410..0x10670",
+          "us_rodata": "0x5020..0x5030",
+          "eu_rodata": "0x11A0..0x11B0"
+        }
+      ],
+      "function_count_differences": [
+        {
+          "id": "track",
+          "us": 20,
+          "eu": 19,
+          "delta": -1,
+          "reason": "EU removes first function (US 0x15C20 / VRAM 0x80015020) and 'Convert track with track10' string"
+        },
+        {
+          "id": "effects",
+          "us": 25,
+          "eu": 24,
+          "delta": -1,
+          "reason": "EU merges/inlines US 0x44FF4 (VRAM 0x800443F4) into EU 0x089E0 (VRAM 0x80007DE0)"
+        },
+        {
+          "id": "particle",
+          "us": 35,
+          "eu": 36,
+          "delta": 1,
+          "reason": "EU adds memory-guard canary check function at EU 0x68E7C (VRAM 0x8006827C)"
+        }
+      ]
+    }
+  },
+  "translation_units": [
+    {
+      "us_order": 0,
+      "eu_order": 0,
+      "id": "crt0",
+      "name": "crt0.s",
+      "name_source": "known_lib",
+      "kind": "boot",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x01000",
+          "rom_end": "0x010F4",
+          "rom_pad_end": "0x010F4",
+          "vram_start": "0x80000400",
+          "vram_end": "0x800004F4",
+          "size": 244
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x10F4",
+          "rom_end": "0x1100",
+          "vram_start": "0x800004F4",
+          "vram_end": "0x80000500",
+          "size": 12
+        },
+        "rodata_pad_gap": null,
+        "func_count": 3,
+        "first_func_vram": "0x80000400",
+        "last_func_vram": "0x80000498"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x01000",
+          "rom_end": "0x010F4",
+          "rom_pad_end": "0x010F4",
+          "vram_start": "0x80000400",
+          "vram_end": "0x800004F4",
+          "size": 244
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x10F4",
+          "rom_end": "0x1100",
+          "vram_start": "0x800004F4",
+          "vram_end": "0x80000500",
+          "size": 12
+        },
+        "rodata_pad_gap": null,
+        "func_count": 3,
+        "first_func_vram": "0x80000400",
+        "last_func_vram": "0x80000498"
+      },
+      "notes": "SN64 boot/crt0 (__start, __init_ctors, __fini_dtors) + 12B crt0_rodata"
+    },
+    {
+      "us_order": 1,
+      "eu_order": 1,
+      "id": "rspboot",
+      "name": "rspboot",
+      "name_source": "known_lib",
+      "kind": "rsp",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x05660",
+          "rom_end": "0x05730",
+          "rom_pad_end": "0x05730",
+          "vram_start": "0x80004A60",
+          "vram_end": "0x80004B30",
+          "size": 208
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x05640",
+          "rom_end": "0x05710",
+          "rom_pad_end": "0x05710",
+          "vram_start": "0x80004A40",
+          "vram_end": "0x80004B10",
+          "size": 208
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "notes": "RSP boot microcode"
+    },
+    {
+      "us_order": 2,
+      "eu_order": 2,
+      "id": "n_aspMain",
+      "name": "n_aspMain",
+      "name_source": "known_lib",
+      "kind": "rsp",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x05730",
+          "rom_end": "0x06550",
+          "rom_pad_end": "0x06550",
+          "vram_start": "0x80004B30",
+          "vram_end": "0x80005950",
+          "size": 3616
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x05710",
+          "rom_end": "0x06530",
+          "rom_pad_end": "0x06530",
+          "vram_start": "0x80004B10",
+          "vram_end": "0x80005930",
+          "size": 3616
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "notes": "RSP n_audio microcode"
+    },
+    {
+      "us_order": 3,
+      "eu_order": 3,
+      "id": "gspF3DLX_fifo",
+      "name": "gspF3DLX_fifo",
+      "name_source": "known_lib",
+      "kind": "rsp",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x06550",
+          "rom_end": "0x07980",
+          "rom_pad_end": "0x07980",
+          "vram_start": "0x80005950",
+          "vram_end": "0x80006D80",
+          "size": 5168
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x06530",
+          "rom_end": "0x07960",
+          "rom_pad_end": "0x07960",
+          "vram_start": "0x80005930",
+          "vram_end": "0x80006D60",
+          "size": 5168
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "notes": "RSP Fast3DLX FIFO microcode"
+    },
+    {
+      "us_order": 4,
+      "eu_order": null,
+      "id": "gspL3DEX_fifo",
+      "name": "gspL3DEX_fifo",
+      "name_source": "known_lib",
+      "kind": "rsp",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x07980",
+          "rom_end": "0x08970",
+          "rom_pad_end": "0x08970",
+          "vram_start": "0x80006D80",
+          "vram_end": "0x80007D70",
+          "size": 4080
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "eu": null,
+      "notes": "RSP Line3DEX FIFO microcode (USA only; omitted in Europe)"
+    },
+    {
+      "us_order": 5,
+      "eu_order": 4,
+      "id": "gspS2DEX_fifo",
+      "name": "gspS2DEX_fifo",
+      "name_source": "known_lib",
+      "kind": "rsp",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x08970",
+          "rom_end": "0x09840",
+          "rom_pad_end": "0x09840",
+          "vram_start": "0x80007D70",
+          "vram_end": "0x80008C40",
+          "size": 3792
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x07960",
+          "rom_end": "0x08830",
+          "rom_pad_end": "0x08830",
+          "vram_start": "0x80006D60",
+          "vram_end": "0x80007C30",
+          "size": 3792
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 0
+      },
+      "notes": "RSP Sprite2DEX FIFO microcode"
+    },
+    {
+      "us_order": 6,
+      "eu_order": 7,
+      "id": "assert",
+      "name": "assert.c",
+      "name_source": "known_lib",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x09840",
+          "rom_end": "0x09848",
+          "rom_pad_end": "0x09850",
+          "vram_start": "0x80008C40",
+          "vram_end": "0x80008C48",
+          "size": 8
+        },
+        "text_pad_gap": {
+          "rom_start": "0x09848",
+          "rom_end": "0x09850",
+          "vram_start": "0x80008C48",
+          "vram_end": "0x80008C50",
+          "size": 8,
+          "bytes_hex": "56578b7e0633f6e9",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 1,
+        "first_func_vram": "0x80008C40",
+        "last_func_vram": "0x80008C40"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x10670",
+          "rom_end": "0x10678",
+          "rom_pad_end": "0x10680",
+          "vram_start": "0x8000FA70",
+          "vram_end": "0x8000FA78",
+          "size": 8
+        },
+        "text_pad_gap": {
+          "rom_start": "0x10678",
+          "rom_end": "0x10680",
+          "vram_start": "0x8000FA78",
+          "vram_end": "0x8000FA80",
+          "size": 8,
+          "bytes_hex": "7b969c89ab006e4c",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 1,
+        "first_func_vram": "0x8000FA70",
+        "last_func_vram": "0x8000FA70"
+      },
+      "notes": "__assert infinite loop stub (matched in src/assert.c)"
+    },
+    {
+      "us_order": 7,
+      "eu_order": 8,
+      "id": "audio",
+      "name": "audio.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x09850",
+          "rom_end": "0x0A0C8",
+          "rom_pad_end": "0x0A0D0",
+          "vram_start": "0x80008C50",
+          "vram_end": "0x800094C8",
+          "size": 2168
+        },
+        "text_pad_gap": {
+          "rom_start": "0x0A0C8",
+          "rom_end": "0x0A0D0",
+          "vram_start": "0x800094C8",
+          "vram_end": "0x800094D0",
+          "size": 8,
+          "bytes_hex": "f80000c746f00000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1100",
+          "rom_end": "0x1140",
+          "vram_start": "0x80000500",
+          "vram_end": "0x80000540",
+          "size": 64
+        },
+        "rodata_pad_gap": null,
+        "func_count": 10,
+        "first_func_vram": "0x80008C50",
+        "last_func_vram": "0x8000915C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x10680",
+          "rom_end": "0x10EF8",
+          "rom_pad_end": "0x10F00",
+          "vram_start": "0x8000FA80",
+          "vram_end": "0x800102F8",
+          "size": 2168
+        },
+        "text_pad_gap": {
+          "rom_start": "0x10EF8",
+          "rom_end": "0x10F00",
+          "vram_start": "0x800102F8",
+          "vram_end": "0x80010300",
+          "size": 8,
+          "bytes_hex": "eb085b0e5770b2e0",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x11B0",
+          "rom_end": "0x11F0",
+          "vram_start": "0x800005B0",
+          "vram_end": "0x800005F0",
+          "size": 64
+        },
+        "rodata_pad_gap": null,
+        "func_count": 10,
+        "first_func_vram": "0x8000FA80",
+        "last_func_vram": "0x8000FF8C"
+      },
+      "notes": "Audio init/streaming/heap setup ($Revision: 1.17, 7.27, 1.5; 'audio.c')"
+    },
+    {
+      "us_order": 8,
+      "eu_order": 9,
+      "id": "gfx",
+      "name": "gfx.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x0A0D0",
+          "rom_end": "0x0A8A4",
+          "rom_pad_end": "0x0A8B0",
+          "vram_start": "0x800094D0",
+          "vram_end": "0x80009CA4",
+          "size": 2004
+        },
+        "text_pad_gap": {
+          "rom_start": "0x0A8A4",
+          "rom_end": "0x0A8B0",
+          "vram_start": "0x80009CA4",
+          "vram_end": "0x80009CB0",
+          "size": 12,
+          "bytes_hex": "c45eec26837f02007503e9e5",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1140",
+          "rom_end": "0x1180",
+          "vram_start": "0x80000540",
+          "vram_end": "0x80000580",
+          "size": 64
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1178",
+          "rom_end": "0x1180",
+          "vram_start": "0x80000578",
+          "vram_end": "0x80000580",
+          "size": 8,
+          "bytes_hex": "948c857e7874706f",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x800094D0",
+        "last_func_vram": "0x8000973C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x10F00",
+          "rom_end": "0x116CC",
+          "rom_pad_end": "0x116D0",
+          "vram_start": "0x80010300",
+          "vram_end": "0x80010ACC",
+          "size": 1996
+        },
+        "text_pad_gap": {
+          "rom_start": "0x116CC",
+          "rom_end": "0x116D0",
+          "vram_start": "0x80010ACC",
+          "vram_end": "0x80010AD0",
+          "size": 4,
+          "bytes_hex": "feb5cf91",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x11F0",
+          "rom_end": "0x1230",
+          "vram_start": "0x800005F0",
+          "vram_end": "0x80000630",
+          "size": 64
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1228",
+          "rom_end": "0x1230",
+          "vram_start": "0x80000628",
+          "vram_end": "0x80000630",
+          "size": 8,
+          "bytes_hex": "4307c8cedf33eacc",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x80010300",
+        "last_func_vram": "0x80010564"
+      },
+      "notes": "Graphics setup / display init ($Revision: 1.17; 'gfx.c')"
+    },
+    {
+      "us_order": 9,
+      "eu_order": 10,
+      "id": "scene",
+      "name": "Scene.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x0A8B0",
+          "rom_end": "0x0F51C",
+          "rom_pad_end": "0x0F520",
+          "vram_start": "0x80009CB0",
+          "vram_end": "0x8000E91C",
+          "size": 19564
+        },
+        "text_pad_gap": {
+          "rom_start": "0x0F51C",
+          "rom_end": "0x0F520",
+          "vram_start": "0x8000E91C",
+          "vram_end": "0x8000E920",
+          "size": 4,
+          "bytes_hex": "561e680f",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1180",
+          "rom_end": "0x1630",
+          "vram_start": "0x80000580",
+          "vram_end": "0x80000A30",
+          "size": 1200
+        },
+        "rodata_pad_gap": null,
+        "func_count": 24,
+        "first_func_vram": "0x80009CB0",
+        "last_func_vram": "0x8000E2E4"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x116D0",
+          "rom_end": "0x1633C",
+          "rom_pad_end": "0x16340",
+          "vram_start": "0x80010AD0",
+          "vram_end": "0x8001573C",
+          "size": 19564
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1633C",
+          "rom_end": "0x16340",
+          "vram_start": "0x8001573C",
+          "vram_end": "0x80015740",
+          "size": 4,
+          "bytes_hex": "00120013",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1230",
+          "rom_end": "0x16E0",
+          "vram_start": "0x80000630",
+          "vram_end": "0x80000AE0",
+          "size": 1200
+        },
+        "rodata_pad_gap": null,
+        "func_count": 24,
+        "first_func_vram": "0x80010AD0",
+        "last_func_vram": "0x80015104"
+      },
+      "notes": "PRM/scene loader and object renderer ($Revision: 1.17; 'Scene.c'/'scene.c')"
+    },
+    {
+      "us_order": 10,
+      "eu_order": 11,
+      "id": "files",
+      "name": "files.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x0F520",
+          "rom_end": "0x0FD0C",
+          "rom_pad_end": "0x0FD10",
+          "vram_start": "0x8000E920",
+          "vram_end": "0x8000F10C",
+          "size": 2028
+        },
+        "text_pad_gap": {
+          "rom_start": "0x0FD0C",
+          "rom_end": "0x0FD10",
+          "vram_start": "0x8000F10C",
+          "vram_end": "0x8000F110",
+          "size": 4,
+          "bytes_hex": "7efa0bd2",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1630",
+          "rom_end": "0x1640",
+          "vram_start": "0x80000A30",
+          "vram_end": "0x80000A40",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1638",
+          "rom_end": "0x1640",
+          "vram_start": "0x80000A38",
+          "vram_end": "0x80000A40",
+          "size": 8,
+          "bytes_hex": "a39b8e8f938e8982",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x8000E920",
+        "last_func_vram": "0x8000EF94"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x16340",
+          "rom_end": "0x16B2C",
+          "rom_pad_end": "0x16B30",
+          "vram_start": "0x80015740",
+          "vram_end": "0x80015F2C",
+          "size": 2028
+        },
+        "text_pad_gap": {
+          "rom_start": "0x16B2C",
+          "rom_end": "0x16B30",
+          "vram_start": "0x80015F2C",
+          "vram_end": "0x80015F30",
+          "size": 4,
+          "bytes_hex": "d07d8439",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x16E0",
+          "rom_end": "0x16F0",
+          "vram_start": "0x80000AE0",
+          "vram_end": "0x80000AF0",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x16E8",
+          "rom_end": "0x16F0",
+          "vram_start": "0x80000AE8",
+          "vram_end": "0x80000AF0",
+          "size": 8,
+          "bytes_hex": "efe184f8637e196f",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x80015740",
+        "last_func_vram": "0x80015DB4"
+      },
+      "notes": "Dynamic heap allocator (DAlloc/DFree) and file I/O ('files.c')"
+    },
+    {
+      "us_order": 11,
+      "eu_order": 12,
+      "id": "error",
+      "name": "Error.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x0FD10",
+          "rom_end": "0x0FE20",
+          "rom_pad_end": "0x0FE20",
+          "vram_start": "0x8000F110",
+          "vram_end": "0x8000F220",
+          "size": 272
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x1640",
+          "rom_end": "0x1650",
+          "vram_start": "0x80000A40",
+          "vram_end": "0x80000A50",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1648",
+          "rom_end": "0x1650",
+          "vram_start": "0x80000A48",
+          "vram_end": "0x80000A50",
+          "size": 8,
+          "bytes_hex": "504e4a44403b3330",
+          "kind": "psylink_heap"
+        },
+        "func_count": 6,
+        "first_func_vram": "0x8000F110",
+        "last_func_vram": "0x8000F1F4"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x16B30",
+          "rom_end": "0x16C40",
+          "rom_pad_end": "0x16C40",
+          "vram_start": "0x80015F30",
+          "vram_end": "0x80016040",
+          "size": 272
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x16F0",
+          "rom_end": "0x1700",
+          "vram_start": "0x80000AF0",
+          "vram_end": "0x80000B00",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x16F8",
+          "rom_end": "0x1700",
+          "vram_start": "0x80000AF8",
+          "vram_end": "0x80000B00",
+          "size": 8,
+          "bytes_hex": "af870fe1ccf8757e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 6,
+        "first_func_vram": "0x80015F30",
+        "last_func_vram": "0x80016014"
+      },
+      "notes": "Error handling ('Error.c'); 0B .text pad in US/EU, 8B .rodata psylink pad proves boundary"
+    },
+    {
+      "us_order": 12,
+      "eu_order": 13,
+      "id": "pad",
+      "name": "pad.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x0FE20",
+          "rom_end": "0x103D4",
+          "rom_pad_end": "0x103E0",
+          "vram_start": "0x8000F220",
+          "vram_end": "0x8000F7D4",
+          "size": 1460
+        },
+        "text_pad_gap": {
+          "rom_start": "0x103D4",
+          "rom_end": "0x103E0",
+          "vram_start": "0x8000F7D4",
+          "vram_end": "0x8000F7E0",
+          "size": 12,
+          "bytes_hex": "750433c0eb20ff7604ff76fe",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1650",
+          "rom_end": "0x16A0",
+          "vram_start": "0x80000A50",
+          "vram_end": "0x80000AA0",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1698",
+          "rom_end": "0x16A0",
+          "vram_start": "0x80000A98",
+          "vram_end": "0x80000AA0",
+          "size": 8,
+          "bytes_hex": "50595f6572818177",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x8000F220",
+        "last_func_vram": "0x8000F5F4"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x16C40",
+          "rom_end": "0x171F4",
+          "rom_pad_end": "0x17200",
+          "vram_start": "0x80016040",
+          "vram_end": "0x800165F4",
+          "size": 1460
+        },
+        "text_pad_gap": {
+          "rom_start": "0x171F4",
+          "rom_end": "0x17200",
+          "vram_start": "0x800165F4",
+          "vram_end": "0x80016600",
+          "size": 12,
+          "bytes_hex": "7ab2869c88d1e66f0822228f",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1700",
+          "rom_end": "0x1750",
+          "vram_start": "0x80000B00",
+          "vram_end": "0x80000B50",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1748",
+          "rom_end": "0x1750",
+          "vram_start": "0x80000B48",
+          "vram_end": "0x80000B50",
+          "size": 8,
+          "bytes_hex": "2dff8ba3e2f1f8be",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x80016040",
+        "last_func_vram": "0x80016414"
+      },
+      "notes": "Controller button mapping / input names ('A', 'B', 'BOTTOM C', 'TOP C', 'UNKNOWN INDEX', 'UNKNOWN ACTION')"
+    },
+    {
+      "us_order": 13,
+      "eu_order": 14,
+      "id": "init",
+      "name": "Init.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x103E0",
+          "rom_end": "0x11AE8",
+          "rom_pad_end": "0x11AF0",
+          "vram_start": "0x8000F7E0",
+          "vram_end": "0x80010EE8",
+          "size": 5896
+        },
+        "text_pad_gap": {
+          "rom_start": "0x11AE8",
+          "rom_end": "0x11AF0",
+          "vram_start": "0x80010EE8",
+          "vram_end": "0x80010EF0",
+          "size": 8,
+          "bytes_hex": "0301a12102001300",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x16A0",
+          "rom_end": "0x17D0",
+          "vram_start": "0x80000AA0",
+          "vram_end": "0x80000BD0",
+          "size": 304
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x17C4",
+          "rom_end": "0x17D0",
+          "vram_start": "0x80000BC4",
+          "vram_end": "0x80000BD0",
+          "size": 12,
+          "bytes_hex": "6f798384807671737c868f94",
+          "kind": "psylink_heap"
+        },
+        "func_count": 9,
+        "first_func_vram": "0x8000F7E0",
+        "last_func_vram": "0x80010988"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x17200",
+          "rom_end": "0x18908",
+          "rom_pad_end": "0x18910",
+          "vram_start": "0x80016600",
+          "vram_end": "0x80017D08",
+          "size": 5896
+        },
+        "text_pad_gap": {
+          "rom_start": "0x18908",
+          "rom_end": "0x18910",
+          "vram_start": "0x80017D08",
+          "vram_end": "0x80017D10",
+          "size": 8,
+          "bytes_hex": "74e4c062d1b4170c",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1750",
+          "rom_end": "0x1880",
+          "vram_start": "0x80000B50",
+          "vram_end": "0x80000C80",
+          "size": 304
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1874",
+          "rom_end": "0x1880",
+          "vram_start": "0x80000C74",
+          "vram_end": "0x80000C80",
+          "size": 12,
+          "bytes_hex": "8be76bf9dd3e77df9e1be78f",
+          "kind": "psylink_heap"
+        },
+        "func_count": 9,
+        "first_func_vram": "0x80016600",
+        "last_func_vram": "0x800177A8"
+      },
+      "notes": "Texture/palette allocation and TIM decompression ('Init.c')"
+    },
+    {
+      "us_order": 14,
+      "eu_order": 15,
+      "id": "decomp",
+      "name": "decomp.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x11AF0",
+          "rom_end": "0x11C94",
+          "rom_pad_end": "0x11CA0",
+          "vram_start": "0x80010EF0",
+          "vram_end": "0x80011094",
+          "size": 420
+        },
+        "text_pad_gap": {
+          "rom_start": "0x11C94",
+          "rom_end": "0x11CA0",
+          "vram_start": "0x80011094",
+          "vram_end": "0x800110A0",
+          "size": 12,
+          "bytes_hex": "020013000301472902001200",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 1,
+        "first_func_vram": "0x80010EF0",
+        "last_func_vram": "0x80010EF0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x18910",
+          "rom_end": "0x18AB4",
+          "rom_pad_end": "0x18AC0",
+          "vram_start": "0x80017D10",
+          "vram_end": "0x80017EB4",
+          "size": 420
+        },
+        "text_pad_gap": {
+          "rom_start": "0x18AB4",
+          "rom_end": "0x18AC0",
+          "vram_start": "0x80017EB4",
+          "vram_end": "0x80017EC0",
+          "size": 12,
+          "bytes_hex": "69b702dfa0ba01669e0b0130",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 1,
+        "first_func_vram": "0x80017D10",
+        "last_func_vram": "0x80017D10"
+      },
+      "notes": "1-function decompressor called exclusively by Init.c (LZ/RNC)"
+    },
+    {
+      "us_order": 15,
+      "eu_order": 16,
+      "id": "ships",
+      "name": "Ships.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x11CA0",
+          "rom_end": "0x1582C",
+          "rom_pad_end": "0x15830",
+          "vram_start": "0x800110A0",
+          "vram_end": "0x80014C2C",
+          "size": 15244
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1582C",
+          "rom_end": "0x15830",
+          "vram_start": "0x80014C2C",
+          "vram_end": "0x80014C30",
+          "size": 4,
+          "bytes_hex": "bab3594f",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x17D0",
+          "rom_end": "0x1890",
+          "vram_start": "0x80000BD0",
+          "vram_end": "0x80000C90",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x188C",
+          "rom_end": "0x1890",
+          "vram_start": "0x80000C8C",
+          "vram_end": "0x80000C90",
+          "size": 4,
+          "bytes_hex": "a39d9e9b",
+          "kind": "psylink_heap"
+        },
+        "func_count": 10,
+        "first_func_vram": "0x800110A0",
+        "last_func_vram": "0x80014884"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x18AC0",
+          "rom_end": "0x1C7E0",
+          "rom_pad_end": "0x1C7E0",
+          "vram_start": "0x80017EC0",
+          "vram_end": "0x8001BBE0",
+          "size": 15648
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x1880",
+          "rom_end": "0x1940",
+          "vram_start": "0x80000C80",
+          "vram_end": "0x80000D40",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x193C",
+          "rom_end": "0x1940",
+          "vram_start": "0x80000D3C",
+          "vram_end": "0x80000D40",
+          "size": 4,
+          "bytes_hex": "280f4203",
+          "kind": "psylink_heap"
+        },
+        "func_count": 10,
+        "first_func_vram": "0x80017EC0",
+        "last_func_vram": "0x8001B838"
+      },
+      "notes": "Ship initialization and physics setup ($Revision: 7.27, 1.5, 1.34; 'Ships.c')"
+    },
+    {
+      "us_order": 16,
+      "eu_order": 17,
+      "id": "math_sfx",
+      "name": "math_sfx.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x15830",
+          "rom_end": "0x15C1C",
+          "rom_pad_end": "0x15C20",
+          "vram_start": "0x80014C30",
+          "vram_end": "0x8001501C",
+          "size": 1004
+        },
+        "text_pad_gap": {
+          "rom_start": "0x15C1C",
+          "rom_end": "0x15C20",
+          "vram_start": "0x8001501C",
+          "vram_end": "0x80015020",
+          "size": 4,
+          "bytes_hex": "9f96918a",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1890",
+          "rom_end": "0x18D0",
+          "vram_start": "0x80000C90",
+          "vram_end": "0x80000CD0",
+          "size": 64
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x18C5",
+          "rom_end": "0x18D0",
+          "vram_start": "0x80000CC5",
+          "vram_end": "0x80000CD0",
+          "size": 11,
+          "bytes_hex": "aca2a6a9a9a1958f8b8a8a",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x80014C30",
+        "last_func_vram": "0x80015014"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x1C7E0",
+          "rom_end": "0x1CBCC",
+          "rom_pad_end": "0x1CBD0",
+          "vram_start": "0x8001BBE0",
+          "vram_end": "0x8001BFCC",
+          "size": 1004
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1CBCC",
+          "rom_end": "0x1CBD0",
+          "vram_start": "0x8001BFCC",
+          "vram_end": "0x8001BFD0",
+          "size": 4,
+          "bytes_hex": "01a90000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1940",
+          "rom_end": "0x1980",
+          "vram_start": "0x80000D40",
+          "vram_end": "0x80000D80",
+          "size": 64
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1975",
+          "rom_end": "0x1980",
+          "vram_start": "0x80000D75",
+          "vram_end": "0x80000D80",
+          "size": 11,
+          "bytes_hex": "bdda817e605d4af77605de",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x8001BBE0",
+        "last_func_vram": "0x8001BFC4"
+      },
+      "notes": "Widely called trig/math & libmus audio helpers ($Revision: 7.27, 1.5, 1.34; 251 call sites)"
+    },
+    {
+      "us_order": 17,
+      "eu_order": 18,
+      "id": "track",
+      "name": "Track.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x15C20",
+          "rom_end": "0x18FA8",
+          "rom_pad_end": "0x18FB0",
+          "vram_start": "0x80015020",
+          "vram_end": "0x800183A8",
+          "size": 13192
+        },
+        "text_pad_gap": {
+          "rom_start": "0x18FA8",
+          "rom_end": "0x18FB0",
+          "vram_start": "0x800183A8",
+          "vram_end": "0x800183B0",
+          "size": 8,
+          "bytes_hex": "2a2b32322a242525",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x18D0",
+          "rom_end": "0x1AE0",
+          "vram_start": "0x80000CD0",
+          "vram_end": "0x80000EE0",
+          "size": 528
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1AD4",
+          "rom_end": "0x1AE0",
+          "vram_start": "0x80000ED4",
+          "vram_end": "0x80000EE0",
+          "size": 12,
+          "bytes_hex": "a1a49e9893908d8f95979897",
+          "kind": "psylink_heap"
+        },
+        "func_count": 20,
+        "first_func_vram": "0x80015020",
+        "last_func_vram": "0x80018188"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x1CBD0",
+          "rom_end": "0x1FEE8",
+          "rom_pad_end": "0x1FEF0",
+          "vram_start": "0x8001BFD0",
+          "vram_end": "0x8001F2E8",
+          "size": 13080
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1FEE8",
+          "rom_end": "0x1FEF0",
+          "vram_start": "0x8001F2E8",
+          "vram_end": "0x8001F2F0",
+          "size": 8,
+          "bytes_hex": "0001030ccdcdcdcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1980",
+          "rom_end": "0x1B70",
+          "vram_start": "0x80000D80",
+          "vram_end": "0x80000F70",
+          "size": 496
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1B6C",
+          "rom_end": "0x1B70",
+          "vram_start": "0x80000F6C",
+          "vram_end": "0x80000F70",
+          "size": 4,
+          "bytes_hex": "00a8c467",
+          "kind": "psylink_heap"
+        },
+        "func_count": 19,
+        "first_func_vram": "0x8001BFD0",
+        "last_func_vram": "0x8001F0C8"
+      },
+      "notes": "Track vertices/faces/sections/viewlist ($Revision: 1.34, 1.5, 1.17; 'Track.c'); EU drops first func (0x15C20) + 'Convert track with track10'"
+    },
+    {
+      "us_order": 18,
+      "eu_order": 19,
+      "id": "initrace",
+      "name": "Initrace.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x18FB0",
+          "rom_end": "0x19C08",
+          "rom_pad_end": "0x19C10",
+          "vram_start": "0x800183B0",
+          "vram_end": "0x80019008",
+          "size": 3160
+        },
+        "text_pad_gap": {
+          "rom_start": "0x19C08",
+          "rom_end": "0x19C10",
+          "vram_start": "0x80019008",
+          "vram_end": "0x80019010",
+          "size": 8,
+          "bytes_hex": "4f4f4f4f594f4f4b",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1AE0",
+          "rom_end": "0x1BA0",
+          "vram_start": "0x80000EE0",
+          "vram_end": "0x80000FA0",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1B98",
+          "rom_end": "0x1BA0",
+          "vram_start": "0x80000F98",
+          "vram_end": "0x80000FA0",
+          "size": 8,
+          "bytes_hex": "8a8a8e8c898c8f90",
+          "kind": "psylink_heap"
+        },
+        "func_count": 6,
+        "first_func_vram": "0x800183B0",
+        "last_func_vram": "0x80018B20"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x1FEF0",
+          "rom_end": "0x20B48",
+          "rom_pad_end": "0x20B50",
+          "vram_start": "0x8001F2F0",
+          "vram_end": "0x8001FF48",
+          "size": 3160
+        },
+        "text_pad_gap": {
+          "rom_start": "0x20B48",
+          "rom_end": "0x20B50",
+          "vram_start": "0x8001FF48",
+          "vram_end": "0x8001FF50",
+          "size": 8,
+          "bytes_hex": "000005d3cdcdcdcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1B70",
+          "rom_end": "0x1C30",
+          "vram_start": "0x80000F70",
+          "vram_end": "0x80001030",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1C28",
+          "rom_end": "0x1C30",
+          "vram_start": "0x80001028",
+          "vram_end": "0x80001030",
+          "size": 8,
+          "bytes_hex": "0fbdc50f718bdc74",
+          "kind": "psylink_heap"
+        },
+        "func_count": 6,
+        "first_func_vram": "0x8001F2F0",
+        "last_func_vram": "0x8001FA60"
+      },
+      "notes": "Race/checkpoint initialization ('Initrace.c'/'initrace.c')"
+    },
+    {
+      "us_order": 19,
+      "eu_order": 20,
+      "id": "wadfile",
+      "name": "Wadfile.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x19C10",
+          "rom_end": "0x19F48",
+          "rom_pad_end": "0x19F50",
+          "vram_start": "0x80019010",
+          "vram_end": "0x80019348",
+          "size": 824
+        },
+        "text_pad_gap": {
+          "rom_start": "0x19F48",
+          "rom_end": "0x19F50",
+          "vram_start": "0x80019348",
+          "vram_end": "0x80019350",
+          "size": 8,
+          "bytes_hex": "59554f4f4f363636",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1BA0",
+          "rom_end": "0x1BB0",
+          "vram_start": "0x80000FA0",
+          "vram_end": "0x80000FB0",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1BAA",
+          "rom_end": "0x1BB0",
+          "vram_start": "0x80000FAA",
+          "vram_end": "0x80000FB0",
+          "size": 6,
+          "bytes_hex": "6e6660585653",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x80019010",
+        "last_func_vram": "0x800192F8"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x20B50",
+          "rom_end": "0x20E88",
+          "rom_pad_end": "0x20E90",
+          "vram_start": "0x8001FF50",
+          "vram_end": "0x80020288",
+          "size": 824
+        },
+        "text_pad_gap": {
+          "rom_start": "0x20E88",
+          "rom_end": "0x20E90",
+          "vram_start": "0x80020288",
+          "vram_end": "0x80020290",
+          "size": 8,
+          "bytes_hex": "ffffc861cdcdcdcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1C30",
+          "rom_end": "0x1C40",
+          "vram_start": "0x80001030",
+          "vram_end": "0x80001040",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1C3A",
+          "rom_end": "0x1C40",
+          "vram_start": "0x8000103A",
+          "vram_end": "0x80001040",
+          "size": 6,
+          "bytes_hex": "33bd341f4d4e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x8001FF50",
+        "last_func_vram": "0x80020238"
+      },
+      "notes": "WAD archive loader ('Wadfile.c')"
+    },
+    {
+      "us_order": 20,
+      "eu_order": 21,
+      "id": "unk_19f50",
+      "name": "unk_19f50.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x19F50",
+          "rom_end": "0x1A0E4",
+          "rom_pad_end": "0x1A0F0",
+          "vram_start": "0x80019350",
+          "vram_end": "0x800194E4",
+          "size": 404
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1A0E4",
+          "rom_end": "0x1A0F0",
+          "vram_start": "0x800194E4",
+          "vram_end": "0x800194F0",
+          "size": 12,
+          "bytes_hex": "793f3f242421252522212434",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1BB0",
+          "rom_end": "0x1BF0",
+          "vram_start": "0x80000FB0",
+          "vram_end": "0x80000FF0",
+          "size": 64
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1BE5",
+          "rom_end": "0x1BF0",
+          "vram_start": "0x80000FE5",
+          "vram_end": "0x80000FF0",
+          "size": 11,
+          "bytes_hex": "70675c5b5c595451505655",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x80019350",
+        "last_func_vram": "0x800194C8"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x20E90",
+          "rom_end": "0x21024",
+          "rom_pad_end": "0x21030",
+          "vram_start": "0x80020290",
+          "vram_end": "0x80020424",
+          "size": 404
+        },
+        "text_pad_gap": {
+          "rom_start": "0x21024",
+          "rom_end": "0x21030",
+          "vram_start": "0x80020424",
+          "vram_end": "0x80020430",
+          "size": 12,
+          "bytes_hex": "00000182ffffa5fccdcdcdcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1C40",
+          "rom_end": "0x1C80",
+          "vram_start": "0x80001040",
+          "vram_end": "0x80001080",
+          "size": 64
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1C75",
+          "rom_end": "0x1C80",
+          "vram_start": "0x80001075",
+          "vram_end": "0x80001080",
+          "size": 11,
+          "bytes_hex": "4061b46fac0539339ac0aa",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x80020290",
+        "last_func_vram": "0x80020408"
+      },
+      "notes": "2-function helper called by math_sfx ($Revision: 7.27, 1.5, 1.34)"
+    },
+    {
+      "us_order": 21,
+      "eu_order": 22,
+      "id": "skeleton",
+      "name": "Skeleton.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x1A0F0",
+          "rom_end": "0x1AB8C",
+          "rom_pad_end": "0x1AB90",
+          "vram_start": "0x800194F0",
+          "vram_end": "0x80019F8C",
+          "size": 2716
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1AB8C",
+          "rom_end": "0x1AB90",
+          "vram_start": "0x80019F8C",
+          "vram_end": "0x80019F90",
+          "size": 4,
+          "bytes_hex": "324b574b",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1BF0",
+          "rom_end": "0x1C40",
+          "vram_start": "0x80000FF0",
+          "vram_end": "0x80001040",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1C33",
+          "rom_end": "0x1C40",
+          "vram_start": "0x80001033",
+          "vram_end": "0x80001040",
+          "size": 13,
+          "bytes_hex": "9ea0a19d9a9d9a8f83868b8e8e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 9,
+        "first_func_vram": "0x800194F0",
+        "last_func_vram": "0x80019F54"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x21030",
+          "rom_end": "0x21ACC",
+          "rom_pad_end": "0x21AD0",
+          "vram_start": "0x80020430",
+          "vram_end": "0x80020ECC",
+          "size": 2716
+        },
+        "text_pad_gap": {
+          "rom_start": "0x21ACC",
+          "rom_end": "0x21AD0",
+          "vram_start": "0x80020ECC",
+          "vram_end": "0x80020ED0",
+          "size": 4,
+          "bytes_hex": "cdcdcdcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1C80",
+          "rom_end": "0x1CD0",
+          "vram_start": "0x80001080",
+          "vram_end": "0x800010D0",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1CC3",
+          "rom_end": "0x1CD0",
+          "vram_start": "0x800010C3",
+          "vram_end": "0x800010D0",
+          "size": 13,
+          "bytes_hex": "069eda47d3e719fc8efd034fc5",
+          "kind": "psylink_heap"
+        },
+        "func_count": 9,
+        "first_func_vram": "0x80020430",
+        "last_func_vram": "0x80020E94"
+      },
+      "notes": "Skeleton transform hierarchy (NewSkeleton, SetSkeletonPosition/Direction; $Revision: 7.27, 1.5, 1.34; 'Skeleton.c')"
+    },
+    {
+      "us_order": 22,
+      "eu_order": 23,
+      "id": "radscn",
+      "name": "Radscn.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x1AB90",
+          "rom_end": "0x1B804",
+          "rom_pad_end": "0x1B810",
+          "vram_start": "0x80019F90",
+          "vram_end": "0x8001AC04",
+          "size": 3188
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1B804",
+          "rom_end": "0x1B810",
+          "vram_start": "0x8001AC04",
+          "vram_end": "0x8001AC10",
+          "size": 12,
+          "bytes_hex": "d8430109080143801243d893",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1C40",
+          "rom_end": "0x1D10",
+          "vram_start": "0x80001040",
+          "vram_end": "0x80001110",
+          "size": 208
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1D08",
+          "rom_end": "0x1D10",
+          "vram_start": "0x80001108",
+          "vram_end": "0x80001110",
+          "size": 8,
+          "bytes_hex": "969ca09d97908a83",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x80019F90",
+        "last_func_vram": "0x8001A560"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x21AD0",
+          "rom_end": "0x22744",
+          "rom_pad_end": "0x22750",
+          "vram_start": "0x80020ED0",
+          "vram_end": "0x80021B44",
+          "size": 3188
+        },
+        "text_pad_gap": {
+          "rom_start": "0x22744",
+          "rom_end": "0x22750",
+          "vram_start": "0x80021B44",
+          "vram_end": "0x80021B50",
+          "size": 12,
+          "bytes_hex": "000002d3fffe377dcdcdcdcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1CD0",
+          "rom_end": "0x1DA0",
+          "vram_start": "0x800010D0",
+          "vram_end": "0x800011A0",
+          "size": 208
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1D98",
+          "rom_end": "0x1DA0",
+          "vram_start": "0x80001198",
+          "vram_end": "0x800011A0",
+          "size": 8,
+          "bytes_hex": "6b883ade1097c020",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x80020ED0",
+        "last_func_vram": "0x800214A0"
+      },
+      "notes": "SceneRadiusCheck spatial object culling ('Radscn.c'/'Radius.c')"
+    },
+    {
+      "us_order": 23,
+      "eu_order": 24,
+      "id": "camera",
+      "name": "camera.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x1B810",
+          "rom_end": "0x1D418",
+          "rom_pad_end": "0x1D420",
+          "vram_start": "0x8001AC10",
+          "vram_end": "0x8001C818",
+          "size": 7176
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1D418",
+          "rom_end": "0x1D420",
+          "vram_start": "0x8001C818",
+          "vram_end": "0x8001C820",
+          "size": 8,
+          "bytes_hex": "3446324f52596060",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 12,
+        "first_func_vram": "0x8001AC10",
+        "last_func_vram": "0x8001C6D8"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x22750",
+          "rom_end": "0x24440",
+          "rom_pad_end": "0x24440",
+          "vram_start": "0x80021B50",
+          "vram_end": "0x80023840",
+          "size": 7408
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 12,
+        "first_func_vram": "0x80021B50",
+        "last_func_vram": "0x80023700"
+      },
+      "notes": "Race camera update/modes (12 functions; called by Initrace.c and Race.c)"
+    },
+    {
+      "us_order": 24,
+      "eu_order": 25,
+      "id": "utils",
+      "name": "utils.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x1D420",
+          "rom_end": "0x1DBCC",
+          "rom_pad_end": "0x1DBD0",
+          "vram_start": "0x8001C820",
+          "vram_end": "0x8001CFCC",
+          "size": 1964
+        },
+        "text_pad_gap": {
+          "rom_start": "0x1DBCC",
+          "rom_end": "0x1DBD0",
+          "vram_start": "0x8001CFCC",
+          "vram_end": "0x8001CFD0",
+          "size": 4,
+          "bytes_hex": "2a32324b",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 13,
+        "first_func_vram": "0x8001C820",
+        "last_func_vram": "0x8001CFAC"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x24440",
+          "rom_end": "0x24BEC",
+          "rom_pad_end": "0x24BF0",
+          "vram_start": "0x80023840",
+          "vram_end": "0x80023FEC",
+          "size": 1964
+        },
+        "text_pad_gap": {
+          "rom_start": "0x24BEC",
+          "rom_end": "0x24BF0",
+          "vram_start": "0x80023FEC",
+          "vram_end": "0x80023FF0",
+          "size": 4,
+          "bytes_hex": "27276700",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 13,
+        "first_func_vram": "0x80023840",
+        "last_func_vram": "0x80023FCC"
+      },
+      "notes": "Core math/vector/section/randy utilities (13 functions; 219 call sites)"
+    },
+    {
+      "us_order": 25,
+      "eu_order": 26,
+      "id": "dynam",
+      "name": "Dynam.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x1DBD0",
+          "rom_end": "0x20308",
+          "rom_pad_end": "0x20310",
+          "vram_start": "0x8001CFD0",
+          "vram_end": "0x8001F708",
+          "size": 10040
+        },
+        "text_pad_gap": {
+          "rom_start": "0x20308",
+          "rom_end": "0x20310",
+          "vram_start": "0x8001F708",
+          "vram_end": "0x8001F710",
+          "size": 8,
+          "bytes_hex": "01297894d8d81094",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1D10",
+          "rom_end": "0x1DA0",
+          "vram_start": "0x80001110",
+          "vram_end": "0x800011A0",
+          "size": 144
+        },
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x8001CFD0",
+        "last_func_vram": "0x8001F33C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x24BF0",
+          "rom_end": "0x275A4",
+          "rom_pad_end": "0x275B0",
+          "vram_start": "0x80023FF0",
+          "vram_end": "0x800269A4",
+          "size": 10676
+        },
+        "text_pad_gap": {
+          "rom_start": "0x275A4",
+          "rom_end": "0x275B0",
+          "vram_start": "0x800269A4",
+          "vram_end": "0x800269B0",
+          "size": 12,
+          "bytes_hex": "2030a10003df03de03d903da",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1DA0",
+          "rom_end": "0x1E30",
+          "vram_start": "0x800011A0",
+          "vram_end": "0x80001230",
+          "size": 144
+        },
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x80023FF0",
+        "last_func_vram": "0x800265D8"
+      },
+      "notes": "Ship dynamics / checkpoint logic ($Revision: 7.27, 1.5, 1.34, 1.17; 'Dynam.c')"
+    },
+    {
+      "us_order": 26,
+      "eu_order": 27,
+      "id": "shipctrl",
+      "name": "shipctrl.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x20310",
+          "rom_end": "0x21834",
+          "rom_pad_end": "0x21840",
+          "vram_start": "0x8001F710",
+          "vram_end": "0x80020C34",
+          "size": 5412
+        },
+        "text_pad_gap": {
+          "rom_start": "0x21834",
+          "rom_end": "0x21840",
+          "vram_start": "0x80020C34",
+          "vram_end": "0x80020C40",
+          "size": 12,
+          "bytes_hex": "010101010101010101010809",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1DA0",
+          "rom_end": "0x1DE0",
+          "vram_start": "0x800011A0",
+          "vram_end": "0x800011E0",
+          "size": 64
+        },
+        "rodata_pad_gap": null,
+        "func_count": 6,
+        "first_func_vram": "0x8001F710",
+        "last_func_vram": "0x80020B0C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x275B0",
+          "rom_end": "0x28B24",
+          "rom_pad_end": "0x28B30",
+          "vram_start": "0x800269B0",
+          "vram_end": "0x80027F24",
+          "size": 5492
+        },
+        "text_pad_gap": {
+          "rom_start": "0x28B24",
+          "rom_end": "0x28B30",
+          "vram_start": "0x80027F24",
+          "vram_end": "0x80027F30",
+          "size": 12,
+          "bytes_hex": "05410540053b053c0000f000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1E30",
+          "rom_end": "0x1E70",
+          "vram_start": "0x80001230",
+          "vram_end": "0x80001270",
+          "size": 64
+        },
+        "rodata_pad_gap": null,
+        "func_count": 6,
+        "first_func_vram": "0x800269B0",
+        "last_func_vram": "0x80027DFC"
+      },
+      "notes": "Ship update/control dispatch ($Revision: 1.17, 7.27, 1.5; 6 functions)"
+    },
+    {
+      "us_order": 27,
+      "eu_order": 28,
+      "id": "control",
+      "name": "control.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x21840",
+          "rom_end": "0x243A4",
+          "rom_pad_end": "0x243B0",
+          "vram_start": "0x80020C40",
+          "vram_end": "0x800237A4",
+          "size": 11108
+        },
+        "text_pad_gap": {
+          "rom_start": "0x243A4",
+          "rom_end": "0x243B0",
+          "vram_start": "0x800237A4",
+          "vram_end": "0x800237B0",
+          "size": 12,
+          "bytes_hex": "080101010101010107090707",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1DE0",
+          "rom_end": "0x1E50",
+          "vram_start": "0x800011E0",
+          "vram_end": "0x80001250",
+          "size": 112
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1E48",
+          "rom_end": "0x1E50",
+          "vram_start": "0x80001248",
+          "vram_end": "0x80001250",
+          "size": 8,
+          "bytes_hex": "777472747980888a",
+          "kind": "psylink_heap"
+        },
+        "func_count": 12,
+        "first_func_vram": "0x80020C40",
+        "last_func_vram": "0x80023768"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x28B30",
+          "rom_end": "0x2B848",
+          "rom_pad_end": "0x2B850",
+          "vram_start": "0x80027F30",
+          "vram_end": "0x8002AC48",
+          "size": 11544
+        },
+        "text_pad_gap": {
+          "rom_start": "0x2B848",
+          "rom_end": "0x2B850",
+          "vram_start": "0x8002AC48",
+          "vram_end": "0x8002AC50",
+          "size": 8,
+          "bytes_hex": "00009c3f000001eb",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1E70",
+          "rom_end": "0x1EE0",
+          "vram_start": "0x80001270",
+          "vram_end": "0x800012E0",
+          "size": 112
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1ED8",
+          "rom_end": "0x1EE0",
+          "vram_start": "0x800012D8",
+          "vram_end": "0x800012E0",
+          "size": 8,
+          "bytes_hex": "7789a3979b809467",
+          "kind": "psylink_heap"
+        },
+        "func_count": 12,
+        "first_func_vram": "0x80027F30",
+        "last_func_vram": "0x8002AC0C"
+      },
+      "notes": "Player/AI ship flight & track control (12 functions; jump table + float constants)"
+    },
+    {
+      "us_order": 28,
+      "eu_order": 29,
+      "id": "collide",
+      "name": "collide.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x243B0",
+          "rom_end": "0x27B78",
+          "rom_pad_end": "0x27B80",
+          "vram_start": "0x800237B0",
+          "vram_end": "0x80026F78",
+          "size": 14280
+        },
+        "text_pad_gap": {
+          "rom_start": "0x27B78",
+          "rom_end": "0x27B80",
+          "vram_start": "0x80026F78",
+          "vram_end": "0x80026F80",
+          "size": 8,
+          "bytes_hex": "a55a4200ffff0000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1E50",
+          "rom_end": "0x1EB0",
+          "vram_start": "0x80001250",
+          "vram_end": "0x800012B0",
+          "size": 96
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1EA4",
+          "rom_end": "0x1EB0",
+          "vram_start": "0x800012A4",
+          "vram_end": "0x800012B0",
+          "size": 12,
+          "bytes_hex": "6e737773797f838583878f94",
+          "kind": "psylink_heap"
+        },
+        "func_count": 12,
+        "first_func_vram": "0x800237B0",
+        "last_func_vram": "0x80026CD0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x2B850",
+          "rom_end": "0x2F21C",
+          "rom_pad_end": "0x2F220",
+          "vram_start": "0x8002AC50",
+          "vram_end": "0x8002E61C",
+          "size": 14796
+        },
+        "text_pad_gap": {
+          "rom_start": "0x2F21C",
+          "rom_end": "0x2F220",
+          "vram_start": "0x8002E61C",
+          "vram_end": "0x8002E620",
+          "size": 4,
+          "bytes_hex": "00a50001",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1EE0",
+          "rom_end": "0x1F40",
+          "vram_start": "0x800012E0",
+          "vram_end": "0x80001340",
+          "size": 96
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1F34",
+          "rom_end": "0x1F40",
+          "vram_start": "0x80001334",
+          "vram_end": "0x80001340",
+          "size": 12,
+          "bytes_hex": "6e91780462b62d6958ac423a",
+          "kind": "psylink_heap"
+        },
+        "func_count": 12,
+        "first_func_vram": "0x8002AC50",
+        "last_func_vram": "0x8002E374"
+      },
+      "notes": "Ship-track and ship-ship collision ($Revision: 1.17; 'collide.c'; 'playerShip', 'facePtr')"
+    },
+    {
+      "us_order": 29,
+      "eu_order": 30,
+      "id": "shipefx",
+      "name": "shipefx.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x27B80",
+          "rom_end": "0x2871C",
+          "rom_pad_end": "0x28720",
+          "vram_start": "0x80026F80",
+          "vram_end": "0x80027B1C",
+          "size": 2972
+        },
+        "text_pad_gap": {
+          "rom_start": "0x2871C",
+          "rom_end": "0x28720",
+          "vram_start": "0x80027B1C",
+          "vram_end": "0x80027B20",
+          "size": 4,
+          "bytes_hex": "636e636e",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1EB0",
+          "rom_end": "0x1EE0",
+          "vram_start": "0x800012B0",
+          "vram_end": "0x800012E0",
+          "size": 48
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1ED4",
+          "rom_end": "0x1EE0",
+          "vram_start": "0x800012D4",
+          "vram_end": "0x800012E0",
+          "size": 12,
+          "bytes_hex": "544d4f58626a6f7071778082",
+          "kind": "psylink_heap"
+        },
+        "func_count": 7,
+        "first_func_vram": "0x80026F80",
+        "last_func_vram": "0x80027648"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x2F220",
+          "rom_end": "0x2FDBC",
+          "rom_pad_end": "0x2FDC0",
+          "vram_start": "0x8002E620",
+          "vram_end": "0x8002F1BC",
+          "size": 2972
+        },
+        "text_pad_gap": {
+          "rom_start": "0x2FDBC",
+          "rom_end": "0x2FDC0",
+          "vram_start": "0x8002F1BC",
+          "vram_end": "0x8002F1C0",
+          "size": 4,
+          "bytes_hex": "000000a4",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1F40",
+          "rom_end": "0x1F70",
+          "vram_start": "0x80001340",
+          "vram_end": "0x80001370",
+          "size": 48
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1F64",
+          "rom_end": "0x1F70",
+          "vram_start": "0x80001364",
+          "vram_end": "0x80001370",
+          "size": 12,
+          "bytes_hex": "f8c21e31124384b8018b4e9a",
+          "kind": "psylink_heap"
+        },
+        "func_count": 7,
+        "first_func_vram": "0x8002E620",
+        "last_func_vram": "0x8002ECE8"
+      },
+      "notes": "Ship engine/damage/timer effects (7 functions; 60.0f US vs 50.0f EU)"
+    },
+    {
+      "us_order": 30,
+      "eu_order": 31,
+      "id": "droid",
+      "name": "droid.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x28720",
+          "rom_end": "0x29610",
+          "rom_pad_end": "0x29610",
+          "vram_start": "0x80027B20",
+          "vram_end": "0x80028A10",
+          "size": 3824
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 6,
+        "first_func_vram": "0x80027B20",
+        "last_func_vram": "0x80028944"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x2FDC0",
+          "rom_end": "0x30D14",
+          "rom_pad_end": "0x30D20",
+          "vram_start": "0x8002F1C0",
+          "vram_end": "0x80030114",
+          "size": 3924
+        },
+        "text_pad_gap": {
+          "rom_start": "0x30D14",
+          "rom_end": "0x30D20",
+          "vram_start": "0x80030114",
+          "vram_end": "0x80030120",
+          "size": 12,
+          "bytes_hex": "803096c0803096d4803096f4",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 6,
+        "first_func_vram": "0x8002F1C0",
+        "last_func_vram": "0x80030048"
+      },
+      "notes": "Rescue droid AI & skeleton movement (6 functions; 12B EU gap proves boundary)"
+    },
+    {
+      "us_order": 31,
+      "eu_order": 32,
+      "id": "scnanim",
+      "name": "scnanim.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x29610",
+          "rom_end": "0x2A388",
+          "rom_pad_end": "0x2A390",
+          "vram_start": "0x80028A10",
+          "vram_end": "0x80029788",
+          "size": 3448
+        },
+        "text_pad_gap": {
+          "rom_start": "0x2A388",
+          "rom_end": "0x2A390",
+          "vram_start": "0x80029788",
+          "vram_end": "0x80029790",
+          "size": 8,
+          "bytes_hex": "604f59594f4f4b32",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1EE0",
+          "rom_end": "0x1F00",
+          "vram_start": "0x800012E0",
+          "vram_end": "0x80001300",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1EFF",
+          "rom_end": "0x1F00",
+          "vram_start": "0x800012FF",
+          "vram_end": "0x80001300",
+          "size": 1,
+          "bytes_hex": "8e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x80028A10",
+        "last_func_vram": "0x80028AE4"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x30D20",
+          "rom_end": "0x31A98",
+          "rom_pad_end": "0x31AA0",
+          "vram_start": "0x80030120",
+          "vram_end": "0x80030E98",
+          "size": 3448
+        },
+        "text_pad_gap": {
+          "rom_start": "0x31A98",
+          "rom_end": "0x31AA0",
+          "vram_start": "0x80030E98",
+          "vram_end": "0x80030EA0",
+          "size": 8,
+          "bytes_hex": "80309e0c80309e30",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1F70",
+          "rom_end": "0x1F90",
+          "vram_start": "0x80001370",
+          "vram_end": "0x80001390",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1F8F",
+          "rom_end": "0x1F90",
+          "vram_start": "0x8000138F",
+          "vram_end": "0x80001390",
+          "size": 1,
+          "bytes_hex": "b7",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x80030120",
+        "last_func_vram": "0x800301F4"
+      },
+      "notes": "Track object/sky prefix matching ('B_', 'A_', 'D_', 'C_', 'V_', 'Z_', 'H_', 'J_'; 2 functions)"
+    },
+    {
+      "us_order": 32,
+      "eu_order": 33,
+      "id": "race",
+      "name": "Race.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x2A390",
+          "rom_end": "0x2AF1C",
+          "rom_pad_end": "0x2AF20",
+          "vram_start": "0x80029790",
+          "vram_end": "0x8002A31C",
+          "size": 2956
+        },
+        "text_pad_gap": {
+          "rom_start": "0x2AF1C",
+          "rom_end": "0x2AF20",
+          "vram_start": "0x8002A31C",
+          "vram_end": "0x8002A320",
+          "size": 4,
+          "bytes_hex": "a5cfcfab",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1F00",
+          "rom_end": "0x1FC0",
+          "vram_start": "0x80001300",
+          "vram_end": "0x800013C0",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1FB4",
+          "rom_end": "0x1FC0",
+          "vram_start": "0x800013B4",
+          "vram_end": "0x800013C0",
+          "size": 12,
+          "bytes_hex": "837e7f8487888480827d726e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x80029790",
+        "last_func_vram": "0x80029A70"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x31AA0",
+          "rom_end": "0x3262C",
+          "rom_pad_end": "0x32630",
+          "vram_start": "0x80030EA0",
+          "vram_end": "0x80031A2C",
+          "size": 2956
+        },
+        "text_pad_gap": {
+          "rom_start": "0x3262C",
+          "rom_end": "0x32630",
+          "vram_start": "0x80031A2C",
+          "vram_end": "0x80031A30",
+          "size": 4,
+          "bytes_hex": "8030a414",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1F90",
+          "rom_end": "0x2050",
+          "vram_start": "0x80001390",
+          "vram_end": "0x80001450",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2044",
+          "rom_end": "0x2050",
+          "vram_start": "0x80001444",
+          "vram_end": "0x80001450",
+          "size": 12,
+          "bytes_hex": "24f9839e636f98ffe6297994",
+          "kind": "psylink_heap"
+        },
+        "func_count": 3,
+        "first_func_vram": "0x80030EA0",
+        "last_func_vram": "0x80031180"
+      },
+      "notes": "Race setup & loop orchestration ($Revision: 1.17, 7.27, 1.5; 'Race.c')"
+    },
+    {
+      "us_order": 33,
+      "eu_order": 34,
+      "id": "hud",
+      "name": "hud.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x2AF20",
+          "rom_end": "0x34E88",
+          "rom_pad_end": "0x34E90",
+          "vram_start": "0x8002A320",
+          "vram_end": "0x80034288",
+          "size": 40808
+        },
+        "text_pad_gap": {
+          "rom_start": "0x34E88",
+          "rom_end": "0x34E90",
+          "vram_start": "0x80034288",
+          "vram_end": "0x80034290",
+          "size": 8,
+          "bytes_hex": "2409010701010101",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1FC0",
+          "rom_end": "0x23C0",
+          "vram_start": "0x800013C0",
+          "vram_end": "0x800017C0",
+          "size": 1024
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x23B8",
+          "rom_end": "0x23C0",
+          "vram_start": "0x800017B8",
+          "vram_end": "0x800017C0",
+          "size": 8,
+          "bytes_hex": "8081818383818080",
+          "kind": "psylink_heap"
+        },
+        "func_count": 19,
+        "first_func_vram": "0x8002A320",
+        "last_func_vram": "0x80034250"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x32630",
+          "rom_end": "0x3C57C",
+          "rom_pad_end": "0x3C580",
+          "vram_start": "0x80031A30",
+          "vram_end": "0x8003B97C",
+          "size": 40780
+        },
+        "text_pad_gap": {
+          "rom_start": "0x3C57C",
+          "rom_end": "0x3C580",
+          "vram_start": "0x8003B97C",
+          "vram_end": "0x8003B980",
+          "size": 4,
+          "bytes_hex": "40080000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2050",
+          "rom_end": "0x2450",
+          "vram_start": "0x80001450",
+          "vram_end": "0x80001850",
+          "size": 1024
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2448",
+          "rom_end": "0x2450",
+          "vram_start": "0x80001848",
+          "vram_end": "0x80001850",
+          "size": 8,
+          "bytes_hex": "db9ef758461e4009",
+          "kind": "psylink_heap"
+        },
+        "func_count": 19,
+        "first_func_vram": "0x80031A30",
+        "last_func_vram": "0x8003B944"
+      },
+      "notes": "In-race HUD, timers, warnings, challenge/race stats ($Revision: 1.17; 'hud.c')"
+    },
+    {
+      "us_order": 34,
+      "eu_order": 35,
+      "id": "loader",
+      "name": "loader.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x34E90",
+          "rom_end": "0x355C0",
+          "rom_pad_end": "0x355C0",
+          "vram_start": "0x80034290",
+          "vram_end": "0x800349C0",
+          "size": 1840
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x23C0",
+          "rom_end": "0x2500",
+          "vram_start": "0x800017C0",
+          "vram_end": "0x80001900",
+          "size": 320
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x24F4",
+          "rom_end": "0x2500",
+          "vram_start": "0x800018F4",
+          "vram_end": "0x80001900",
+          "size": 12,
+          "bytes_hex": "818181807e7d7c7c7b7c7e7e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x80034290",
+        "last_func_vram": "0x80034658"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x3C580",
+          "rom_end": "0x3CCA8",
+          "rom_pad_end": "0x3CCB0",
+          "vram_start": "0x8003B980",
+          "vram_end": "0x8003C0A8",
+          "size": 1832
+        },
+        "text_pad_gap": {
+          "rom_start": "0x3CCA8",
+          "rom_end": "0x3CCB0",
+          "vram_start": "0x8003C0A8",
+          "vram_end": "0x8003C0B0",
+          "size": 8,
+          "bytes_hex": "7cb87f2e67cbabf2",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2450",
+          "rom_end": "0x2590",
+          "vram_start": "0x80001850",
+          "vram_end": "0x80001990",
+          "size": 320
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2584",
+          "rom_end": "0x2590",
+          "vram_start": "0x80001984",
+          "vram_end": "0x80001990",
+          "size": 12,
+          "bytes_hex": "301f0c4fc325f0cdfc349f66",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x8003B980",
+        "last_func_vram": "0x8003BD48"
+      },
+      "notes": "Loading screen & Rumble Pak prompt ($Revision: 1.17, 7.27, 1.5; 'loader.c'; 8B EU gap proves boundary)"
+    },
+    {
+      "us_order": 35,
+      "eu_order": 36,
+      "id": "tim",
+      "name": "Tim.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x355C0",
+          "rom_end": "0x35760",
+          "rom_pad_end": "0x35760",
+          "vram_start": "0x800349C0",
+          "vram_end": "0x80034B60",
+          "size": 416
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x2500",
+          "rom_end": "0x25A0",
+          "vram_start": "0x80001900",
+          "vram_end": "0x800019A0",
+          "size": 160
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2599",
+          "rom_end": "0x25A0",
+          "vram_start": "0x80001999",
+          "vram_end": "0x800019A0",
+          "size": 7,
+          "bytes_hex": "7f7f7e7e7e8083",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x800349C0",
+        "last_func_vram": "0x80034AE0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x3CCB0",
+          "rom_end": "0x3CE50",
+          "rom_pad_end": "0x3CE50",
+          "vram_start": "0x8003C0B0",
+          "vram_end": "0x8003C250",
+          "size": 416
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x2590",
+          "rom_end": "0x2630",
+          "vram_start": "0x80001990",
+          "vram_end": "0x80001A30",
+          "size": 160
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2629",
+          "rom_end": "0x2630",
+          "vram_start": "0x80001A29",
+          "vram_end": "0x80001A30",
+          "size": 7,
+          "bytes_hex": "40af102bcc0af5",
+          "kind": "psylink_heap"
+        },
+        "func_count": 2,
+        "first_func_vram": "0x8003C0B0",
+        "last_func_vram": "0x8003C1D0"
+      },
+      "notes": "TIM texture loading ('Tim.c'); 0B .text pad in US/EU, 7B .rodata pad + gfx2d $Revision prove boundary"
+    },
+    {
+      "us_order": 36,
+      "eu_order": 37,
+      "id": "gfx2d",
+      "name": "gfx2d.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x35760",
+          "rom_end": "0x3624C",
+          "rom_pad_end": "0x36250",
+          "vram_start": "0x80034B60",
+          "vram_end": "0x8003564C",
+          "size": 2796
+        },
+        "text_pad_gap": {
+          "rom_start": "0x3624C",
+          "rom_end": "0x36250",
+          "vram_start": "0x8003564C",
+          "vram_end": "0x80035650",
+          "size": 4,
+          "bytes_hex": "01b7cbcd",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x25A0",
+          "rom_end": "0x2630",
+          "vram_start": "0x800019A0",
+          "vram_end": "0x80001A30",
+          "size": 144
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2628",
+          "rom_end": "0x2630",
+          "vram_start": "0x80001A28",
+          "vram_end": "0x80001A30",
+          "size": 8,
+          "bytes_hex": "7c7c7e7f7f7f7e7c",
+          "kind": "psylink_heap"
+        },
+        "func_count": 4,
+        "first_func_vram": "0x80034B60",
+        "last_func_vram": "0x80035498"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x3CE50",
+          "rom_end": "0x3D93C",
+          "rom_pad_end": "0x3D940",
+          "vram_start": "0x8003C250",
+          "vram_end": "0x8003CD3C",
+          "size": 2796
+        },
+        "text_pad_gap": {
+          "rom_start": "0x3D93C",
+          "rom_end": "0x3D940",
+          "vram_start": "0x8003CD3C",
+          "vram_end": "0x8003CD40",
+          "size": 4,
+          "bytes_hex": "0dd4cf85",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2630",
+          "rom_end": "0x26C0",
+          "vram_start": "0x80001A30",
+          "vram_end": "0x80001AC0",
+          "size": 144
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x26B8",
+          "rom_end": "0x26C0",
+          "vram_start": "0x80001AB8",
+          "vram_end": "0x80001AC0",
+          "size": 8,
+          "bytes_hex": "95402072fb08b221",
+          "kind": "psylink_heap"
+        },
+        "func_count": 4,
+        "first_func_vram": "0x8003C250",
+        "last_func_vram": "0x8003CB88"
+      },
+      "notes": "2D sprite/display-list renderer ($Revision: 1.17; 'gfx2d.c')"
+    },
+    {
+      "us_order": 37,
+      "eu_order": 38,
+      "id": "font",
+      "name": "font.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x36250",
+          "rom_end": "0x374D4",
+          "rom_pad_end": "0x374E0",
+          "vram_start": "0x80035650",
+          "vram_end": "0x800368D4",
+          "size": 4740
+        },
+        "text_pad_gap": {
+          "rom_start": "0x374D4",
+          "rom_end": "0x374E0",
+          "vram_start": "0x800368D4",
+          "vram_end": "0x800368E0",
+          "size": 12,
+          "bytes_hex": "010101010101010101010101",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2630",
+          "rom_end": "0x26F0",
+          "vram_start": "0x80001A30",
+          "vram_end": "0x80001AF0",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x26EB",
+          "rom_end": "0x26F0",
+          "vram_start": "0x80001AEB",
+          "vram_end": "0x80001AF0",
+          "size": 5,
+          "bytes_hex": "848382807f",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x80035650",
+        "last_func_vram": "0x80036504"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x3D940",
+          "rom_end": "0x3EBC4",
+          "rom_pad_end": "0x3EBD0",
+          "vram_start": "0x8003CD40",
+          "vram_end": "0x8003DFC4",
+          "size": 4740
+        },
+        "text_pad_gap": {
+          "rom_start": "0x3EBC4",
+          "rom_end": "0x3EBD0",
+          "vram_start": "0x8003DFC4",
+          "vram_end": "0x8003DFD0",
+          "size": 12,
+          "bytes_hex": "d6c14c104ed0c8b90303814c",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x26C0",
+          "rom_end": "0x2780",
+          "vram_start": "0x80001AC0",
+          "vram_end": "0x80001B80",
+          "size": 192
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x277B",
+          "rom_end": "0x2780",
+          "vram_start": "0x80001B7B",
+          "vram_end": "0x80001B80",
+          "size": 5,
+          "bytes_hex": "d064d2af58",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x8003CD40",
+        "last_func_vram": "0x8003DBF4"
+      },
+      "notes": "Text/font rendering & class/track name tables ('VECTOR'..'SCREW UP', 'KLIES BRIDGE', '%i'; 225 call sites)"
+    },
+    {
+      "us_order": 38,
+      "eu_order": 39,
+      "id": "weapon",
+      "name": "weapon.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x374E0",
+          "rom_end": "0x44708",
+          "rom_pad_end": "0x44710",
+          "vram_start": "0x800368E0",
+          "vram_end": "0x80043B08",
+          "size": 53800
+        },
+        "text_pad_gap": {
+          "rom_start": "0x44708",
+          "rom_end": "0x44710",
+          "vram_start": "0x80043B08",
+          "vram_end": "0x80043B10",
+          "size": 8,
+          "bytes_hex": "2222222222222222",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x26F0",
+          "rom_end": "0x2B20",
+          "vram_start": "0x80001AF0",
+          "vram_end": "0x80001F20",
+          "size": 1072
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2B1C",
+          "rom_end": "0x2B20",
+          "vram_start": "0x80001F1C",
+          "vram_end": "0x80001F20",
+          "size": 4,
+          "bytes_hex": "7e7f7e7e",
+          "kind": "psylink_heap"
+        },
+        "func_count": 59,
+        "first_func_vram": "0x800368E0",
+        "last_func_vram": "0x80043AE8"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x3EBD0",
+          "rom_end": "0x4C42C",
+          "rom_pad_end": "0x4C430",
+          "vram_start": "0x8003DFD0",
+          "vram_end": "0x8004B82C",
+          "size": 55388
+        },
+        "text_pad_gap": {
+          "rom_start": "0x4C42C",
+          "rom_end": "0x4C430",
+          "vram_start": "0x8004B82C",
+          "vram_end": "0x8004B830",
+          "size": 4,
+          "bytes_hex": "d4021019",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2780",
+          "rom_end": "0x2BB0",
+          "vram_start": "0x80001B80",
+          "vram_end": "0x80001FB0",
+          "size": 1072
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2BAC",
+          "rom_end": "0x2BB0",
+          "vram_start": "0x80001FAC",
+          "vram_end": "0x80001FB0",
+          "size": 4,
+          "bytes_hex": "f0a2c3df",
+          "kind": "psylink_heap"
+        },
+        "func_count": 59,
+        "first_func_vram": "0x8003DFD0",
+        "last_func_vram": "0x8004B80C"
+      },
+      "notes": "Weapons system ($Revision: 1.17, 7.27, 1.5; 59 functions, heavy switch jump tables)"
+    },
+    {
+      "us_order": 39,
+      "eu_order": 5,
+      "id": "effects",
+      "name": "effects.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": true,
+      "us": {
+        "text": {
+          "rom_start": "0x44710",
+          "rom_end": "0x4A550",
+          "rom_pad_end": "0x4A550",
+          "vram_start": "0x80043B10",
+          "vram_end": "0x80049950",
+          "size": 24128
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x2B20",
+          "rom_end": "0x2BC0",
+          "vram_start": "0x80001F20",
+          "vram_end": "0x80001FC0",
+          "size": 160
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2BB4",
+          "rom_end": "0x2BC0",
+          "vram_start": "0x80001FB4",
+          "vram_end": "0x80001FC0",
+          "size": 12,
+          "bytes_hex": "7e7f7f7e7e7e7e7f7f808080",
+          "kind": "psylink_heap"
+        },
+        "func_count": 25,
+        "first_func_vram": "0x80043B10",
+        "last_func_vram": "0x8004986C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x08830",
+          "rom_end": "0x0E40C",
+          "rom_pad_end": "0x0E410",
+          "vram_start": "0x80007C30",
+          "vram_end": "0x8000D80C",
+          "size": 23516
+        },
+        "text_pad_gap": {
+          "rom_start": "0x0E40C",
+          "rom_end": "0x0E410",
+          "vram_start": "0x8000D80C",
+          "vram_end": "0x8000D810",
+          "size": 4,
+          "bytes_hex": "eaee402f",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x1100",
+          "rom_end": "0x11A0",
+          "vram_start": "0x80000500",
+          "vram_end": "0x800005A0",
+          "size": 160
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x1194",
+          "rom_end": "0x11A0",
+          "vram_start": "0x80000594",
+          "vram_end": "0x800005A0",
+          "size": 12,
+          "bytes_hex": "c826d091d84180370c6964cb",
+          "kind": "psylink_heap"
+        },
+        "func_count": 24,
+        "first_func_vram": "0x80007C30",
+        "last_func_vram": "0x8000D728"
+      },
+      "notes": "Effects/objects/explosions ('sroid', 'light'); MOVED to early_game in EU; 25 US / 24 EU fns (EU merges US 0x44FF4 into 0x089E0)"
+    },
+    {
+      "us_order": 40,
+      "eu_order": 40,
+      "id": "cont",
+      "name": "cont.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x4A550",
+          "rom_end": "0x4AB5C",
+          "rom_pad_end": "0x4AB60",
+          "vram_start": "0x80049950",
+          "vram_end": "0x80049F5C",
+          "size": 1548
+        },
+        "text_pad_gap": {
+          "rom_start": "0x4AB5C",
+          "rom_end": "0x4AB60",
+          "vram_start": "0x80049F5C",
+          "vram_end": "0x80049F60",
+          "size": 4,
+          "bytes_hex": "fbfbfbfb",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x80049950",
+        "last_func_vram": "0x80049E20"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x4C430",
+          "rom_end": "0x4CA3C",
+          "rom_pad_end": "0x4CA40",
+          "vram_start": "0x8004B830",
+          "vram_end": "0x8004BE3C",
+          "size": 1548
+        },
+        "text_pad_gap": {
+          "rom_start": "0x4CA3C",
+          "rom_end": "0x4CA40",
+          "vram_start": "0x8004BE3C",
+          "vram_end": "0x8004BE40",
+          "size": 4,
+          "bytes_hex": "851206ea",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x8004B830",
+        "last_func_vram": "0x8004BD00"
+      },
+      "notes": "N64 Controller/Rumble/Pak thread & SI manager (7 functions; calls osCreateThread/osMotor*)"
+    },
+    {
+      "us_order": 41,
+      "eu_order": 41,
+      "id": "sched",
+      "name": "sched.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x4AB60",
+          "rom_end": "0x4AC24",
+          "rom_pad_end": "0x4AC30",
+          "vram_start": "0x80049F60",
+          "vram_end": "0x8004A024",
+          "size": 196
+        },
+        "text_pad_gap": {
+          "rom_start": "0x4AC24",
+          "rom_end": "0x4AC30",
+          "vram_start": "0x8004A024",
+          "vram_end": "0x8004A030",
+          "size": 12,
+          "bytes_hex": "fbfbe4c1c6e2dfe4e7b18f9c",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 3,
+        "first_func_vram": "0x80049F60",
+        "last_func_vram": "0x80049FF8"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x4CA40",
+          "rom_end": "0x4CB04",
+          "rom_pad_end": "0x4CB10",
+          "vram_start": "0x8004BE40",
+          "vram_end": "0x8004BF04",
+          "size": 196
+        },
+        "text_pad_gap": {
+          "rom_start": "0x4CB04",
+          "rom_end": "0x4CB10",
+          "vram_start": "0x8004BF04",
+          "vram_end": "0x8004BF10",
+          "size": 12,
+          "bytes_hex": "3a1b1f7fbb77bc9a0e061203",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 3,
+        "first_func_vram": "0x8004BE40",
+        "last_func_vram": "0x8004BED8"
+      },
+      "notes": "N64 message-queue/scheduler helper (3 functions; calls osRecvMesg/osSendMesg)"
+    },
+    {
+      "us_order": 42,
+      "eu_order": 42,
+      "id": "cpu",
+      "name": "cpu.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x4AC30",
+          "rom_end": "0x50258",
+          "rom_pad_end": "0x50260",
+          "vram_start": "0x8004A030",
+          "vram_end": "0x8004F658",
+          "size": 22056
+        },
+        "text_pad_gap": {
+          "rom_start": "0x50258",
+          "rom_end": "0x50260",
+          "vram_start": "0x8004F658",
+          "vram_end": "0x8004F660",
+          "size": 8,
+          "bytes_hex": "fbfbfbfbfbfbfbfb",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2BC0",
+          "rom_end": "0x2D40",
+          "vram_start": "0x80001FC0",
+          "vram_end": "0x80002140",
+          "size": 384
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2D3E",
+          "rom_end": "0x2D40",
+          "vram_start": "0x8000213E",
+          "vram_end": "0x80002140",
+          "size": 2,
+          "bytes_hex": "8080",
+          "kind": "psylink_heap"
+        },
+        "func_count": 42,
+        "first_func_vram": "0x8004A030",
+        "last_func_vram": "0x8004F63C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x4CB10",
+          "rom_end": "0x51FEC",
+          "rom_pad_end": "0x51FF0",
+          "vram_start": "0x8004BF10",
+          "vram_end": "0x800513EC",
+          "size": 21724
+        },
+        "text_pad_gap": {
+          "rom_start": "0x51FEC",
+          "rom_end": "0x51FF0",
+          "vram_start": "0x800513EC",
+          "vram_end": "0x800513F0",
+          "size": 4,
+          "bytes_hex": "ddcb6a1e",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2BB0",
+          "rom_end": "0x2D30",
+          "vram_start": "0x80001FB0",
+          "vram_end": "0x80002130",
+          "size": 384
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2D2E",
+          "rom_end": "0x2D30",
+          "vram_start": "0x8000212E",
+          "vram_end": "0x80002130",
+          "size": 2,
+          "bytes_hex": "d963",
+          "kind": "psylink_heap"
+        },
+        "func_count": 42,
+        "first_func_vram": "0x8004BF10",
+        "last_func_vram": "0x800513D0"
+      },
+      "notes": "Main frame/CPU loop & AI/render coordination ($Revision: 1.17, 7.27, 1.5, 1.34; 'cpu.c'; 42 functions)"
+    },
+    {
+      "us_order": 43,
+      "eu_order": 43,
+      "id": "n64render",
+      "name": "n64render.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x50260",
+          "rom_end": "0x50738",
+          "rom_pad_end": "0x50740",
+          "vram_start": "0x8004F660",
+          "vram_end": "0x8004FB38",
+          "size": 1240
+        },
+        "text_pad_gap": {
+          "rom_start": "0x50738",
+          "rom_end": "0x50740",
+          "vram_start": "0x8004FB38",
+          "vram_end": "0x8004FB40",
+          "size": 8,
+          "bytes_hex": "7b83838383838383",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2D40",
+          "rom_end": "0x2D50",
+          "vram_start": "0x80002140",
+          "vram_end": "0x80002150",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2D4C",
+          "rom_end": "0x2D50",
+          "vram_start": "0x8000214C",
+          "vram_end": "0x80002150",
+          "size": 4,
+          "bytes_hex": "7f808080",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x8004F660",
+        "last_func_vram": "0x8004FB04"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x51FF0",
+          "rom_end": "0x524C8",
+          "rom_pad_end": "0x524D0",
+          "vram_start": "0x800513F0",
+          "vram_end": "0x800518C8",
+          "size": 1240
+        },
+        "text_pad_gap": {
+          "rom_start": "0x524C8",
+          "rom_end": "0x524D0",
+          "vram_start": "0x800518C8",
+          "vram_end": "0x800518D0",
+          "size": 8,
+          "bytes_hex": "77533d2992d4b887",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2D30",
+          "rom_end": "0x2D40",
+          "vram_start": "0x80002130",
+          "vram_end": "0x80002140",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2D3C",
+          "rom_end": "0x2D40",
+          "vram_start": "0x8000213C",
+          "vram_end": "0x80002140",
+          "size": 4,
+          "bytes_hex": "dd18c585",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x800513F0",
+        "last_func_vram": "0x80051894"
+      },
+      "notes": "N64 RDP/RSP display-list renderer ('n64render.c'; 5 functions)"
+    },
+    {
+      "us_order": 44,
+      "eu_order": 44,
+      "id": "unk_50740",
+      "name": "unk_50740.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x50740",
+          "rom_end": "0x50748",
+          "rom_pad_end": "0x50750",
+          "vram_start": "0x8004FB40",
+          "vram_end": "0x8004FB48",
+          "size": 8
+        },
+        "text_pad_gap": {
+          "rom_start": "0x50748",
+          "rom_end": "0x50750",
+          "vram_start": "0x8004FB48",
+          "vram_end": "0x8004FB50",
+          "size": 8,
+          "bytes_hex": "19191913cdf310bf",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2D50",
+          "rom_end": "0x2D70",
+          "vram_start": "0x80002150",
+          "vram_end": "0x80002170",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2D62",
+          "rom_end": "0x2D70",
+          "vram_start": "0x80002162",
+          "vram_end": "0x80002170",
+          "size": 14,
+          "bytes_hex": "8080808080818181818080808180",
+          "kind": "psylink_heap"
+        },
+        "func_count": 1,
+        "first_func_vram": "0x8004FB40",
+        "last_func_vram": "0x8004FB40"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x524D0",
+          "rom_end": "0x524D8",
+          "rom_pad_end": "0x524E0",
+          "vram_start": "0x800518D0",
+          "vram_end": "0x800518D8",
+          "size": 8
+        },
+        "text_pad_gap": {
+          "rom_start": "0x524D8",
+          "rom_end": "0x524E0",
+          "vram_start": "0x800518D8",
+          "vram_end": "0x800518E0",
+          "size": 8,
+          "bytes_hex": "b5ecffbf8bdbfff7",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2D40",
+          "rom_end": "0x2D60",
+          "vram_start": "0x80002140",
+          "vram_end": "0x80002160",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2D52",
+          "rom_end": "0x2D60",
+          "vram_start": "0x80002152",
+          "vram_end": "0x80002160",
+          "size": 14,
+          "bytes_hex": "5f94ab45a012150c814a80a1c0e0",
+          "kind": "psylink_heap"
+        },
+        "func_count": 1,
+        "first_func_vram": "0x800518D0",
+        "last_func_vram": "0x800518D0"
+      },
+      "notes": "1 uncalled 8-byte function (return a2) with $Revision: 1.17 in .rodata"
+    },
+    {
+      "us_order": 45,
+      "eu_order": 45,
+      "id": "plasma",
+      "name": "plasma.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x50750",
+          "rom_end": "0x524C0",
+          "rom_pad_end": "0x524C0",
+          "vram_start": "0x8004FB50",
+          "vram_end": "0x800518C0",
+          "size": 7536
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x2D70",
+          "rom_end": "0x2EA0",
+          "vram_start": "0x80002170",
+          "vram_end": "0x800022A0",
+          "size": 304
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2E9C",
+          "rom_end": "0x2EA0",
+          "vram_start": "0x8000229C",
+          "vram_end": "0x800022A0",
+          "size": 4,
+          "bytes_hex": "7f7f7f7f",
+          "kind": "psylink_heap"
+        },
+        "func_count": 10,
+        "first_func_vram": "0x8004FB50",
+        "last_func_vram": "0x80051604"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x524E0",
+          "rom_end": "0x54250",
+          "rom_pad_end": "0x54250",
+          "vram_start": "0x800518E0",
+          "vram_end": "0x80053650",
+          "size": 7536
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x2D60",
+          "rom_end": "0x2E90",
+          "vram_start": "0x80002160",
+          "vram_end": "0x80002290",
+          "size": 304
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x2E8C",
+          "rom_end": "0x2E90",
+          "vram_start": "0x8000228C",
+          "vram_end": "0x80002290",
+          "size": 4,
+          "bytes_hex": "bddecf77",
+          "kind": "psylink_heap"
+        },
+        "func_count": 10,
+        "first_func_vram": "0x800518E0",
+        "last_func_vram": "0x80053394"
+      },
+      "notes": "Frontend plasma background effect ($Revision: 1.17, 7.27, 1.5; 'plasma.c'; 10 functions; .data/.rodata prove boundary at 0x524C0/0x54250)"
+    },
+    {
+      "us_order": 46,
+      "eu_order": 46,
+      "id": "frontend",
+      "name": "frontend.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x524C0",
+          "rom_end": "0x654E8",
+          "rom_pad_end": "0x654F0",
+          "vram_start": "0x800518C0",
+          "vram_end": "0x800648E8",
+          "size": 77864
+        },
+        "text_pad_gap": {
+          "rom_start": "0x654E8",
+          "rom_end": "0x654F0",
+          "vram_start": "0x800648E8",
+          "vram_end": "0x800648F0",
+          "size": 8,
+          "bytes_hex": "fafafafafafafa00",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2EA0",
+          "rom_end": "0x4800",
+          "vram_start": "0x800022A0",
+          "vram_end": "0x80003C00",
+          "size": 6496
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x47F4",
+          "rom_end": "0x4800",
+          "vram_start": "0x80003BF4",
+          "vram_end": "0x80003C00",
+          "size": 12,
+          "bytes_hex": "9478672d79f79d7a0796791f",
+          "kind": "psylink_heap"
+        },
+        "func_count": 112,
+        "first_func_vram": "0x800518C0",
+        "last_func_vram": "0x8006448C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x54250",
+          "rom_end": "0x6725C",
+          "rom_pad_end": "0x67260",
+          "vram_start": "0x80053650",
+          "vram_end": "0x8006665C",
+          "size": 77836
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6725C",
+          "rom_end": "0x67260",
+          "vram_start": "0x8006665C",
+          "vram_end": "0x80066660",
+          "size": 4,
+          "bytes_hex": "10000000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x2E90",
+          "rom_end": "0x47F0",
+          "vram_start": "0x80002290",
+          "vram_end": "0x80003BF0",
+          "size": 6496
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x47E4",
+          "rom_end": "0x47F0",
+          "vram_start": "0x80003BE4",
+          "vram_end": "0x80003BF0",
+          "size": 12,
+          "bytes_hex": "ba35c39ecfa83a15f97c0201",
+          "kind": "psylink_heap"
+        },
+        "func_count": 112,
+        "first_func_vram": "0x80053650",
+        "last_func_vram": "0x80066200"
+      },
+      "notes": "Frontend menus, Controller Pak UI, options ($Revision: 1.17; 'frontend.c'; 112 functions)"
+    },
+    {
+      "us_order": 47,
+      "eu_order": 47,
+      "id": "trackrend",
+      "name": "trackrend.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x654F0",
+          "rom_end": "0x667B0",
+          "rom_pad_end": "0x667B0",
+          "vram_start": "0x800648F0",
+          "vram_end": "0x80065BB0",
+          "size": 4800
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x4800",
+          "rom_end": "0x4850",
+          "vram_start": "0x80003C00",
+          "vram_end": "0x80003C50",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4848",
+          "rom_end": "0x4850",
+          "vram_start": "0x80003C48",
+          "vram_end": "0x80003C50",
+          "size": 8,
+          "bytes_hex": "b7ef97b9422125aa",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x800648F0",
+        "last_func_vram": "0x80065890"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x67260",
+          "rom_end": "0x68520",
+          "rom_pad_end": "0x68520",
+          "vram_start": "0x80066660",
+          "vram_end": "0x80067920",
+          "size": 4800
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x47F0",
+          "rom_end": "0x4840",
+          "vram_start": "0x80003BF0",
+          "vram_end": "0x80003C40",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4838",
+          "rom_end": "0x4840",
+          "vram_start": "0x80003C38",
+          "vram_end": "0x80003C40",
+          "size": 8,
+          "bytes_hex": "178bd9ef570b85ce",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x80066660",
+        "last_func_vram": "0x80067600"
+      },
+      "notes": "3D track/object display list builder ($Revision: 1.34, 1.5; 5 functions right before main)"
+    },
+    {
+      "us_order": 48,
+      "eu_order": 48,
+      "id": "n64init",
+      "name": "n64init.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x667B0",
+          "rom_end": "0x670A0",
+          "rom_pad_end": "0x670A0",
+          "vram_start": "0x80065BB0",
+          "vram_end": "0x800664A0",
+          "size": 2288
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x4850",
+          "rom_end": "0x48D0",
+          "vram_start": "0x80003C50",
+          "vram_end": "0x80003CD0",
+          "size": 128
+        },
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x80065BB0",
+        "last_func_vram": "0x800661D4"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x68520",
+          "rom_end": "0x68E2C",
+          "rom_pad_end": "0x68E30",
+          "vram_start": "0x80067920",
+          "vram_end": "0x8006822C",
+          "size": 2316
+        },
+        "text_pad_gap": {
+          "rom_start": "0x68E2C",
+          "rom_end": "0x68E30",
+          "vram_start": "0x8006822C",
+          "vram_end": "0x80068230",
+          "size": 4,
+          "bytes_hex": "403d6600",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4840",
+          "rom_end": "0x48C0",
+          "vram_start": "0x80003C40",
+          "vram_end": "0x80003CC0",
+          "size": 128
+        },
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x80067920",
+        "last_func_vram": "0x80067F60"
+      },
+      "notes": "main(), InitTvTiming(), N64 OS/VI/PI/audio boot ($Revision: 1.17; 'n64init.c'; 7 functions; 4B EU gap proves end)"
+    },
+    {
+      "us_order": 49,
+      "eu_order": 49,
+      "id": "particle",
+      "name": "Particle.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x670A0",
+          "rom_end": "0x6B780",
+          "rom_pad_end": "0x6B780",
+          "vram_start": "0x800664A0",
+          "vram_end": "0x8006AB80",
+          "size": 18144
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x48D0",
+          "rom_end": "0x4920",
+          "vram_start": "0x80003CD0",
+          "vram_end": "0x80003D20",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4914",
+          "rom_end": "0x4920",
+          "vram_start": "0x80003D14",
+          "vram_end": "0x80003D20",
+          "size": 12,
+          "bytes_hex": "9c400d1b8dc5c321c0806e34",
+          "kind": "psylink_heap"
+        },
+        "func_count": 35,
+        "first_func_vram": "0x800664A0",
+        "last_func_vram": "0x8006AB58"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x68E30",
+          "rom_end": "0x6D7C4",
+          "rom_pad_end": "0x6D7D0",
+          "vram_start": "0x80068230",
+          "vram_end": "0x8006CBC4",
+          "size": 18836
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6D7C4",
+          "rom_end": "0x6D7D0",
+          "vram_start": "0x8006CBC4",
+          "vram_end": "0x8006CBD0",
+          "size": 12,
+          "bytes_hex": "00001d901000000000000000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x48C0",
+          "rom_end": "0x4910",
+          "vram_start": "0x80003CC0",
+          "vram_end": "0x80003D10",
+          "size": 80
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4904",
+          "rom_end": "0x4910",
+          "vram_start": "0x80003D04",
+          "vram_end": "0x80003D10",
+          "size": 12,
+          "bytes_hex": "84f2dd6e5500acd2887a7f62",
+          "kind": "psylink_heap"
+        },
+        "func_count": 36,
+        "first_func_vram": "0x80068230",
+        "last_func_vram": "0x8006CB9C"
+      },
+      "notes": "Particle system ($Revision: 1.17; 'Particle.c'; 35 US / 36 EU fns \u2014 EU adds memory-guard canary func at 0x68E7C; 12B EU gap proves end)"
+    },
+    {
+      "us_order": 50,
+      "eu_order": 50,
+      "id": "unk_6b780",
+      "name": "unk_6b780.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x6B780",
+          "rom_end": "0x6B90C",
+          "rom_pad_end": "0x6B910",
+          "vram_start": "0x8006AB80",
+          "vram_end": "0x8006AD0C",
+          "size": 396
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6B90C",
+          "rom_end": "0x6B910",
+          "vram_start": "0x8006AD0C",
+          "vram_end": "0x8006AD10",
+          "size": 4,
+          "bytes_hex": "35b9ff00",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 2,
+        "first_func_vram": "0x8006AB80",
+        "last_func_vram": "0x8006AC20"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x6D7D0",
+          "rom_end": "0x6D95C",
+          "rom_pad_end": "0x6D960",
+          "vram_start": "0x8006CBD0",
+          "vram_end": "0x8006CD5C",
+          "size": 396
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6D95C",
+          "rom_end": "0x6D960",
+          "vram_start": "0x8006CD5C",
+          "vram_end": "0x8006CD60",
+          "size": 4,
+          "bytes_hex": "42416600",
+          "kind": "psylink_heap"
+        },
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 2,
+        "first_func_vram": "0x8006CBD0",
+        "last_func_vram": "0x8006CC70"
+      },
+      "notes": "2-function helper called 16x from effects.c"
+    },
+    {
+      "us_order": 51,
+      "eu_order": 51,
+      "id": "hiscores",
+      "name": "hiscores.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x6B910",
+          "rom_end": "0x6CD28",
+          "rom_pad_end": "0x6CD30",
+          "vram_start": "0x8006AD10",
+          "vram_end": "0x8006C128",
+          "size": 5144
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6CD28",
+          "rom_end": "0x6CD30",
+          "vram_start": "0x8006C128",
+          "vram_end": "0x8006C130",
+          "size": 8,
+          "bytes_hex": "fa0dcacbf3c7cabb",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4920",
+          "rom_end": "0x4BB0",
+          "vram_start": "0x80003D20",
+          "vram_end": "0x80003FB0",
+          "size": 656
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4BA8",
+          "rom_end": "0x4BB0",
+          "vram_start": "0x80003FA8",
+          "vram_end": "0x80003FB0",
+          "size": 8,
+          "bytes_hex": "894cce19b3aab22b",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x8006AD10",
+        "last_func_vram": "0x8006BA04"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x6D960",
+          "rom_end": "0x6ED88",
+          "rom_pad_end": "0x6ED90",
+          "vram_start": "0x8006CD60",
+          "vram_end": "0x8006E188",
+          "size": 5160
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6ED88",
+          "rom_end": "0x6ED90",
+          "vram_start": "0x8006E188",
+          "vram_end": "0x8006E190",
+          "size": 8,
+          "bytes_hex": "000400090009000b",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4910",
+          "rom_end": "0x4BA0",
+          "vram_start": "0x80003D10",
+          "vram_end": "0x80003FA0",
+          "size": 656
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4B98",
+          "rom_end": "0x4BA0",
+          "vram_start": "0x80003F98",
+          "vram_end": "0x80003FA0",
+          "size": 8,
+          "bytes_hex": "cf083bc220f08cbc",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x8006CD60",
+        "last_func_vram": "0x8006DA64"
+      },
+      "notes": "High score / record tables & name entry ($Revision: 1.17, 7.27, 1.5; 'DIG'..'CJR', 'KLIES BRIDGE'..'VELOCITAR', 'NEW LAP RECORD')"
+    },
+    {
+      "us_order": 52,
+      "eu_order": 52,
+      "id": "racefunc",
+      "name": "Racefunc.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x6CD30",
+          "rom_end": "0x6FB0C",
+          "rom_pad_end": "0x6FB10",
+          "vram_start": "0x8006C130",
+          "vram_end": "0x8006EF0C",
+          "size": 11740
+        },
+        "text_pad_gap": {
+          "rom_start": "0x6FB0C",
+          "rom_end": "0x6FB10",
+          "vram_start": "0x8006EF0C",
+          "vram_end": "0x8006EF10",
+          "size": 4,
+          "bytes_hex": "fafafafa",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4BB0",
+          "rom_end": "0x4D50",
+          "vram_start": "0x80003FB0",
+          "vram_end": "0x80004150",
+          "size": 416
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4D41",
+          "rom_end": "0x4D50",
+          "vram_start": "0x80004141",
+          "vram_end": "0x80004150",
+          "size": 15,
+          "bytes_hex": "91f1c5c86701a352918bcf8236a678",
+          "kind": "psylink_heap"
+        },
+        "func_count": 16,
+        "first_func_vram": "0x8006C130",
+        "last_func_vram": "0x8006EE20"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x6ED90",
+          "rom_end": "0x71AAC",
+          "rom_pad_end": "0x71AB0",
+          "vram_start": "0x8006E190",
+          "vram_end": "0x80070EAC",
+          "size": 11548
+        },
+        "text_pad_gap": {
+          "rom_start": "0x71AAC",
+          "rom_end": "0x71AB0",
+          "vram_start": "0x80070EAC",
+          "vram_end": "0x80070EB0",
+          "size": 4,
+          "bytes_hex": "00000000",
+          "kind": "zero_pad"
+        },
+        "rodata": {
+          "rom_start": "0x4BA0",
+          "rom_end": "0x4D40",
+          "vram_start": "0x80003FA0",
+          "vram_end": "0x80004140",
+          "size": 416
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4D31",
+          "rom_end": "0x4D40",
+          "vram_start": "0x80004131",
+          "vram_end": "0x80004140",
+          "size": 15,
+          "bytes_hex": "e72579cb9e73779d01e74979d49e75",
+          "kind": "psylink_heap"
+        },
+        "func_count": 16,
+        "first_func_vram": "0x8006E190",
+        "last_func_vram": "0x80070DC0"
+      },
+      "notes": "Race completion, challenge medals, circuit progression ($Revision: 1.17; 'Racefunc.c'; 16 functions; 4B ZERO pad in EU)"
+    },
+    {
+      "us_order": 53,
+      "eu_order": 53,
+      "id": "pause",
+      "name": "pause.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x6FB10",
+          "rom_end": "0x70138",
+          "rom_pad_end": "0x70140",
+          "vram_start": "0x8006EF10",
+          "vram_end": "0x8006F538",
+          "size": 1576
+        },
+        "text_pad_gap": {
+          "rom_start": "0x70138",
+          "rom_end": "0x70140",
+          "vram_start": "0x8006F538",
+          "vram_end": "0x8006F540",
+          "size": 8,
+          "bytes_hex": "4aceff004ad6ff00",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4D50",
+          "rom_end": "0x4EB0",
+          "vram_start": "0x80004150",
+          "vram_end": "0x800042B0",
+          "size": 352
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4EAF",
+          "rom_end": "0x4EB0",
+          "vram_start": "0x800042AF",
+          "vram_end": "0x800042B0",
+          "size": 1,
+          "bytes_hex": "fa",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x8006EF10",
+        "last_func_vram": "0x8006F508"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x71AB0",
+          "rom_end": "0x720D8",
+          "rom_pad_end": "0x720E0",
+          "vram_start": "0x80070EB0",
+          "vram_end": "0x800714D8",
+          "size": 1576
+        },
+        "text_pad_gap": {
+          "rom_start": "0x720D8",
+          "rom_end": "0x720E0",
+          "vram_start": "0x800714D8",
+          "vram_end": "0x800714E0",
+          "size": 8,
+          "bytes_hex": "4d4d86008484af00",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4D40",
+          "rom_end": "0x4EA0",
+          "vram_start": "0x80004140",
+          "vram_end": "0x800042A0",
+          "size": 352
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4E9F",
+          "rom_end": "0x4EA0",
+          "vram_start": "0x8000429F",
+          "vram_end": "0x800042A0",
+          "size": 1,
+          "bytes_hex": "96",
+          "kind": "psylink_heap"
+        },
+        "func_count": 5,
+        "first_func_vram": "0x80070EB0",
+        "last_func_vram": "0x800714A8"
+      },
+      "notes": "Pause menu & music track name table ($Revision: 1.17; 'OUTRO'..'PAUSED'..'YES'/'NO'; 5 functions)"
+    },
+    {
+      "us_order": 54,
+      "eu_order": 54,
+      "id": "inspect",
+      "name": "inspect.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x70140",
+          "rom_end": "0x70848",
+          "rom_pad_end": "0x70850",
+          "vram_start": "0x8006F540",
+          "vram_end": "0x8006FC48",
+          "size": 1800
+        },
+        "text_pad_gap": {
+          "rom_start": "0x70848",
+          "rom_end": "0x70850",
+          "vram_start": "0x8006FC48",
+          "vram_end": "0x8006FC50",
+          "size": 8,
+          "bytes_hex": "d1a395873565b457",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4EB0",
+          "rom_end": "0x5000",
+          "vram_start": "0x800042B0",
+          "vram_end": "0x80004400",
+          "size": 336
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4FFD",
+          "rom_end": "0x5000",
+          "vram_start": "0x800043FD",
+          "vram_end": "0x80004400",
+          "size": 3,
+          "bytes_hex": "de09cb",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x8006F540",
+        "last_func_vram": "0x8006FC40"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x720E0",
+          "rom_end": "0x727E8",
+          "rom_pad_end": "0x727F0",
+          "vram_start": "0x800714E0",
+          "vram_end": "0x80071BE8",
+          "size": 1800
+        },
+        "text_pad_gap": {
+          "rom_start": "0x727E8",
+          "rom_end": "0x727F0",
+          "vram_start": "0x80071BE8",
+          "vram_end": "0x80071BF0",
+          "size": 8,
+          "bytes_hex": "1000000000000000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4EA0",
+          "rom_end": "0x4FF0",
+          "vram_start": "0x800042A0",
+          "vram_end": "0x800043F0",
+          "size": 336
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x4FED",
+          "rom_end": "0x4FF0",
+          "vram_start": "0x800043ED",
+          "vram_end": "0x800043F0",
+          "size": 3,
+          "bytes_hex": "b399ec",
+          "kind": "psylink_heap"
+        },
+        "func_count": 11,
+        "first_func_vram": "0x800714E0",
+        "last_func_vram": "0x80071BE0"
+      },
+      "notes": "AI damage/ship inspector + 7 stripped debug stubs ($Revision: 1.17, 7.27, 1.5; 'inspect.c'; 11 functions)"
+    },
+    {
+      "us_order": 55,
+      "eu_order": 55,
+      "id": "sfx",
+      "name": "sfx.c",
+      "name_source": "inferred",
+      "kind": "game",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x70850",
+          "rom_end": "0x70CEC",
+          "rom_pad_end": "0x70CF0",
+          "vram_start": "0x8006FC50",
+          "vram_end": "0x800700EC",
+          "size": 1180
+        },
+        "text_pad_gap": {
+          "rom_start": "0x70CEC",
+          "rom_end": "0x70CF0",
+          "vram_start": "0x800700EC",
+          "vram_end": "0x800700F0",
+          "size": 4,
+          "bytes_hex": "a0958e82",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x5000",
+          "rom_end": "0x5020",
+          "vram_start": "0x80004400",
+          "vram_end": "0x80004420",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x501C",
+          "rom_end": "0x5020",
+          "vram_start": "0x8000441C",
+          "vram_end": "0x80004420",
+          "size": 4,
+          "bytes_hex": "3c9ccd39",
+          "kind": "psylink_heap"
+        },
+        "func_count": 7,
+        "first_func_vram": "0x8006FC50",
+        "last_func_vram": "0x800700CC"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x727F0",
+          "rom_end": "0x72C8C",
+          "rom_pad_end": "0x72C90",
+          "vram_start": "0x80071BF0",
+          "vram_end": "0x8007208C",
+          "size": 1180
+        },
+        "text_pad_gap": {
+          "rom_start": "0x72C8C",
+          "rom_end": "0x72C90",
+          "vram_start": "0x8007208C",
+          "vram_end": "0x80072090",
+          "size": 4,
+          "bytes_hex": "033e0000",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x4FF0",
+          "rom_end": "0x5010",
+          "vram_start": "0x800043F0",
+          "vram_end": "0x80004410",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x500C",
+          "rom_end": "0x5010",
+          "vram_start": "0x8000440C",
+          "vram_end": "0x80004410",
+          "size": 4,
+          "bytes_hex": "6c860ad3",
+          "kind": "psylink_heap"
+        },
+        "func_count": 7,
+        "first_func_vram": "0x80071BF0",
+        "last_func_vram": "0x8007206C"
+      },
+      "notes": "libmus SFX wrapper ($Revision: 1.17; 7 functions, 48 call sites)"
+    },
+    {
+      "us_order": 56,
+      "eu_order": 6,
+      "id": "trail",
+      "name": "Trail.c",
+      "name_source": "rom_string",
+      "kind": "game",
+      "moved_in_eu": true,
+      "us": {
+        "text": {
+          "rom_start": "0x70CF0",
+          "rom_end": "0x72EE4",
+          "rom_pad_end": "0x72EF0",
+          "vram_start": "0x800700F0",
+          "vram_end": "0x800722E4",
+          "size": 8692
+        },
+        "text_pad_gap": {
+          "rom_start": "0x72EE4",
+          "rom_end": "0x72EF0",
+          "vram_start": "0x800722E4",
+          "vram_end": "0x800722F0",
+          "size": 12,
+          "bytes_hex": "fafafafafa7884959aced0d3",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x5020",
+          "rom_end": "0x5030",
+          "vram_start": "0x80004420",
+          "vram_end": "0x80004430",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x5028",
+          "rom_end": "0x5030",
+          "vram_start": "0x80004428",
+          "vram_end": "0x80004430",
+          "size": 8,
+          "bytes_hex": "191dd2d006d74361",
+          "kind": "psylink_heap"
+        },
+        "func_count": 9,
+        "first_func_vram": "0x800700F0",
+        "last_func_vram": "0x800721A0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x0E410",
+          "rom_end": "0x10670",
+          "rom_pad_end": "0x10670",
+          "vram_start": "0x8000D810",
+          "vram_end": "0x8000FA70",
+          "size": 8800
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x11A0",
+          "rom_end": "0x11B0",
+          "vram_start": "0x800005A0",
+          "vram_end": "0x800005B0",
+          "size": 16
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x11A8",
+          "rom_end": "0x11B0",
+          "vram_start": "0x800005A8",
+          "vram_end": "0x800005B0",
+          "size": 8,
+          "bytes_hex": "a3f25984de73379b",
+          "kind": "psylink_heap"
+        },
+        "func_count": 9,
+        "first_func_vram": "0x8000D810",
+        "last_func_vram": "0x8000F92C"
+      },
+      "notes": "Ship exhaust/ribbon trails ('Trail.c'; 9 functions; MOVED to early_game in EU)"
+    },
+    {
+      "us_order": 57,
+      "eu_order": 56,
+      "id": "libgcc_cmpdi2",
+      "name": "libgcc (_cmpdi2.o)",
+      "name_source": "known_lib",
+      "kind": "libgcc",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x72EF0",
+          "rom_end": "0x72F30",
+          "rom_pad_end": "0x72F30",
+          "vram_start": "0x800722F0",
+          "vram_end": "0x80072330",
+          "size": 64
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 1,
+        "first_func_vram": "0x800722F0",
+        "last_func_vram": "0x800722F0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x72C90",
+          "rom_end": "0x72CD0",
+          "rom_pad_end": "0x72CD0",
+          "vram_start": "0x80072090",
+          "vram_end": "0x800720D0",
+          "size": 64
+        },
+        "text_pad_gap": null,
+        "rodata": null,
+        "rodata_pad_gap": null,
+        "func_count": 1,
+        "first_func_vram": "0x80072090",
+        "last_func_vram": "0x80072090"
+      },
+      "notes": "GCC 2.7.2 libgcc2 __cmpdi2 (64-bit signed compare; 0B pad)"
+    },
+    {
+      "us_order": 58,
+      "eu_order": 57,
+      "id": "libgcc_floatdidf",
+      "name": "libgcc (_floatdidf.o)",
+      "name_source": "known_lib",
+      "kind": "libgcc",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x72F30",
+          "rom_end": "0x72FEC",
+          "rom_pad_end": "0x72FF0",
+          "vram_start": "0x80072330",
+          "vram_end": "0x800723EC",
+          "size": 188
+        },
+        "text_pad_gap": {
+          "rom_start": "0x72FEC",
+          "rom_end": "0x72FF0",
+          "vram_start": "0x800723EC",
+          "vram_end": "0x800723F0",
+          "size": 4,
+          "bytes_hex": "fafafafa",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x5030",
+          "rom_end": "0x5050",
+          "vram_start": "0x80004430",
+          "vram_end": "0x80004450",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x5048",
+          "rom_end": "0x5050",
+          "vram_start": "0x80004448",
+          "vram_end": "0x80004450",
+          "size": 8,
+          "bytes_hex": "43345e7fcad94338",
+          "kind": "psylink_heap"
+        },
+        "func_count": 1,
+        "first_func_vram": "0x80072330",
+        "last_func_vram": "0x80072330"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x72CD0",
+          "rom_end": "0x72D8C",
+          "rom_pad_end": "0x72D90",
+          "vram_start": "0x800720D0",
+          "vram_end": "0x8007218C",
+          "size": 188
+        },
+        "text_pad_gap": {
+          "rom_start": "0x72D8C",
+          "rom_end": "0x72D90",
+          "vram_start": "0x8007218C",
+          "vram_end": "0x80072190",
+          "size": 4,
+          "bytes_hex": "00001e0b",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x5010",
+          "rom_end": "0x5030",
+          "vram_start": "0x80004410",
+          "vram_end": "0x80004430",
+          "size": 32
+        },
+        "rodata_pad_gap": {
+          "rom_start": "0x5028",
+          "rom_end": "0x5030",
+          "vram_start": "0x80004428",
+          "vram_end": "0x80004430",
+          "size": 8,
+          "bytes_hex": "31a8ff6b1fda9a49",
+          "kind": "psylink_heap"
+        },
+        "func_count": 1,
+        "first_func_vram": "0x800720D0",
+        "last_func_vram": "0x800720D0"
+      },
+      "notes": "GCC 2.7.2 libgcc2 __floatdidf (64-bit signed int to double)"
+    },
+    {
+      "us_order": 59,
+      "eu_order": 58,
+      "id": "libgcc_udivdi3",
+      "name": "libgcc (_udivdi3.o)",
+      "name_source": "known_lib",
+      "kind": "libgcc",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x72FF0",
+          "rom_end": "0x7364C",
+          "rom_pad_end": "0x73650",
+          "vram_start": "0x800723F0",
+          "vram_end": "0x80072A4C",
+          "size": 1628
+        },
+        "text_pad_gap": {
+          "rom_start": "0x7364C",
+          "rom_end": "0x73650",
+          "vram_start": "0x80072A4C",
+          "vram_end": "0x80072A50",
+          "size": 4,
+          "bytes_hex": "8600186c",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x5050",
+          "rom_end": "0x5150",
+          "vram_start": "0x80004450",
+          "vram_end": "0x80004550",
+          "size": 256
+        },
+        "rodata_pad_gap": null,
+        "func_count": 2,
+        "first_func_vram": "0x800723F0",
+        "last_func_vram": "0x80072410"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x72D90",
+          "rom_end": "0x733EC",
+          "rom_pad_end": "0x733F0",
+          "vram_start": "0x80072190",
+          "vram_end": "0x800727EC",
+          "size": 1628
+        },
+        "text_pad_gap": {
+          "rom_start": "0x733EC",
+          "rom_end": "0x733F0",
+          "vram_start": "0x800727EC",
+          "vram_end": "0x800727F0",
+          "size": 4,
+          "bytes_hex": "00060005",
+          "kind": "psylink_heap"
+        },
+        "rodata": {
+          "rom_start": "0x5030",
+          "rom_end": "0x5130",
+          "vram_start": "0x80004430",
+          "vram_end": "0x80004530",
+          "size": 256
+        },
+        "rodata_pad_gap": null,
+        "func_count": 2,
+        "first_func_vram": "0x80072190",
+        "last_func_vram": "0x800721B0"
+      },
+      "notes": "GCC 2.7.2 libgcc2 __udivdi3 + __udivmoddi4 + 256B __clz_tab"
+    },
+    {
+      "us_order": 60,
+      "eu_order": 59,
+      "id": "libmus_player",
+      "name": "libmus (player.o)",
+      "name_source": "known_lib",
+      "kind": "libmus",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x73650",
+          "rom_end": "0x76208",
+          "rom_pad_end": "0x76210",
+          "vram_start": "0x80072A50",
+          "vram_end": "0x80075608",
+          "size": 11192
+        },
+        "text_pad_gap": {
+          "rom_start": "0x76208",
+          "rom_end": "0x76210",
+          "vram_start": "0x80075608",
+          "vram_end": "0x80075610",
+          "size": 8,
+          "bytes_hex": "0000000000000000",
+          "kind": "zero_pad"
+        },
+        "rodata": {
+          "rom_start": "0x5150",
+          "rom_end": "0x5210",
+          "vram_start": "0x80004550",
+          "vram_end": "0x80004610",
+          "size": 192
+        },
+        "rodata_pad_gap": null,
+        "func_count": 82,
+        "first_func_vram": "0x80072A50",
+        "last_func_vram": "0x8007556C"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x733F0",
+          "rom_end": "0x75FA8",
+          "rom_pad_end": "0x75FB0",
+          "vram_start": "0x800727F0",
+          "vram_end": "0x800753A8",
+          "size": 11192
+        },
+        "text_pad_gap": {
+          "rom_start": "0x75FA8",
+          "rom_end": "0x75FB0",
+          "vram_start": "0x800753A8",
+          "vram_end": "0x800753B0",
+          "size": 8,
+          "bytes_hex": "0000000000000000",
+          "kind": "zero_pad"
+        },
+        "rodata": {
+          "rom_start": "0x5130",
+          "rom_end": "0x51F0",
+          "vram_start": "0x80004530",
+          "vram_end": "0x800045F0",
+          "size": 192
+        },
+        "rodata_pad_gap": null,
+        "func_count": 82,
+        "first_func_vram": "0x800727F0",
+        "last_func_vram": "0x8007530C"
+      },
+      "notes": "Software Creations N64 libmus music player (82 functions; 8B ZERO pad at end)"
+    },
+    {
+      "us_order": 61,
+      "eu_order": 60,
+      "id": "libmus_aud",
+      "name": "libmus (aud_thread/dma/sched)",
+      "name_source": "known_lib",
+      "kind": "libmus",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x76210",
+          "rom_end": "0x76CA0",
+          "rom_pad_end": "0x76CA0",
+          "vram_start": "0x80075610",
+          "vram_end": "0x800760A0",
+          "size": 2704
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x5210",
+          "rom_end": "0x5220",
+          "vram_start": "0x80004610",
+          "vram_end": "0x80004620",
+          "size": 16
+        },
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x80075610",
+        "last_func_vram": "0x80075FA0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x75FB0",
+          "rom_end": "0x76A40",
+          "rom_pad_end": "0x76A40",
+          "vram_start": "0x800753B0",
+          "vram_end": "0x80075E40",
+          "size": 2704
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x51F0",
+          "rom_end": "0x5200",
+          "vram_start": "0x800045F0",
+          "vram_end": "0x80004600",
+          "size": 16
+        },
+        "rodata_pad_gap": null,
+        "func_count": 7,
+        "first_func_vram": "0x800753B0",
+        "last_func_vram": "0x80075D40"
+      },
+      "notes": "N64 libmus audio thread/DMA/scheduler (7 functions; IDO-compiled)"
+    },
+    {
+      "us_order": 62,
+      "eu_order": 61,
+      "id": "libultra",
+      "name": "libultra 2.0H / libnaudio",
+      "name_source": "known_lib",
+      "kind": "libultra",
+      "moved_in_eu": false,
+      "us": {
+        "text": {
+          "rom_start": "0x76CA0",
+          "rom_end": "0x88910",
+          "rom_pad_end": "0x88910",
+          "vram_start": "0x800760A0",
+          "vram_end": "0x80087D10",
+          "size": 72816
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x5220",
+          "rom_end": "0x5660",
+          "vram_start": "0x80004620",
+          "vram_end": "0x80004A60",
+          "size": 1088
+        },
+        "rodata_pad_gap": null,
+        "func_count": 263,
+        "first_func_vram": "0x800760A0",
+        "last_func_vram": "0x80087CC0"
+      },
+      "eu": {
+        "text": {
+          "rom_start": "0x76A40",
+          "rom_end": "0x886B0",
+          "rom_pad_end": "0x886B0",
+          "vram_start": "0x80075E40",
+          "vram_end": "0x80087AB0",
+          "size": 72816
+        },
+        "text_pad_gap": null,
+        "rodata": {
+          "rom_start": "0x5200",
+          "rom_end": "0x5640",
+          "vram_start": "0x80004600",
+          "vram_end": "0x80004A40",
+          "size": 1088
+        },
+        "rodata_pad_gap": null,
+        "func_count": 263,
+        "first_func_vram": "0x80075E40",
+        "last_func_vram": "0x80087A60"
+      },
+      "notes": "Nintendo libultra 2.0H / libnaudio / gu / libc (263 functions; EU = US - 0x260)"
+    }
+  ],
+  "us_text_padding_gaps": [
+    {
+      "rom_start": "0x09848",
+      "rom_end": "0x09850",
+      "vram_start": "0x80008C48",
+      "vram_end": "0x80008C50",
+      "size": 8,
+      "bytes_hex": "56578b7e0633f6e9",
+      "kind": "psylink_heap",
+      "after_tu": "assert",
+      "after_name": "assert.c"
+    },
+    {
+      "rom_start": "0x0A0C8",
+      "rom_end": "0x0A0D0",
+      "vram_start": "0x800094C8",
+      "vram_end": "0x800094D0",
+      "size": 8,
+      "bytes_hex": "f80000c746f00000",
+      "kind": "psylink_heap",
+      "after_tu": "audio",
+      "after_name": "audio.c"
+    },
+    {
+      "rom_start": "0x0A8A4",
+      "rom_end": "0x0A8B0",
+      "vram_start": "0x80009CA4",
+      "vram_end": "0x80009CB0",
+      "size": 12,
+      "bytes_hex": "c45eec26837f02007503e9e5",
+      "kind": "psylink_heap",
+      "after_tu": "gfx",
+      "after_name": "gfx.c"
+    },
+    {
+      "rom_start": "0x0F51C",
+      "rom_end": "0x0F520",
+      "vram_start": "0x8000E91C",
+      "vram_end": "0x8000E920",
+      "size": 4,
+      "bytes_hex": "561e680f",
+      "kind": "psylink_heap",
+      "after_tu": "scene",
+      "after_name": "Scene.c"
+    },
+    {
+      "rom_start": "0x0FD0C",
+      "rom_end": "0x0FD10",
+      "vram_start": "0x8000F10C",
+      "vram_end": "0x8000F110",
+      "size": 4,
+      "bytes_hex": "7efa0bd2",
+      "kind": "psylink_heap",
+      "after_tu": "files",
+      "after_name": "files.c"
+    },
+    {
+      "rom_start": "0x103D4",
+      "rom_end": "0x103E0",
+      "vram_start": "0x8000F7D4",
+      "vram_end": "0x8000F7E0",
+      "size": 12,
+      "bytes_hex": "750433c0eb20ff7604ff76fe",
+      "kind": "psylink_heap",
+      "after_tu": "pad",
+      "after_name": "pad.c"
+    },
+    {
+      "rom_start": "0x11AE8",
+      "rom_end": "0x11AF0",
+      "vram_start": "0x80010EE8",
+      "vram_end": "0x80010EF0",
+      "size": 8,
+      "bytes_hex": "0301a12102001300",
+      "kind": "psylink_heap",
+      "after_tu": "init",
+      "after_name": "Init.c"
+    },
+    {
+      "rom_start": "0x11C94",
+      "rom_end": "0x11CA0",
+      "vram_start": "0x80011094",
+      "vram_end": "0x800110A0",
+      "size": 12,
+      "bytes_hex": "020013000301472902001200",
+      "kind": "psylink_heap",
+      "after_tu": "decomp",
+      "after_name": "decomp.c"
+    },
+    {
+      "rom_start": "0x1582C",
+      "rom_end": "0x15830",
+      "vram_start": "0x80014C2C",
+      "vram_end": "0x80014C30",
+      "size": 4,
+      "bytes_hex": "bab3594f",
+      "kind": "psylink_heap",
+      "after_tu": "ships",
+      "after_name": "Ships.c"
+    },
+    {
+      "rom_start": "0x15C1C",
+      "rom_end": "0x15C20",
+      "vram_start": "0x8001501C",
+      "vram_end": "0x80015020",
+      "size": 4,
+      "bytes_hex": "9f96918a",
+      "kind": "psylink_heap",
+      "after_tu": "math_sfx",
+      "after_name": "math_sfx.c"
+    },
+    {
+      "rom_start": "0x18FA8",
+      "rom_end": "0x18FB0",
+      "vram_start": "0x800183A8",
+      "vram_end": "0x800183B0",
+      "size": 8,
+      "bytes_hex": "2a2b32322a242525",
+      "kind": "psylink_heap",
+      "after_tu": "track",
+      "after_name": "Track.c"
+    },
+    {
+      "rom_start": "0x19C08",
+      "rom_end": "0x19C10",
+      "vram_start": "0x80019008",
+      "vram_end": "0x80019010",
+      "size": 8,
+      "bytes_hex": "4f4f4f4f594f4f4b",
+      "kind": "psylink_heap",
+      "after_tu": "initrace",
+      "after_name": "Initrace.c"
+    },
+    {
+      "rom_start": "0x19F48",
+      "rom_end": "0x19F50",
+      "vram_start": "0x80019348",
+      "vram_end": "0x80019350",
+      "size": 8,
+      "bytes_hex": "59554f4f4f363636",
+      "kind": "psylink_heap",
+      "after_tu": "wadfile",
+      "after_name": "Wadfile.c"
+    },
+    {
+      "rom_start": "0x1A0E4",
+      "rom_end": "0x1A0F0",
+      "vram_start": "0x800194E4",
+      "vram_end": "0x800194F0",
+      "size": 12,
+      "bytes_hex": "793f3f242421252522212434",
+      "kind": "psylink_heap",
+      "after_tu": "unk_19f50",
+      "after_name": "unk_19f50.c"
+    },
+    {
+      "rom_start": "0x1AB8C",
+      "rom_end": "0x1AB90",
+      "vram_start": "0x80019F8C",
+      "vram_end": "0x80019F90",
+      "size": 4,
+      "bytes_hex": "324b574b",
+      "kind": "psylink_heap",
+      "after_tu": "skeleton",
+      "after_name": "Skeleton.c"
+    },
+    {
+      "rom_start": "0x1B804",
+      "rom_end": "0x1B810",
+      "vram_start": "0x8001AC04",
+      "vram_end": "0x8001AC10",
+      "size": 12,
+      "bytes_hex": "d8430109080143801243d893",
+      "kind": "psylink_heap",
+      "after_tu": "radscn",
+      "after_name": "Radscn.c"
+    },
+    {
+      "rom_start": "0x1D418",
+      "rom_end": "0x1D420",
+      "vram_start": "0x8001C818",
+      "vram_end": "0x8001C820",
+      "size": 8,
+      "bytes_hex": "3446324f52596060",
+      "kind": "psylink_heap",
+      "after_tu": "camera",
+      "after_name": "camera.c"
+    },
+    {
+      "rom_start": "0x1DBCC",
+      "rom_end": "0x1DBD0",
+      "vram_start": "0x8001CFCC",
+      "vram_end": "0x8001CFD0",
+      "size": 4,
+      "bytes_hex": "2a32324b",
+      "kind": "psylink_heap",
+      "after_tu": "utils",
+      "after_name": "utils.c"
+    },
+    {
+      "rom_start": "0x20308",
+      "rom_end": "0x20310",
+      "vram_start": "0x8001F708",
+      "vram_end": "0x8001F710",
+      "size": 8,
+      "bytes_hex": "01297894d8d81094",
+      "kind": "psylink_heap",
+      "after_tu": "dynam",
+      "after_name": "Dynam.c"
+    },
+    {
+      "rom_start": "0x21834",
+      "rom_end": "0x21840",
+      "vram_start": "0x80020C34",
+      "vram_end": "0x80020C40",
+      "size": 12,
+      "bytes_hex": "010101010101010101010809",
+      "kind": "psylink_heap",
+      "after_tu": "shipctrl",
+      "after_name": "shipctrl.c"
+    },
+    {
+      "rom_start": "0x243A4",
+      "rom_end": "0x243B0",
+      "vram_start": "0x800237A4",
+      "vram_end": "0x800237B0",
+      "size": 12,
+      "bytes_hex": "080101010101010107090707",
+      "kind": "psylink_heap",
+      "after_tu": "control",
+      "after_name": "control.c"
+    },
+    {
+      "rom_start": "0x27B78",
+      "rom_end": "0x27B80",
+      "vram_start": "0x80026F78",
+      "vram_end": "0x80026F80",
+      "size": 8,
+      "bytes_hex": "a55a4200ffff0000",
+      "kind": "psylink_heap",
+      "after_tu": "collide",
+      "after_name": "collide.c"
+    },
+    {
+      "rom_start": "0x2871C",
+      "rom_end": "0x28720",
+      "vram_start": "0x80027B1C",
+      "vram_end": "0x80027B20",
+      "size": 4,
+      "bytes_hex": "636e636e",
+      "kind": "psylink_heap",
+      "after_tu": "shipefx",
+      "after_name": "shipefx.c"
+    },
+    {
+      "rom_start": "0x2A388",
+      "rom_end": "0x2A390",
+      "vram_start": "0x80029788",
+      "vram_end": "0x80029790",
+      "size": 8,
+      "bytes_hex": "604f59594f4f4b32",
+      "kind": "psylink_heap",
+      "after_tu": "scnanim",
+      "after_name": "scnanim.c"
+    },
+    {
+      "rom_start": "0x2AF1C",
+      "rom_end": "0x2AF20",
+      "vram_start": "0x8002A31C",
+      "vram_end": "0x8002A320",
+      "size": 4,
+      "bytes_hex": "a5cfcfab",
+      "kind": "psylink_heap",
+      "after_tu": "race",
+      "after_name": "Race.c"
+    },
+    {
+      "rom_start": "0x34E88",
+      "rom_end": "0x34E90",
+      "vram_start": "0x80034288",
+      "vram_end": "0x80034290",
+      "size": 8,
+      "bytes_hex": "2409010701010101",
+      "kind": "psylink_heap",
+      "after_tu": "hud",
+      "after_name": "hud.c"
+    },
+    {
+      "rom_start": "0x3624C",
+      "rom_end": "0x36250",
+      "vram_start": "0x8003564C",
+      "vram_end": "0x80035650",
+      "size": 4,
+      "bytes_hex": "01b7cbcd",
+      "kind": "psylink_heap",
+      "after_tu": "gfx2d",
+      "after_name": "gfx2d.c"
+    },
+    {
+      "rom_start": "0x374D4",
+      "rom_end": "0x374E0",
+      "vram_start": "0x800368D4",
+      "vram_end": "0x800368E0",
+      "size": 12,
+      "bytes_hex": "010101010101010101010101",
+      "kind": "psylink_heap",
+      "after_tu": "font",
+      "after_name": "font.c"
+    },
+    {
+      "rom_start": "0x44708",
+      "rom_end": "0x44710",
+      "vram_start": "0x80043B08",
+      "vram_end": "0x80043B10",
+      "size": 8,
+      "bytes_hex": "2222222222222222",
+      "kind": "psylink_heap",
+      "after_tu": "weapon",
+      "after_name": "weapon.c"
+    },
+    {
+      "rom_start": "0x4AB5C",
+      "rom_end": "0x4AB60",
+      "vram_start": "0x80049F5C",
+      "vram_end": "0x80049F60",
+      "size": 4,
+      "bytes_hex": "fbfbfbfb",
+      "kind": "psylink_heap",
+      "after_tu": "cont",
+      "after_name": "cont.c"
+    },
+    {
+      "rom_start": "0x4AC24",
+      "rom_end": "0x4AC30",
+      "vram_start": "0x8004A024",
+      "vram_end": "0x8004A030",
+      "size": 12,
+      "bytes_hex": "fbfbe4c1c6e2dfe4e7b18f9c",
+      "kind": "psylink_heap",
+      "after_tu": "sched",
+      "after_name": "sched.c"
+    },
+    {
+      "rom_start": "0x50258",
+      "rom_end": "0x50260",
+      "vram_start": "0x8004F658",
+      "vram_end": "0x8004F660",
+      "size": 8,
+      "bytes_hex": "fbfbfbfbfbfbfbfb",
+      "kind": "psylink_heap",
+      "after_tu": "cpu",
+      "after_name": "cpu.c"
+    },
+    {
+      "rom_start": "0x50738",
+      "rom_end": "0x50740",
+      "vram_start": "0x8004FB38",
+      "vram_end": "0x8004FB40",
+      "size": 8,
+      "bytes_hex": "7b83838383838383",
+      "kind": "psylink_heap",
+      "after_tu": "n64render",
+      "after_name": "n64render.c"
+    },
+    {
+      "rom_start": "0x50748",
+      "rom_end": "0x50750",
+      "vram_start": "0x8004FB48",
+      "vram_end": "0x8004FB50",
+      "size": 8,
+      "bytes_hex": "19191913cdf310bf",
+      "kind": "psylink_heap",
+      "after_tu": "unk_50740",
+      "after_name": "unk_50740.c"
+    },
+    {
+      "rom_start": "0x654E8",
+      "rom_end": "0x654F0",
+      "vram_start": "0x800648E8",
+      "vram_end": "0x800648F0",
+      "size": 8,
+      "bytes_hex": "fafafafafafafa00",
+      "kind": "psylink_heap",
+      "after_tu": "frontend",
+      "after_name": "frontend.c"
+    },
+    {
+      "rom_start": "0x6B90C",
+      "rom_end": "0x6B910",
+      "vram_start": "0x8006AD0C",
+      "vram_end": "0x8006AD10",
+      "size": 4,
+      "bytes_hex": "35b9ff00",
+      "kind": "psylink_heap",
+      "after_tu": "unk_6b780",
+      "after_name": "unk_6b780.c"
+    },
+    {
+      "rom_start": "0x6CD28",
+      "rom_end": "0x6CD30",
+      "vram_start": "0x8006C128",
+      "vram_end": "0x8006C130",
+      "size": 8,
+      "bytes_hex": "fa0dcacbf3c7cabb",
+      "kind": "psylink_heap",
+      "after_tu": "hiscores",
+      "after_name": "hiscores.c"
+    },
+    {
+      "rom_start": "0x6FB0C",
+      "rom_end": "0x6FB10",
+      "vram_start": "0x8006EF0C",
+      "vram_end": "0x8006EF10",
+      "size": 4,
+      "bytes_hex": "fafafafa",
+      "kind": "psylink_heap",
+      "after_tu": "racefunc",
+      "after_name": "Racefunc.c"
+    },
+    {
+      "rom_start": "0x70138",
+      "rom_end": "0x70140",
+      "vram_start": "0x8006F538",
+      "vram_end": "0x8006F540",
+      "size": 8,
+      "bytes_hex": "4aceff004ad6ff00",
+      "kind": "psylink_heap",
+      "after_tu": "pause",
+      "after_name": "pause.c"
+    },
+    {
+      "rom_start": "0x70848",
+      "rom_end": "0x70850",
+      "vram_start": "0x8006FC48",
+      "vram_end": "0x8006FC50",
+      "size": 8,
+      "bytes_hex": "d1a395873565b457",
+      "kind": "psylink_heap",
+      "after_tu": "inspect",
+      "after_name": "inspect.c"
+    },
+    {
+      "rom_start": "0x70CEC",
+      "rom_end": "0x70CF0",
+      "vram_start": "0x800700EC",
+      "vram_end": "0x800700F0",
+      "size": 4,
+      "bytes_hex": "a0958e82",
+      "kind": "psylink_heap",
+      "after_tu": "sfx",
+      "after_name": "sfx.c"
+    },
+    {
+      "rom_start": "0x72EE4",
+      "rom_end": "0x72EF0",
+      "vram_start": "0x800722E4",
+      "vram_end": "0x800722F0",
+      "size": 12,
+      "bytes_hex": "fafafafafa7884959aced0d3",
+      "kind": "psylink_heap",
+      "after_tu": "trail",
+      "after_name": "Trail.c"
+    },
+    {
+      "rom_start": "0x72FEC",
+      "rom_end": "0x72FF0",
+      "vram_start": "0x800723EC",
+      "vram_end": "0x800723F0",
+      "size": 4,
+      "bytes_hex": "fafafafa",
+      "kind": "psylink_heap",
+      "after_tu": "libgcc_floatdidf",
+      "after_name": "libgcc (_floatdidf.o)"
+    },
+    {
+      "rom_start": "0x7364C",
+      "rom_end": "0x73650",
+      "vram_start": "0x80072A4C",
+      "vram_end": "0x80072A50",
+      "size": 4,
+      "bytes_hex": "8600186c",
+      "kind": "psylink_heap",
+      "after_tu": "libgcc_udivdi3",
+      "after_name": "libgcc (_udivdi3.o)"
+    },
+    {
+      "rom_start": "0x76208",
+      "rom_end": "0x76210",
+      "vram_start": "0x80075608",
+      "vram_end": "0x80075610",
+      "size": 8,
+      "bytes_hex": "0000000000000000",
+      "kind": "zero_pad",
+      "after_tu": "libmus_player",
+      "after_name": "libmus (player.o)"
+    }
+  ],
+  "eu_text_padding_gaps": [
+    {
+      "rom_start": "0x0E40C",
+      "rom_end": "0x0E410",
+      "vram_start": "0x8000D80C",
+      "vram_end": "0x8000D810",
+      "size": 4,
+      "bytes_hex": "eaee402f",
+      "kind": "psylink_heap",
+      "after_tu": "effects",
+      "after_name": "effects.c"
+    },
+    {
+      "rom_start": "0x10678",
+      "rom_end": "0x10680",
+      "vram_start": "0x8000FA78",
+      "vram_end": "0x8000FA80",
+      "size": 8,
+      "bytes_hex": "7b969c89ab006e4c",
+      "kind": "psylink_heap",
+      "after_tu": "assert",
+      "after_name": "assert.c"
+    },
+    {
+      "rom_start": "0x10EF8",
+      "rom_end": "0x10F00",
+      "vram_start": "0x800102F8",
+      "vram_end": "0x80010300",
+      "size": 8,
+      "bytes_hex": "eb085b0e5770b2e0",
+      "kind": "psylink_heap",
+      "after_tu": "audio",
+      "after_name": "audio.c"
+    },
+    {
+      "rom_start": "0x116CC",
+      "rom_end": "0x116D0",
+      "vram_start": "0x80010ACC",
+      "vram_end": "0x80010AD0",
+      "size": 4,
+      "bytes_hex": "feb5cf91",
+      "kind": "psylink_heap",
+      "after_tu": "gfx",
+      "after_name": "gfx.c"
+    },
+    {
+      "rom_start": "0x1633C",
+      "rom_end": "0x16340",
+      "vram_start": "0x8001573C",
+      "vram_end": "0x80015740",
+      "size": 4,
+      "bytes_hex": "00120013",
+      "kind": "psylink_heap",
+      "after_tu": "scene",
+      "after_name": "Scene.c"
+    },
+    {
+      "rom_start": "0x16B2C",
+      "rom_end": "0x16B30",
+      "vram_start": "0x80015F2C",
+      "vram_end": "0x80015F30",
+      "size": 4,
+      "bytes_hex": "d07d8439",
+      "kind": "psylink_heap",
+      "after_tu": "files",
+      "after_name": "files.c"
+    },
+    {
+      "rom_start": "0x171F4",
+      "rom_end": "0x17200",
+      "vram_start": "0x800165F4",
+      "vram_end": "0x80016600",
+      "size": 12,
+      "bytes_hex": "7ab2869c88d1e66f0822228f",
+      "kind": "psylink_heap",
+      "after_tu": "pad",
+      "after_name": "pad.c"
+    },
+    {
+      "rom_start": "0x18908",
+      "rom_end": "0x18910",
+      "vram_start": "0x80017D08",
+      "vram_end": "0x80017D10",
+      "size": 8,
+      "bytes_hex": "74e4c062d1b4170c",
+      "kind": "psylink_heap",
+      "after_tu": "init",
+      "after_name": "Init.c"
+    },
+    {
+      "rom_start": "0x18AB4",
+      "rom_end": "0x18AC0",
+      "vram_start": "0x80017EB4",
+      "vram_end": "0x80017EC0",
+      "size": 12,
+      "bytes_hex": "69b702dfa0ba01669e0b0130",
+      "kind": "psylink_heap",
+      "after_tu": "decomp",
+      "after_name": "decomp.c"
+    },
+    {
+      "rom_start": "0x1CBCC",
+      "rom_end": "0x1CBD0",
+      "vram_start": "0x8001BFCC",
+      "vram_end": "0x8001BFD0",
+      "size": 4,
+      "bytes_hex": "01a90000",
+      "kind": "psylink_heap",
+      "after_tu": "math_sfx",
+      "after_name": "math_sfx.c"
+    },
+    {
+      "rom_start": "0x1FEE8",
+      "rom_end": "0x1FEF0",
+      "vram_start": "0x8001F2E8",
+      "vram_end": "0x8001F2F0",
+      "size": 8,
+      "bytes_hex": "0001030ccdcdcdcd",
+      "kind": "psylink_heap",
+      "after_tu": "track",
+      "after_name": "Track.c"
+    },
+    {
+      "rom_start": "0x20B48",
+      "rom_end": "0x20B50",
+      "vram_start": "0x8001FF48",
+      "vram_end": "0x8001FF50",
+      "size": 8,
+      "bytes_hex": "000005d3cdcdcdcd",
+      "kind": "psylink_heap",
+      "after_tu": "initrace",
+      "after_name": "Initrace.c"
+    },
+    {
+      "rom_start": "0x20E88",
+      "rom_end": "0x20E90",
+      "vram_start": "0x80020288",
+      "vram_end": "0x80020290",
+      "size": 8,
+      "bytes_hex": "ffffc861cdcdcdcd",
+      "kind": "psylink_heap",
+      "after_tu": "wadfile",
+      "after_name": "Wadfile.c"
+    },
+    {
+      "rom_start": "0x21024",
+      "rom_end": "0x21030",
+      "vram_start": "0x80020424",
+      "vram_end": "0x80020430",
+      "size": 12,
+      "bytes_hex": "00000182ffffa5fccdcdcdcd",
+      "kind": "psylink_heap",
+      "after_tu": "unk_19f50",
+      "after_name": "unk_19f50.c"
+    },
+    {
+      "rom_start": "0x21ACC",
+      "rom_end": "0x21AD0",
+      "vram_start": "0x80020ECC",
+      "vram_end": "0x80020ED0",
+      "size": 4,
+      "bytes_hex": "cdcdcdcd",
+      "kind": "psylink_heap",
+      "after_tu": "skeleton",
+      "after_name": "Skeleton.c"
+    },
+    {
+      "rom_start": "0x22744",
+      "rom_end": "0x22750",
+      "vram_start": "0x80021B44",
+      "vram_end": "0x80021B50",
+      "size": 12,
+      "bytes_hex": "000002d3fffe377dcdcdcdcd",
+      "kind": "psylink_heap",
+      "after_tu": "radscn",
+      "after_name": "Radscn.c"
+    },
+    {
+      "rom_start": "0x24BEC",
+      "rom_end": "0x24BF0",
+      "vram_start": "0x80023FEC",
+      "vram_end": "0x80023FF0",
+      "size": 4,
+      "bytes_hex": "27276700",
+      "kind": "psylink_heap",
+      "after_tu": "utils",
+      "after_name": "utils.c"
+    },
+    {
+      "rom_start": "0x275A4",
+      "rom_end": "0x275B0",
+      "vram_start": "0x800269A4",
+      "vram_end": "0x800269B0",
+      "size": 12,
+      "bytes_hex": "2030a10003df03de03d903da",
+      "kind": "psylink_heap",
+      "after_tu": "dynam",
+      "after_name": "Dynam.c"
+    },
+    {
+      "rom_start": "0x28B24",
+      "rom_end": "0x28B30",
+      "vram_start": "0x80027F24",
+      "vram_end": "0x80027F30",
+      "size": 12,
+      "bytes_hex": "05410540053b053c0000f000",
+      "kind": "psylink_heap",
+      "after_tu": "shipctrl",
+      "after_name": "shipctrl.c"
+    },
+    {
+      "rom_start": "0x2B848",
+      "rom_end": "0x2B850",
+      "vram_start": "0x8002AC48",
+      "vram_end": "0x8002AC50",
+      "size": 8,
+      "bytes_hex": "00009c3f000001eb",
+      "kind": "psylink_heap",
+      "after_tu": "control",
+      "after_name": "control.c"
+    },
+    {
+      "rom_start": "0x2F21C",
+      "rom_end": "0x2F220",
+      "vram_start": "0x8002E61C",
+      "vram_end": "0x8002E620",
+      "size": 4,
+      "bytes_hex": "00a50001",
+      "kind": "psylink_heap",
+      "after_tu": "collide",
+      "after_name": "collide.c"
+    },
+    {
+      "rom_start": "0x2FDBC",
+      "rom_end": "0x2FDC0",
+      "vram_start": "0x8002F1BC",
+      "vram_end": "0x8002F1C0",
+      "size": 4,
+      "bytes_hex": "000000a4",
+      "kind": "psylink_heap",
+      "after_tu": "shipefx",
+      "after_name": "shipefx.c"
+    },
+    {
+      "rom_start": "0x30D14",
+      "rom_end": "0x30D20",
+      "vram_start": "0x80030114",
+      "vram_end": "0x80030120",
+      "size": 12,
+      "bytes_hex": "803096c0803096d4803096f4",
+      "kind": "psylink_heap",
+      "after_tu": "droid",
+      "after_name": "droid.c"
+    },
+    {
+      "rom_start": "0x31A98",
+      "rom_end": "0x31AA0",
+      "vram_start": "0x80030E98",
+      "vram_end": "0x80030EA0",
+      "size": 8,
+      "bytes_hex": "80309e0c80309e30",
+      "kind": "psylink_heap",
+      "after_tu": "scnanim",
+      "after_name": "scnanim.c"
+    },
+    {
+      "rom_start": "0x3262C",
+      "rom_end": "0x32630",
+      "vram_start": "0x80031A2C",
+      "vram_end": "0x80031A30",
+      "size": 4,
+      "bytes_hex": "8030a414",
+      "kind": "psylink_heap",
+      "after_tu": "race",
+      "after_name": "Race.c"
+    },
+    {
+      "rom_start": "0x3C57C",
+      "rom_end": "0x3C580",
+      "vram_start": "0x8003B97C",
+      "vram_end": "0x8003B980",
+      "size": 4,
+      "bytes_hex": "40080000",
+      "kind": "psylink_heap",
+      "after_tu": "hud",
+      "after_name": "hud.c"
+    },
+    {
+      "rom_start": "0x3CCA8",
+      "rom_end": "0x3CCB0",
+      "vram_start": "0x8003C0A8",
+      "vram_end": "0x8003C0B0",
+      "size": 8,
+      "bytes_hex": "7cb87f2e67cbabf2",
+      "kind": "psylink_heap",
+      "after_tu": "loader",
+      "after_name": "loader.c"
+    },
+    {
+      "rom_start": "0x3D93C",
+      "rom_end": "0x3D940",
+      "vram_start": "0x8003CD3C",
+      "vram_end": "0x8003CD40",
+      "size": 4,
+      "bytes_hex": "0dd4cf85",
+      "kind": "psylink_heap",
+      "after_tu": "gfx2d",
+      "after_name": "gfx2d.c"
+    },
+    {
+      "rom_start": "0x3EBC4",
+      "rom_end": "0x3EBD0",
+      "vram_start": "0x8003DFC4",
+      "vram_end": "0x8003DFD0",
+      "size": 12,
+      "bytes_hex": "d6c14c104ed0c8b90303814c",
+      "kind": "psylink_heap",
+      "after_tu": "font",
+      "after_name": "font.c"
+    },
+    {
+      "rom_start": "0x4C42C",
+      "rom_end": "0x4C430",
+      "vram_start": "0x8004B82C",
+      "vram_end": "0x8004B830",
+      "size": 4,
+      "bytes_hex": "d4021019",
+      "kind": "psylink_heap",
+      "after_tu": "weapon",
+      "after_name": "weapon.c"
+    },
+    {
+      "rom_start": "0x4CA3C",
+      "rom_end": "0x4CA40",
+      "vram_start": "0x8004BE3C",
+      "vram_end": "0x8004BE40",
+      "size": 4,
+      "bytes_hex": "851206ea",
+      "kind": "psylink_heap",
+      "after_tu": "cont",
+      "after_name": "cont.c"
+    },
+    {
+      "rom_start": "0x4CB04",
+      "rom_end": "0x4CB10",
+      "vram_start": "0x8004BF04",
+      "vram_end": "0x8004BF10",
+      "size": 12,
+      "bytes_hex": "3a1b1f7fbb77bc9a0e061203",
+      "kind": "psylink_heap",
+      "after_tu": "sched",
+      "after_name": "sched.c"
+    },
+    {
+      "rom_start": "0x51FEC",
+      "rom_end": "0x51FF0",
+      "vram_start": "0x800513EC",
+      "vram_end": "0x800513F0",
+      "size": 4,
+      "bytes_hex": "ddcb6a1e",
+      "kind": "psylink_heap",
+      "after_tu": "cpu",
+      "after_name": "cpu.c"
+    },
+    {
+      "rom_start": "0x524C8",
+      "rom_end": "0x524D0",
+      "vram_start": "0x800518C8",
+      "vram_end": "0x800518D0",
+      "size": 8,
+      "bytes_hex": "77533d2992d4b887",
+      "kind": "psylink_heap",
+      "after_tu": "n64render",
+      "after_name": "n64render.c"
+    },
+    {
+      "rom_start": "0x524D8",
+      "rom_end": "0x524E0",
+      "vram_start": "0x800518D8",
+      "vram_end": "0x800518E0",
+      "size": 8,
+      "bytes_hex": "b5ecffbf8bdbfff7",
+      "kind": "psylink_heap",
+      "after_tu": "unk_50740",
+      "after_name": "unk_50740.c"
+    },
+    {
+      "rom_start": "0x6725C",
+      "rom_end": "0x67260",
+      "vram_start": "0x8006665C",
+      "vram_end": "0x80066660",
+      "size": 4,
+      "bytes_hex": "10000000",
+      "kind": "psylink_heap",
+      "after_tu": "frontend",
+      "after_name": "frontend.c"
+    },
+    {
+      "rom_start": "0x68E2C",
+      "rom_end": "0x68E30",
+      "vram_start": "0x8006822C",
+      "vram_end": "0x80068230",
+      "size": 4,
+      "bytes_hex": "403d6600",
+      "kind": "psylink_heap",
+      "after_tu": "n64init",
+      "after_name": "n64init.c"
+    },
+    {
+      "rom_start": "0x6D7C4",
+      "rom_end": "0x6D7D0",
+      "vram_start": "0x8006CBC4",
+      "vram_end": "0x8006CBD0",
+      "size": 12,
+      "bytes_hex": "00001d901000000000000000",
+      "kind": "psylink_heap",
+      "after_tu": "particle",
+      "after_name": "Particle.c"
+    },
+    {
+      "rom_start": "0x6D95C",
+      "rom_end": "0x6D960",
+      "vram_start": "0x8006CD5C",
+      "vram_end": "0x8006CD60",
+      "size": 4,
+      "bytes_hex": "42416600",
+      "kind": "psylink_heap",
+      "after_tu": "unk_6b780",
+      "after_name": "unk_6b780.c"
+    },
+    {
+      "rom_start": "0x6ED88",
+      "rom_end": "0x6ED90",
+      "vram_start": "0x8006E188",
+      "vram_end": "0x8006E190",
+      "size": 8,
+      "bytes_hex": "000400090009000b",
+      "kind": "psylink_heap",
+      "after_tu": "hiscores",
+      "after_name": "hiscores.c"
+    },
+    {
+      "rom_start": "0x71AAC",
+      "rom_end": "0x71AB0",
+      "vram_start": "0x80070EAC",
+      "vram_end": "0x80070EB0",
+      "size": 4,
+      "bytes_hex": "00000000",
+      "kind": "zero_pad",
+      "after_tu": "racefunc",
+      "after_name": "Racefunc.c"
+    },
+    {
+      "rom_start": "0x720D8",
+      "rom_end": "0x720E0",
+      "vram_start": "0x800714D8",
+      "vram_end": "0x800714E0",
+      "size": 8,
+      "bytes_hex": "4d4d86008484af00",
+      "kind": "psylink_heap",
+      "after_tu": "pause",
+      "after_name": "pause.c"
+    },
+    {
+      "rom_start": "0x727E8",
+      "rom_end": "0x727F0",
+      "vram_start": "0x80071BE8",
+      "vram_end": "0x80071BF0",
+      "size": 8,
+      "bytes_hex": "1000000000000000",
+      "kind": "psylink_heap",
+      "after_tu": "inspect",
+      "after_name": "inspect.c"
+    },
+    {
+      "rom_start": "0x72C8C",
+      "rom_end": "0x72C90",
+      "vram_start": "0x8007208C",
+      "vram_end": "0x80072090",
+      "size": 4,
+      "bytes_hex": "033e0000",
+      "kind": "psylink_heap",
+      "after_tu": "sfx",
+      "after_name": "sfx.c"
+    },
+    {
+      "rom_start": "0x72D8C",
+      "rom_end": "0x72D90",
+      "vram_start": "0x8007218C",
+      "vram_end": "0x80072190",
+      "size": 4,
+      "bytes_hex": "00001e0b",
+      "kind": "psylink_heap",
+      "after_tu": "libgcc_floatdidf",
+      "after_name": "libgcc (_floatdidf.o)"
+    },
+    {
+      "rom_start": "0x733EC",
+      "rom_end": "0x733F0",
+      "vram_start": "0x800727EC",
+      "vram_end": "0x800727F0",
+      "size": 4,
+      "bytes_hex": "00060005",
+      "kind": "psylink_heap",
+      "after_tu": "libgcc_udivdi3",
+      "after_name": "libgcc (_udivdi3.o)"
+    },
+    {
+      "rom_start": "0x75FA8",
+      "rom_end": "0x75FB0",
+      "vram_start": "0x800753A8",
+      "vram_end": "0x800753B0",
+      "size": 8,
+      "bytes_hex": "0000000000000000",
+      "kind": "zero_pad",
+      "after_tu": "libmus_player",
+      "after_name": "libmus (player.o)"
+    }
+  ],
+  "us_rodata_padding_gaps": [
+    {
+      "rom_start": "0x1178",
+      "rom_end": "0x1180",
+      "vram_start": "0x80000578",
+      "vram_end": "0x80000580",
+      "size": 8,
+      "bytes_hex": "948c857e7874706f",
+      "kind": "psylink_heap",
+      "after_tu": "gfx",
+      "after_name": "gfx.c"
+    },
+    {
+      "rom_start": "0x1638",
+      "rom_end": "0x1640",
+      "vram_start": "0x80000A38",
+      "vram_end": "0x80000A40",
+      "size": 8,
+      "bytes_hex": "a39b8e8f938e8982",
+      "kind": "psylink_heap",
+      "after_tu": "files",
+      "after_name": "files.c"
+    },
+    {
+      "rom_start": "0x1648",
+      "rom_end": "0x1650",
+      "vram_start": "0x80000A48",
+      "vram_end": "0x80000A50",
+      "size": 8,
+      "bytes_hex": "504e4a44403b3330",
+      "kind": "psylink_heap",
+      "after_tu": "error",
+      "after_name": "Error.c"
+    },
+    {
+      "rom_start": "0x1698",
+      "rom_end": "0x16A0",
+      "vram_start": "0x80000A98",
+      "vram_end": "0x80000AA0",
+      "size": 8,
+      "bytes_hex": "50595f6572818177",
+      "kind": "psylink_heap",
+      "after_tu": "pad",
+      "after_name": "pad.c"
+    },
+    {
+      "rom_start": "0x17C4",
+      "rom_end": "0x17D0",
+      "vram_start": "0x80000BC4",
+      "vram_end": "0x80000BD0",
+      "size": 12,
+      "bytes_hex": "6f798384807671737c868f94",
+      "kind": "psylink_heap",
+      "after_tu": "init",
+      "after_name": "Init.c"
+    },
+    {
+      "rom_start": "0x188C",
+      "rom_end": "0x1890",
+      "vram_start": "0x80000C8C",
+      "vram_end": "0x80000C90",
+      "size": 4,
+      "bytes_hex": "a39d9e9b",
+      "kind": "psylink_heap",
+      "after_tu": "ships",
+      "after_name": "Ships.c"
+    },
+    {
+      "rom_start": "0x18C5",
+      "rom_end": "0x18D0",
+      "vram_start": "0x80000CC5",
+      "vram_end": "0x80000CD0",
+      "size": 11,
+      "bytes_hex": "aca2a6a9a9a1958f8b8a8a",
+      "kind": "psylink_heap",
+      "after_tu": "math_sfx",
+      "after_name": "math_sfx.c"
+    },
+    {
+      "rom_start": "0x1AD4",
+      "rom_end": "0x1AE0",
+      "vram_start": "0x80000ED4",
+      "vram_end": "0x80000EE0",
+      "size": 12,
+      "bytes_hex": "a1a49e9893908d8f95979897",
+      "kind": "psylink_heap",
+      "after_tu": "track",
+      "after_name": "Track.c"
+    },
+    {
+      "rom_start": "0x1B98",
+      "rom_end": "0x1BA0",
+      "vram_start": "0x80000F98",
+      "vram_end": "0x80000FA0",
+      "size": 8,
+      "bytes_hex": "8a8a8e8c898c8f90",
+      "kind": "psylink_heap",
+      "after_tu": "initrace",
+      "after_name": "Initrace.c"
+    },
+    {
+      "rom_start": "0x1BAA",
+      "rom_end": "0x1BB0",
+      "vram_start": "0x80000FAA",
+      "vram_end": "0x80000FB0",
+      "size": 6,
+      "bytes_hex": "6e6660585653",
+      "kind": "psylink_heap",
+      "after_tu": "wadfile",
+      "after_name": "Wadfile.c"
+    },
+    {
+      "rom_start": "0x1BE5",
+      "rom_end": "0x1BF0",
+      "vram_start": "0x80000FE5",
+      "vram_end": "0x80000FF0",
+      "size": 11,
+      "bytes_hex": "70675c5b5c595451505655",
+      "kind": "psylink_heap",
+      "after_tu": "unk_19f50",
+      "after_name": "unk_19f50.c"
+    },
+    {
+      "rom_start": "0x1C33",
+      "rom_end": "0x1C40",
+      "vram_start": "0x80001033",
+      "vram_end": "0x80001040",
+      "size": 13,
+      "bytes_hex": "9ea0a19d9a9d9a8f83868b8e8e",
+      "kind": "psylink_heap",
+      "after_tu": "skeleton",
+      "after_name": "Skeleton.c"
+    },
+    {
+      "rom_start": "0x1D08",
+      "rom_end": "0x1D10",
+      "vram_start": "0x80001108",
+      "vram_end": "0x80001110",
+      "size": 8,
+      "bytes_hex": "969ca09d97908a83",
+      "kind": "psylink_heap",
+      "after_tu": "radscn",
+      "after_name": "Radscn.c"
+    },
+    {
+      "rom_start": "0x1E48",
+      "rom_end": "0x1E50",
+      "vram_start": "0x80001248",
+      "vram_end": "0x80001250",
+      "size": 8,
+      "bytes_hex": "777472747980888a",
+      "kind": "psylink_heap",
+      "after_tu": "control",
+      "after_name": "control.c"
+    },
+    {
+      "rom_start": "0x1EA4",
+      "rom_end": "0x1EB0",
+      "vram_start": "0x800012A4",
+      "vram_end": "0x800012B0",
+      "size": 12,
+      "bytes_hex": "6e737773797f838583878f94",
+      "kind": "psylink_heap",
+      "after_tu": "collide",
+      "after_name": "collide.c"
+    },
+    {
+      "rom_start": "0x1ED4",
+      "rom_end": "0x1EE0",
+      "vram_start": "0x800012D4",
+      "vram_end": "0x800012E0",
+      "size": 12,
+      "bytes_hex": "544d4f58626a6f7071778082",
+      "kind": "psylink_heap",
+      "after_tu": "shipefx",
+      "after_name": "shipefx.c"
+    },
+    {
+      "rom_start": "0x1EFF",
+      "rom_end": "0x1F00",
+      "vram_start": "0x800012FF",
+      "vram_end": "0x80001300",
+      "size": 1,
+      "bytes_hex": "8e",
+      "kind": "psylink_heap",
+      "after_tu": "scnanim",
+      "after_name": "scnanim.c"
+    },
+    {
+      "rom_start": "0x1FB4",
+      "rom_end": "0x1FC0",
+      "vram_start": "0x800013B4",
+      "vram_end": "0x800013C0",
+      "size": 12,
+      "bytes_hex": "837e7f8487888480827d726e",
+      "kind": "psylink_heap",
+      "after_tu": "race",
+      "after_name": "Race.c"
+    },
+    {
+      "rom_start": "0x23B8",
+      "rom_end": "0x23C0",
+      "vram_start": "0x800017B8",
+      "vram_end": "0x800017C0",
+      "size": 8,
+      "bytes_hex": "8081818383818080",
+      "kind": "psylink_heap",
+      "after_tu": "hud",
+      "after_name": "hud.c"
+    },
+    {
+      "rom_start": "0x24F4",
+      "rom_end": "0x2500",
+      "vram_start": "0x800018F4",
+      "vram_end": "0x80001900",
+      "size": 12,
+      "bytes_hex": "818181807e7d7c7c7b7c7e7e",
+      "kind": "psylink_heap",
+      "after_tu": "loader",
+      "after_name": "loader.c"
+    },
+    {
+      "rom_start": "0x2599",
+      "rom_end": "0x25A0",
+      "vram_start": "0x80001999",
+      "vram_end": "0x800019A0",
+      "size": 7,
+      "bytes_hex": "7f7f7e7e7e8083",
+      "kind": "psylink_heap",
+      "after_tu": "tim",
+      "after_name": "Tim.c"
+    },
+    {
+      "rom_start": "0x2628",
+      "rom_end": "0x2630",
+      "vram_start": "0x80001A28",
+      "vram_end": "0x80001A30",
+      "size": 8,
+      "bytes_hex": "7c7c7e7f7f7f7e7c",
+      "kind": "psylink_heap",
+      "after_tu": "gfx2d",
+      "after_name": "gfx2d.c"
+    },
+    {
+      "rom_start": "0x26EB",
+      "rom_end": "0x26F0",
+      "vram_start": "0x80001AEB",
+      "vram_end": "0x80001AF0",
+      "size": 5,
+      "bytes_hex": "848382807f",
+      "kind": "psylink_heap",
+      "after_tu": "font",
+      "after_name": "font.c"
+    },
+    {
+      "rom_start": "0x2B1C",
+      "rom_end": "0x2B20",
+      "vram_start": "0x80001F1C",
+      "vram_end": "0x80001F20",
+      "size": 4,
+      "bytes_hex": "7e7f7e7e",
+      "kind": "psylink_heap",
+      "after_tu": "weapon",
+      "after_name": "weapon.c"
+    },
+    {
+      "rom_start": "0x2BB4",
+      "rom_end": "0x2BC0",
+      "vram_start": "0x80001FB4",
+      "vram_end": "0x80001FC0",
+      "size": 12,
+      "bytes_hex": "7e7f7f7e7e7e7e7f7f808080",
+      "kind": "psylink_heap",
+      "after_tu": "effects",
+      "after_name": "effects.c"
+    },
+    {
+      "rom_start": "0x2D3E",
+      "rom_end": "0x2D40",
+      "vram_start": "0x8000213E",
+      "vram_end": "0x80002140",
+      "size": 2,
+      "bytes_hex": "8080",
+      "kind": "psylink_heap",
+      "after_tu": "cpu",
+      "after_name": "cpu.c"
+    },
+    {
+      "rom_start": "0x2D4C",
+      "rom_end": "0x2D50",
+      "vram_start": "0x8000214C",
+      "vram_end": "0x80002150",
+      "size": 4,
+      "bytes_hex": "7f808080",
+      "kind": "psylink_heap",
+      "after_tu": "n64render",
+      "after_name": "n64render.c"
+    },
+    {
+      "rom_start": "0x2D62",
+      "rom_end": "0x2D70",
+      "vram_start": "0x80002162",
+      "vram_end": "0x80002170",
+      "size": 14,
+      "bytes_hex": "8080808080818181818080808180",
+      "kind": "psylink_heap",
+      "after_tu": "unk_50740",
+      "after_name": "unk_50740.c"
+    },
+    {
+      "rom_start": "0x2E9C",
+      "rom_end": "0x2EA0",
+      "vram_start": "0x8000229C",
+      "vram_end": "0x800022A0",
+      "size": 4,
+      "bytes_hex": "7f7f7f7f",
+      "kind": "psylink_heap",
+      "after_tu": "plasma",
+      "after_name": "plasma.c"
+    },
+    {
+      "rom_start": "0x47F4",
+      "rom_end": "0x4800",
+      "vram_start": "0x80003BF4",
+      "vram_end": "0x80003C00",
+      "size": 12,
+      "bytes_hex": "9478672d79f79d7a0796791f",
+      "kind": "psylink_heap",
+      "after_tu": "frontend",
+      "after_name": "frontend.c"
+    },
+    {
+      "rom_start": "0x4848",
+      "rom_end": "0x4850",
+      "vram_start": "0x80003C48",
+      "vram_end": "0x80003C50",
+      "size": 8,
+      "bytes_hex": "b7ef97b9422125aa",
+      "kind": "psylink_heap",
+      "after_tu": "trackrend",
+      "after_name": "trackrend.c"
+    },
+    {
+      "rom_start": "0x4914",
+      "rom_end": "0x4920",
+      "vram_start": "0x80003D14",
+      "vram_end": "0x80003D20",
+      "size": 12,
+      "bytes_hex": "9c400d1b8dc5c321c0806e34",
+      "kind": "psylink_heap",
+      "after_tu": "particle",
+      "after_name": "Particle.c"
+    },
+    {
+      "rom_start": "0x4BA8",
+      "rom_end": "0x4BB0",
+      "vram_start": "0x80003FA8",
+      "vram_end": "0x80003FB0",
+      "size": 8,
+      "bytes_hex": "894cce19b3aab22b",
+      "kind": "psylink_heap",
+      "after_tu": "hiscores",
+      "after_name": "hiscores.c"
+    },
+    {
+      "rom_start": "0x4D41",
+      "rom_end": "0x4D50",
+      "vram_start": "0x80004141",
+      "vram_end": "0x80004150",
+      "size": 15,
+      "bytes_hex": "91f1c5c86701a352918bcf8236a678",
+      "kind": "psylink_heap",
+      "after_tu": "racefunc",
+      "after_name": "Racefunc.c"
+    },
+    {
+      "rom_start": "0x4EAF",
+      "rom_end": "0x4EB0",
+      "vram_start": "0x800042AF",
+      "vram_end": "0x800042B0",
+      "size": 1,
+      "bytes_hex": "fa",
+      "kind": "psylink_heap",
+      "after_tu": "pause",
+      "after_name": "pause.c"
+    },
+    {
+      "rom_start": "0x4FFD",
+      "rom_end": "0x5000",
+      "vram_start": "0x800043FD",
+      "vram_end": "0x80004400",
+      "size": 3,
+      "bytes_hex": "de09cb",
+      "kind": "psylink_heap",
+      "after_tu": "inspect",
+      "after_name": "inspect.c"
+    },
+    {
+      "rom_start": "0x501C",
+      "rom_end": "0x5020",
+      "vram_start": "0x8000441C",
+      "vram_end": "0x80004420",
+      "size": 4,
+      "bytes_hex": "3c9ccd39",
+      "kind": "psylink_heap",
+      "after_tu": "sfx",
+      "after_name": "sfx.c"
+    },
+    {
+      "rom_start": "0x5028",
+      "rom_end": "0x5030",
+      "vram_start": "0x80004428",
+      "vram_end": "0x80004430",
+      "size": 8,
+      "bytes_hex": "191dd2d006d74361",
+      "kind": "psylink_heap",
+      "after_tu": "trail",
+      "after_name": "Trail.c"
+    },
+    {
+      "rom_start": "0x5048",
+      "rom_end": "0x5050",
+      "vram_start": "0x80004448",
+      "vram_end": "0x80004450",
+      "size": 8,
+      "bytes_hex": "43345e7fcad94338",
+      "kind": "psylink_heap",
+      "after_tu": "libgcc_floatdidf",
+      "after_name": "libgcc (_floatdidf.o)"
+    }
+  ],
+  "eu_rodata_padding_gaps": [
+    {
+      "rom_start": "0x1194",
+      "rom_end": "0x11A0",
+      "vram_start": "0x80000594",
+      "vram_end": "0x800005A0",
+      "size": 12,
+      "bytes_hex": "c826d091d84180370c6964cb",
+      "kind": "psylink_heap",
+      "after_tu": "effects",
+      "after_name": "effects.c"
+    },
+    {
+      "rom_start": "0x11A8",
+      "rom_end": "0x11B0",
+      "vram_start": "0x800005A8",
+      "vram_end": "0x800005B0",
+      "size": 8,
+      "bytes_hex": "a3f25984de73379b",
+      "kind": "psylink_heap",
+      "after_tu": "trail",
+      "after_name": "Trail.c"
+    },
+    {
+      "rom_start": "0x1228",
+      "rom_end": "0x1230",
+      "vram_start": "0x80000628",
+      "vram_end": "0x80000630",
+      "size": 8,
+      "bytes_hex": "4307c8cedf33eacc",
+      "kind": "psylink_heap",
+      "after_tu": "gfx",
+      "after_name": "gfx.c"
+    },
+    {
+      "rom_start": "0x16E8",
+      "rom_end": "0x16F0",
+      "vram_start": "0x80000AE8",
+      "vram_end": "0x80000AF0",
+      "size": 8,
+      "bytes_hex": "efe184f8637e196f",
+      "kind": "psylink_heap",
+      "after_tu": "files",
+      "after_name": "files.c"
+    },
+    {
+      "rom_start": "0x16F8",
+      "rom_end": "0x1700",
+      "vram_start": "0x80000AF8",
+      "vram_end": "0x80000B00",
+      "size": 8,
+      "bytes_hex": "af870fe1ccf8757e",
+      "kind": "psylink_heap",
+      "after_tu": "error",
+      "after_name": "Error.c"
+    },
+    {
+      "rom_start": "0x1748",
+      "rom_end": "0x1750",
+      "vram_start": "0x80000B48",
+      "vram_end": "0x80000B50",
+      "size": 8,
+      "bytes_hex": "2dff8ba3e2f1f8be",
+      "kind": "psylink_heap",
+      "after_tu": "pad",
+      "after_name": "pad.c"
+    },
+    {
+      "rom_start": "0x1874",
+      "rom_end": "0x1880",
+      "vram_start": "0x80000C74",
+      "vram_end": "0x80000C80",
+      "size": 12,
+      "bytes_hex": "8be76bf9dd3e77df9e1be78f",
+      "kind": "psylink_heap",
+      "after_tu": "init",
+      "after_name": "Init.c"
+    },
+    {
+      "rom_start": "0x193C",
+      "rom_end": "0x1940",
+      "vram_start": "0x80000D3C",
+      "vram_end": "0x80000D40",
+      "size": 4,
+      "bytes_hex": "280f4203",
+      "kind": "psylink_heap",
+      "after_tu": "ships",
+      "after_name": "Ships.c"
+    },
+    {
+      "rom_start": "0x1975",
+      "rom_end": "0x1980",
+      "vram_start": "0x80000D75",
+      "vram_end": "0x80000D80",
+      "size": 11,
+      "bytes_hex": "bdda817e605d4af77605de",
+      "kind": "psylink_heap",
+      "after_tu": "math_sfx",
+      "after_name": "math_sfx.c"
+    },
+    {
+      "rom_start": "0x1B6C",
+      "rom_end": "0x1B70",
+      "vram_start": "0x80000F6C",
+      "vram_end": "0x80000F70",
+      "size": 4,
+      "bytes_hex": "00a8c467",
+      "kind": "psylink_heap",
+      "after_tu": "track",
+      "after_name": "Track.c"
+    },
+    {
+      "rom_start": "0x1C28",
+      "rom_end": "0x1C30",
+      "vram_start": "0x80001028",
+      "vram_end": "0x80001030",
+      "size": 8,
+      "bytes_hex": "0fbdc50f718bdc74",
+      "kind": "psylink_heap",
+      "after_tu": "initrace",
+      "after_name": "Initrace.c"
+    },
+    {
+      "rom_start": "0x1C3A",
+      "rom_end": "0x1C40",
+      "vram_start": "0x8000103A",
+      "vram_end": "0x80001040",
+      "size": 6,
+      "bytes_hex": "33bd341f4d4e",
+      "kind": "psylink_heap",
+      "after_tu": "wadfile",
+      "after_name": "Wadfile.c"
+    },
+    {
+      "rom_start": "0x1C75",
+      "rom_end": "0x1C80",
+      "vram_start": "0x80001075",
+      "vram_end": "0x80001080",
+      "size": 11,
+      "bytes_hex": "4061b46fac0539339ac0aa",
+      "kind": "psylink_heap",
+      "after_tu": "unk_19f50",
+      "after_name": "unk_19f50.c"
+    },
+    {
+      "rom_start": "0x1CC3",
+      "rom_end": "0x1CD0",
+      "vram_start": "0x800010C3",
+      "vram_end": "0x800010D0",
+      "size": 13,
+      "bytes_hex": "069eda47d3e719fc8efd034fc5",
+      "kind": "psylink_heap",
+      "after_tu": "skeleton",
+      "after_name": "Skeleton.c"
+    },
+    {
+      "rom_start": "0x1D98",
+      "rom_end": "0x1DA0",
+      "vram_start": "0x80001198",
+      "vram_end": "0x800011A0",
+      "size": 8,
+      "bytes_hex": "6b883ade1097c020",
+      "kind": "psylink_heap",
+      "after_tu": "radscn",
+      "after_name": "Radscn.c"
+    },
+    {
+      "rom_start": "0x1ED8",
+      "rom_end": "0x1EE0",
+      "vram_start": "0x800012D8",
+      "vram_end": "0x800012E0",
+      "size": 8,
+      "bytes_hex": "7789a3979b809467",
+      "kind": "psylink_heap",
+      "after_tu": "control",
+      "after_name": "control.c"
+    },
+    {
+      "rom_start": "0x1F34",
+      "rom_end": "0x1F40",
+      "vram_start": "0x80001334",
+      "vram_end": "0x80001340",
+      "size": 12,
+      "bytes_hex": "6e91780462b62d6958ac423a",
+      "kind": "psylink_heap",
+      "after_tu": "collide",
+      "after_name": "collide.c"
+    },
+    {
+      "rom_start": "0x1F64",
+      "rom_end": "0x1F70",
+      "vram_start": "0x80001364",
+      "vram_end": "0x80001370",
+      "size": 12,
+      "bytes_hex": "f8c21e31124384b8018b4e9a",
+      "kind": "psylink_heap",
+      "after_tu": "shipefx",
+      "after_name": "shipefx.c"
+    },
+    {
+      "rom_start": "0x1F8F",
+      "rom_end": "0x1F90",
+      "vram_start": "0x8000138F",
+      "vram_end": "0x80001390",
+      "size": 1,
+      "bytes_hex": "b7",
+      "kind": "psylink_heap",
+      "after_tu": "scnanim",
+      "after_name": "scnanim.c"
+    },
+    {
+      "rom_start": "0x2044",
+      "rom_end": "0x2050",
+      "vram_start": "0x80001444",
+      "vram_end": "0x80001450",
+      "size": 12,
+      "bytes_hex": "24f9839e636f98ffe6297994",
+      "kind": "psylink_heap",
+      "after_tu": "race",
+      "after_name": "Race.c"
+    },
+    {
+      "rom_start": "0x2448",
+      "rom_end": "0x2450",
+      "vram_start": "0x80001848",
+      "vram_end": "0x80001850",
+      "size": 8,
+      "bytes_hex": "db9ef758461e4009",
+      "kind": "psylink_heap",
+      "after_tu": "hud",
+      "after_name": "hud.c"
+    },
+    {
+      "rom_start": "0x2584",
+      "rom_end": "0x2590",
+      "vram_start": "0x80001984",
+      "vram_end": "0x80001990",
+      "size": 12,
+      "bytes_hex": "301f0c4fc325f0cdfc349f66",
+      "kind": "psylink_heap",
+      "after_tu": "loader",
+      "after_name": "loader.c"
+    },
+    {
+      "rom_start": "0x2629",
+      "rom_end": "0x2630",
+      "vram_start": "0x80001A29",
+      "vram_end": "0x80001A30",
+      "size": 7,
+      "bytes_hex": "40af102bcc0af5",
+      "kind": "psylink_heap",
+      "after_tu": "tim",
+      "after_name": "Tim.c"
+    },
+    {
+      "rom_start": "0x26B8",
+      "rom_end": "0x26C0",
+      "vram_start": "0x80001AB8",
+      "vram_end": "0x80001AC0",
+      "size": 8,
+      "bytes_hex": "95402072fb08b221",
+      "kind": "psylink_heap",
+      "after_tu": "gfx2d",
+      "after_name": "gfx2d.c"
+    },
+    {
+      "rom_start": "0x277B",
+      "rom_end": "0x2780",
+      "vram_start": "0x80001B7B",
+      "vram_end": "0x80001B80",
+      "size": 5,
+      "bytes_hex": "d064d2af58",
+      "kind": "psylink_heap",
+      "after_tu": "font",
+      "after_name": "font.c"
+    },
+    {
+      "rom_start": "0x2BAC",
+      "rom_end": "0x2BB0",
+      "vram_start": "0x80001FAC",
+      "vram_end": "0x80001FB0",
+      "size": 4,
+      "bytes_hex": "f0a2c3df",
+      "kind": "psylink_heap",
+      "after_tu": "weapon",
+      "after_name": "weapon.c"
+    },
+    {
+      "rom_start": "0x2D2E",
+      "rom_end": "0x2D30",
+      "vram_start": "0x8000212E",
+      "vram_end": "0x80002130",
+      "size": 2,
+      "bytes_hex": "d963",
+      "kind": "psylink_heap",
+      "after_tu": "cpu",
+      "after_name": "cpu.c"
+    },
+    {
+      "rom_start": "0x2D3C",
+      "rom_end": "0x2D40",
+      "vram_start": "0x8000213C",
+      "vram_end": "0x80002140",
+      "size": 4,
+      "bytes_hex": "dd18c585",
+      "kind": "psylink_heap",
+      "after_tu": "n64render",
+      "after_name": "n64render.c"
+    },
+    {
+      "rom_start": "0x2D52",
+      "rom_end": "0x2D60",
+      "vram_start": "0x80002152",
+      "vram_end": "0x80002160",
+      "size": 14,
+      "bytes_hex": "5f94ab45a012150c814a80a1c0e0",
+      "kind": "psylink_heap",
+      "after_tu": "unk_50740",
+      "after_name": "unk_50740.c"
+    },
+    {
+      "rom_start": "0x2E8C",
+      "rom_end": "0x2E90",
+      "vram_start": "0x8000228C",
+      "vram_end": "0x80002290",
+      "size": 4,
+      "bytes_hex": "bddecf77",
+      "kind": "psylink_heap",
+      "after_tu": "plasma",
+      "after_name": "plasma.c"
+    },
+    {
+      "rom_start": "0x47E4",
+      "rom_end": "0x47F0",
+      "vram_start": "0x80003BE4",
+      "vram_end": "0x80003BF0",
+      "size": 12,
+      "bytes_hex": "ba35c39ecfa83a15f97c0201",
+      "kind": "psylink_heap",
+      "after_tu": "frontend",
+      "after_name": "frontend.c"
+    },
+    {
+      "rom_start": "0x4838",
+      "rom_end": "0x4840",
+      "vram_start": "0x80003C38",
+      "vram_end": "0x80003C40",
+      "size": 8,
+      "bytes_hex": "178bd9ef570b85ce",
+      "kind": "psylink_heap",
+      "after_tu": "trackrend",
+      "after_name": "trackrend.c"
+    },
+    {
+      "rom_start": "0x4904",
+      "rom_end": "0x4910",
+      "vram_start": "0x80003D04",
+      "vram_end": "0x80003D10",
+      "size": 12,
+      "bytes_hex": "84f2dd6e5500acd2887a7f62",
+      "kind": "psylink_heap",
+      "after_tu": "particle",
+      "after_name": "Particle.c"
+    },
+    {
+      "rom_start": "0x4B98",
+      "rom_end": "0x4BA0",
+      "vram_start": "0x80003F98",
+      "vram_end": "0x80003FA0",
+      "size": 8,
+      "bytes_hex": "cf083bc220f08cbc",
+      "kind": "psylink_heap",
+      "after_tu": "hiscores",
+      "after_name": "hiscores.c"
+    },
+    {
+      "rom_start": "0x4D31",
+      "rom_end": "0x4D40",
+      "vram_start": "0x80004131",
+      "vram_end": "0x80004140",
+      "size": 15,
+      "bytes_hex": "e72579cb9e73779d01e74979d49e75",
+      "kind": "psylink_heap",
+      "after_tu": "racefunc",
+      "after_name": "Racefunc.c"
+    },
+    {
+      "rom_start": "0x4E9F",
+      "rom_end": "0x4EA0",
+      "vram_start": "0x8000429F",
+      "vram_end": "0x800042A0",
+      "size": 1,
+      "bytes_hex": "96",
+      "kind": "psylink_heap",
+      "after_tu": "pause",
+      "after_name": "pause.c"
+    },
+    {
+      "rom_start": "0x4FED",
+      "rom_end": "0x4FF0",
+      "vram_start": "0x800043ED",
+      "vram_end": "0x800043F0",
+      "size": 3,
+      "bytes_hex": "b399ec",
+      "kind": "psylink_heap",
+      "after_tu": "inspect",
+      "after_name": "inspect.c"
+    },
+    {
+      "rom_start": "0x500C",
+      "rom_end": "0x5010",
+      "vram_start": "0x8000440C",
+      "vram_end": "0x80004410",
+      "size": 4,
+      "bytes_hex": "6c860ad3",
+      "kind": "psylink_heap",
+      "after_tu": "sfx",
+      "after_name": "sfx.c"
+    },
+    {
+      "rom_start": "0x5028",
+      "rom_end": "0x5030",
+      "vram_start": "0x80004428",
+      "vram_end": "0x80004430",
+      "size": 8,
+      "bytes_hex": "31a8ff6b1fda9a49",
+      "kind": "psylink_heap",
+      "after_tu": "libgcc_floatdidf",
+      "after_name": "libgcc (_floatdidf.o)"
+    }
+  ]
+}
