@@ -13,8 +13,12 @@ gspS2DEX_fifoTextStart = 0x80006D60;
 
 // Game functions
 __assert = 0x8000FA70; // type:func size:0x8
-DAlloc = 0x800157B0; // type:func
-DFree = 0x80015AB4; // type:func
+DInit = 0x80015740; // type:func size:0x34
+DCheckHeap = 0x80015774; // type:func size:0x3C
+DAlloc = 0x800157B0; // type:func size:0x188
+DMemCmp = 0x80015938; // type:func size:0x44
+DRegisterFile = 0x8001597C; // type:func size:0x138
+DFree = 0x80015AB4; // type:func size:0xBC
 Error = 0x80015F40; // type:func size:0xC
 StringCopy = 0x80015F4C; // type:func size:0x1C
 StringCat = 0x80015F68; // type:func size:0x4C
@@ -47,5 +51,9 @@ gspS2DEX_fifoDataStart = 0x80088570;
 
 // System / Game globals
 osTvType = 0x80000300; // absolute:True
+g_allocFileCount = 0x80089E70;
+g_heapMinFree = 0x80089E78;
 g_sinTable = 0x8008A4E0;
 g_heap = 0x800A6BF0;
+g_mainHeap = 0x800A6BF4;
+g_allocFileNames = 0x800A6C00;

@@ -104,6 +104,8 @@ def compile_c_to_obj_bytes(src_text, src_dir, version, opt, extra_cc1, extra_cpp
         obj_path = tmp_p / "out.obj"
         c_path.write_text(src_text, encoding="utf-8")
 
+        libreultra_inc = TOOLCHAIN / "libreultra" / "include" / "2.0I"
+        extra_inc = [f"-I{libreultra_inc}"] if libreultra_inc.is_dir() else []
         cpp_cmd = [
             str(WIBO),
             str(CPP),
@@ -118,8 +120,10 @@ def compile_c_to_obj_bytes(src_text, src_dir, version, opt, extra_cc1, extra_cpp
             "-D__mips__",
             "-DMIPSEB",
             "-D_MIPSEB",
+            "-DF3DEX_GBI",
             ver_def,
             f"-I{ROOT / 'include'}",
+            *extra_inc,
             f"-I{src_dir}",
             *extra_cpp,
             str(c_path),
@@ -262,12 +266,14 @@ def compile_with_include_asm(src_path, out_path, version, opt, extra_cc1, extra_
         s_path = tmp_p / "out.s"
         c_path.write_text("".join(rewritten), encoding="utf-8")
 
+        libreultra_inc = TOOLCHAIN / "libreultra" / "include" / "2.0I"
+        extra_inc = [f"-I{libreultra_inc}"] if libreultra_inc.is_dir() else []
         run_host([
             str(WIBO), str(CPP), "-lang-c", "-undef",
             "-D__GNUC__=2", "-D_MIPS_SZLONG=32", "-D_MIPS_SZINT=32",
             "-D_LANGUAGE_C", "-DLANGUAGE_C", "-Dmips", "-D__mips__",
-            "-DMIPSEB", "-D_MIPSEB", ver_def,
-            f"-I{ROOT / 'include'}", f"-I{src_path.parent}",
+            "-DMIPSEB", "-D_MIPSEB", "-DF3DEX_GBI", ver_def,
+            f"-I{ROOT / 'include'}", *extra_inc, f"-I{src_path.parent}",
             *extra_cpp, str(c_path), str(i_path),
         ])
         run_host([
