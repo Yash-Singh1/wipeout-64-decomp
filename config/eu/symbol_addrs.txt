@@ -19,6 +19,11 @@ DAlloc = 0x800157B0; // type:func size:0x188
 DMemCmp = 0x80015938; // type:func size:0x44
 DRegisterFile = 0x8001597C; // type:func size:0x138
 DFree = 0x80015AB4; // type:func size:0xBC
+InitFileSystem = 0x80015B70; // type:func size:0x140
+FileLength = 0x80015CB0; // type:func size:0x48
+LoadFile = 0x80015CF8; // type:func size:0x70
+FindFile = 0x80015D68; // type:func size:0x4C
+LoadFileOffset = 0x80015DB4; // type:func size:0x178
 Error = 0x80015F40; // type:func size:0xC
 StringCopy = 0x80015F4C; // type:func size:0x1C
 StringCat = 0x80015F68; // type:func size:0x4C
@@ -37,6 +42,7 @@ MatrixToN64Mtx = 0x80020D6C; // type:func
 SetSkeletonTransform = 0x80020E94; // type:func size:0x38
 main = 0x80067920; // type:func
 InitTvTiming = 0x80067988; // type:func
+DmaRead = 0x80067EBC; // type:func
 
 // libultra 2.0H / libnaudio / gu / libc functions
 alUnlink = 0x80075E40; // type:func
@@ -306,9 +312,14 @@ gspS2DEX_fifoDataStart = 0x80088570;
 
 // System / Game globals
 osTvType = 0x80000300; // absolute:True
+_romFilesBase = 0xB03CD4D0; // absolute:True
 g_allocFileCount = 0x80089E70;
 g_heapMinFree = 0x80089E78;
+g_fileCount = 0x80089E80;
+g_romFileOffsets = 0x80089E84;
 g_sinTable = 0x8008A4E0;
 g_heap = 0x800A6BF0;
 g_mainHeap = 0x800A6BF4;
 g_allocFileNames = 0x800A6C00;
+g_trackFileIds = 0x800A6F00;
+g_fileTable = 0x800A6FA8;

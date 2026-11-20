@@ -7,3 +7,7 @@ osCicId = 0x80000310;
 osVersion = 0x80000314;
 osMemSize = 0x80000318;
 osAppNMIBuffer = 0x8000031C;
+
+/* Shared cartridge file-table relative offsets (identical in USA and Europe) */
+_romFilesEnd = 0x003E8F10;
+_trackFilesStart = 0x00027F80;

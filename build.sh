@@ -92,6 +92,7 @@ for f in \$(find assets/\$VER -name '*.bin' | sort); do
 done
 
 \$LD -T config/common_syms.ld \
+    -T config/\$VER/syms.ld \
     -T build/\$VER/wipeout64.ld \
     -T build/\$VER/undefined_funcs_auto.txt \
     -T build/\$VER/undefined_syms_auto.txt \
