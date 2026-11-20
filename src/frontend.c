@@ -4190,14 +4190,14 @@ Gfx *RaceRecordsMenu(Gfx *glistp) {
     return DrawMenu(g_raceRecordsMenu, 130, 60, glistp, 1);
 }
 
-#ifdef NON_MATCHING
-/* GCC 2.7.2 cse_skip_blocks caches &frontendOptions_g in $s1 across musicTrack != 8 (-8 B) */
 Gfx *AudioConfigMenu(Gfx *glistp) {
     char artistBuf[32];
     s32 res;
     s32 endX;
     s32 halfWidth;
     s32 i;
+    s32 x;
+    char *artist;
 
     gDPPipeSync(glistp++);
     gDPSetCombineMode(glistp++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -4238,9 +4238,13 @@ Gfx *AudioConfigMenu(Gfx *glistp) {
         }
     }
 
+    /* Separate else arm prevents cse_skip_blocks from caching &frontendOptions_g in $s1 across musicTrack != 8 */
     if (frontendOptions_g.musicTrack != 8) {
-        sprintf(artistBuf, "[%s]", GetCdTrackArtist(frontendOptions_g.unk70));
+        artist = GetCdTrackArtist(frontendOptions_g.unk70);
+        sprintf(artistBuf, "[%s]", artist);
         glistp = AddCentreText(artistBuf, 160, 102, 8, glistp);
+    } else {
+        artist = NULL;
     }
 
     if (g_menuItem == 1) {
@@ -4264,9 +4268,10 @@ Gfx *AudioConfigMenu(Gfx *glistp) {
         gSPSprite2DScaleFlip(glistp++, 1 << 10, 1 << 10, 0, 0);
         gSPSprite2DDraw(glistp++, 372 + i * 180, 524);
     }
+    x = frontendOptions_g.musicVol + 98;
     gSPSprite2DBase(glistp++, OS_K0_TO_PHYSICAL(&g_volumeBarSprites[3]));
     gSPSprite2DScaleFlip(glistp++, 1 << 10, 1 << 10, 0, 0);
-    gSPSprite2DDraw(glistp++, (frontendOptions_g.musicVol + 98) << 2, 532);
+    gSPSprite2DDraw(glistp++, x << 2, 532);
 
     if (g_menuItem == 2) {
         if (g_audioConfigSfx == NULL) {
@@ -4296,10 +4301,14 @@ Gfx *AudioConfigMenu(Gfx *glistp) {
         gSPSprite2DScaleFlip(glistp++, 1 << 10, 1 << 10, 0, 0);
         gSPSprite2DDraw(glistp++, 372 + i * 180, 684);
     }
+    x = frontendOptions_g.sfxVol + 98;
     gSPSprite2DBase(glistp++, OS_K0_TO_PHYSICAL(&g_volumeBarSprites[3]));
     gSPSprite2DScaleFlip(glistp++, 1 << 10, 1 << 10, 0, 0);
-    gSPSprite2DDraw(glistp++, (frontendOptions_g.sfxVol + 98) << 2, 692);
+    gSPSprite2DDraw(glistp++, x << 2, 692);
 
+    /* Materializes constant 2 into $v1 in the delay slot of res != 1, keeping glistp += 1 at +0620 */
+    if (res == 2) {
+    }
     if (res == 1) {
         SetMenuTransition(g_audioConfigMenu[0].nextScreen);
         ApplyAudioConfig();
@@ -4310,13 +4319,6 @@ Gfx *AudioConfigMenu(Gfx *glistp) {
 
     return DrawMenu(g_audioConfigMenu, 130, 60, glistp, 1);
 }
-#else
-#ifdef VERSION_EU
-INCLUDE_ASM("nonmatchings/frontend", func_8005F478);
-#else
-INCLUDE_ASM("nonmatchings/frontend", func_8005D6F0);
-#endif
-#endif
 
 void LoadAudioSliderSprites(void) {
     s32 startTex;
