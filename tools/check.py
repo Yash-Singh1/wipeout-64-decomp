@@ -253,6 +253,26 @@ def resolve_and_compare(obj_bytes, ver, only=None, verbose=False):
                     else:
                         struct.pack_into(">I", patched, local_off, (word & 0xFFFF0000) | (val & 0xFFFF))
 
+        # Flush any trailing orphan R_MIPS_HI16 relocations (e.g. delay-slot copy of a loop-header lui)
+        for h_off, h_sym, h_imm in pending_hi:
+            # Find matching LO16 addend from an earlier relocation against the same symbol if any
+            addend = 0
+            for r_off2, r_type2, r_sym2 in rels:
+                if r_type2 == 6 and r_sym2 == h_sym and c_start <= r_off2 < c_start + c_len:
+                    w2, = struct.unpack_from(">I", text_buf, r_off2)
+                    lo2 = w2 & 0xFFFF
+                    if lo2 >= 0x8000:
+                        lo2 -= 0x10000
+                    addend = (h_imm << 16) + lo2
+                    break
+            val = lookup_sym(h_sym, addend, vram, c_start)
+            if val is None:
+                unresolved.append((h_off, symbols[h_sym][0]))
+            else:
+                hi_out = ((val + 0x8000) >> 16) & 0xFFFF
+                hw, = struct.unpack_from(">I", patched, h_off)
+                struct.pack_into(">I", patched, h_off, (hw & 0xFFFF0000) | hi_out)
+
         retail_bytes = rom[rom_off:rom_off + r_len]
         if not unresolved and bytes(patched) == retail_bytes:
             print(f"[{ver}] MATCH {name} ({vram:#010x}, {r_len} bytes)")

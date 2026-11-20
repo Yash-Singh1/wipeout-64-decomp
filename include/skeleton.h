@@ -28,7 +28,7 @@ extern void *g_heap;
 extern s16 g_sinTable[];
 
 void *DAlloc(void *heap, s32 size, const char *file, s32 line);
-void MulMatrix0(MATRIX *m0, MATRIX *m1, MATRIX *m2);
+MATRIX *MulMatrix0(MATRIX *m0, MATRIX *m1, MATRIX *m2);
 void SetTransMatrix(MATRIX *m);
 void SetRotMatrix(MATRIX *m);
 
