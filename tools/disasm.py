@@ -37,7 +37,7 @@ def load_symbols(ver):
             if not p.is_file():
                 continue
             for ln in p.read_text(encoding="utf-8", errors="ignore").splitlines():
-                m = re.match(r"^\s*([A-Za-z_.$][A-Za-z0-9_.$]*)\s*=\s*(0x[0-9A-Fa-f]+|\d+)\s*;", ln)
+                m = re.match(r"^\s*([A-Za-z_.$][A-Za-z0-9_.$]*)\s*=\s*(0[xX][0-9A-Fa-f]+|\d+)\s*;", ln)
                 if m:
                     name, addr = m.group(1), int(m.group(2), 0)
                     by_name[name] = addr

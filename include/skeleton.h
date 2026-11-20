@@ -2,6 +2,7 @@
 #define WIPEOUT64_SKELETON_H
 
 #include "common.h"
+#include "dheap.h"
 
 typedef struct {
     s16 m[3][3];
@@ -24,10 +25,8 @@ typedef union {
     s64 force_structure_alignment;
 } N64Mtx;
 
-extern void *g_heap;
 extern s16 g_sinTable[];
 
-void *DAlloc(void *heap, s32 size, const char *file, s32 line);
 MATRIX *MulMatrix0(MATRIX *m0, MATRIX *m1, MATRIX *m2);
 void SetTransMatrix(MATRIX *m);
 void SetRotMatrix(MATRIX *m);

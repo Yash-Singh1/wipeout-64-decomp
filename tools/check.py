@@ -57,6 +57,7 @@ def load_version_symbols(ver):
     func_sizes = {}
     for p in [
         ROOT / "config" / "common_syms.ld",
+        ROOT / "config" / ver / "syms.ld",
         ROOT / "config" / ver / "symbol_addrs.txt",
         ROOT / "build" / ver / "undefined_funcs_auto.txt",
         ROOT / "build" / ver / "undefined_syms_auto.txt",
@@ -64,7 +65,7 @@ def load_version_symbols(ver):
         if not p.is_file():
             continue
         for ln in p.read_text(encoding="utf-8", errors="ignore").splitlines():
-            m = re.match(r"^\s*([A-Za-z_.$][A-Za-z0-9_.$]*)\s*=\s*(0x[0-9A-Fa-f]+|\d+)\s*;", ln)
+            m = re.match(r"^\s*([A-Za-z_.$][A-Za-z0-9_.$]*)\s*=\s*(0[xX][0-9A-Fa-f]+|\d+)\s*;", ln)
             if m:
                 addrs[m.group(1)] = int(m.group(2), 0)
 
@@ -100,7 +101,7 @@ def load_version_symbols(ver):
     return addrs, func_sizes
 
 
-def resolve_and_compare(obj_bytes, ver, only=None, verbose=False):
+def resolve_and_compare(obj_bytes, ver, only=None, verbose=False, src_path=None):
     sections, names, symbols = parse_elf_be32(obj_bytes)
     addrs, func_sizes = load_version_symbols(ver)
     rom = (ROOT / "orig" / ver / "baserom.z64").read_bytes()
@@ -126,23 +127,36 @@ def resolve_and_compare(obj_bytes, ver, only=None, verbose=False):
         end = text_funcs[idx + 1][0] if idx + 1 < len(text_funcs) else len(text_buf)
         func_ranges[name] = (start, end - start)
 
-    # Locate .rodata base in retail ROM by matching literal bytes if present
+    # Locate .rodata base in retail ROM: check linker map first, then search ROM
     rodata_idx = next((i for i, n in enumerate(names) if n in (".rodata", ".rdata")), None)
     rodata_vram_base = None
     if rodata_idx is not None:
         rsh = sections[rodata_idx]
         rbytes = obj_bytes[rsh[4]:rsh[4] + rsh[5]]
-        if rbytes:
+        if src_path is not None:
+            map_p = ROOT / "build" / ver / "wipeout64.map"
+            if map_p.is_file():
+                try:
+                    rel_src = Path(src_path).resolve().relative_to(ROOT).as_posix()
+                except ValueError:
+                    rel_src = str(src_path)
+                obj_marker = f"build/{ver}/{rel_src}.o"
+                mm = re.search(
+                    rf"^\s*\.rodata\s+0x0*([0-9a-fA-F]+)\s+0x[0-9a-fA-F]+\s+{re.escape(obj_marker)}\s*$",
+                    map_p.read_text(encoding="utf-8", errors="ignore"),
+                    re.M,
+                )
+                if mm:
+                    rodata_vram_base = int(mm.group(1), 16)
+        if rodata_vram_base is None and rbytes:
             # Search inside retail .rodata region (0x10f4..0x5700)
             pos = rom.find(rbytes, 0x10F4, 0x5700)
             if pos != -1:
                 rodata_vram_base = MAIN_VRAM_BASE + pos - MAIN_ROM_BASE
-            else:
-                # Try matching individual non-empty pieces later per relocation or first 8 bytes
-                if len(rbytes) >= 4:
-                    pos = rom.find(rbytes[:min(len(rbytes), 16)], 0x10F4, 0x5700)
-                    if pos != -1:
-                        rodata_vram_base = MAIN_VRAM_BASE + pos - MAIN_ROM_BASE
+            elif len(rbytes) >= 4:
+                pos = rom.find(rbytes[:min(len(rbytes), 16)], 0x10F4, 0x5700)
+                if pos != -1:
+                    rodata_vram_base = MAIN_VRAM_BASE + pos - MAIN_ROM_BASE
 
     # Parse .rel.text relocations
     rel_idx = next((i for i, s in enumerate(sections) if s[1] == 9 and s[7] == text_idx), None)
@@ -326,7 +340,7 @@ def main():
         obj_bytes = cc.compile_c_to_obj_bytes(
             c_only, args.source.resolve().parent, ver, args.opt, [], []
         )
-        ok = resolve_and_compare(obj_bytes, ver, only=args.only, verbose=args.verbose)
+        ok = resolve_and_compare(obj_bytes, ver, only=args.only, verbose=args.verbose, src_path=args.source)
         all_ok = all_ok and ok
 
     sys.exit(0 if all_ok else 1)

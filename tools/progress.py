@@ -53,7 +53,7 @@ def count_version(ver):
         if rel in ("header.s", "crt0.s") or rel.startswith(("data/", "matchings/")):
             continue
         nf, nb = scan_s(p)
-        if "libultra" in rel:
+        if any(k in rel for k in ("libultra", "libmus", "libgcc")):
             lib_funcs += nf
             lib_bytes += nb
         else:

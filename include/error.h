@@ -2,11 +2,7 @@
 #define WIPEOUT64_ERROR_H
 
 #include "common.h"
-
-extern void *g_heap;
-void *DAlloc(void *heap, s32 size, const char *file, s32 line);
-void DFree(void *heap, void *ptr);
-u32 strlen(const char *s);
+#include "dheap.h"
 
 void Error(const char *msg, s16 errorLevel);
 char *StringCopy(char *dst, const char *src);
