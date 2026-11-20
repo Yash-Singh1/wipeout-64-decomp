@@ -33,6 +33,3 @@ D_800ACF88 = 0x800ACF88;
 D_800ACFA0 = 0x800ACFA0;
 D_800950D1 = 0x800950D1;
 D_800C5072 = 0x800C5072;
-/* Pooled frontend.c .rodata strings referenced by RenderFinalStandings3D stub */
-D_80002534 = 0x80002534;
-D_80003134 = 0x80003134;

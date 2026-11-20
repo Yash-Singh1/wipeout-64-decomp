@@ -6286,8 +6286,18 @@ Gfx *RenderChallengeMedal3D(MenuItem *menu, Dynamic *dp, s32 isChallengeList, Gf
     return glistp;
 }
 
-#ifdef NON_MATCHING
-/* GCC 2.7.2 loop.c hoists &g_unk80092360 out of place == 1 (+8 B) */
+/*
+ * Renders the 3D trophy ships on the final league standings screen.
+ *
+ * Compiler note (SN64 cc1n64.exe loop.c): scan_loop (0x48c618) initializes
+ * threshold = (n_non_fixed_regs + 1) * 1 = 61 and move_movables (0x48dd88)
+ * hoists a movable iff lifetime * savings * threshold >= insn_count, then
+ * decrements threshold -= 3 (0x48e28f). In retail, %hi(tournamentTableStandingCount),
+ * %hi(g_unk8009235C), and &g_unk80092360 stay unhoisted while &jtbl stays hoisted.
+ * Under #ifndef NON_MATCHING, two flow-eliminated loop-carried expressions lower
+ * threshold by 6 before tournamentTableStandingCount and by 9 before place == 1
+ * (emitting zero instructions) to reproduce retail's exact hoist set.
+ */
 Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
     Gfx *dlStart;
     s32 startMtx;
@@ -6295,6 +6305,10 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
     s32 place;
     s32 shipIdx;
     ObjectStub *obj;
+#ifndef NON_MATCHING
+    s32 deadLoopA = 0;
+    s32 deadLoopB = 0;
+#endif
 
     g_modelAngle += 20;
     if (g_modelAngle >= 4096) {
@@ -6309,6 +6323,9 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
     startMtx = g_mtxCount;
 
     for (place = 1; place < 4; place++) {
+#ifndef NON_MATCHING
+        deadLoopA = deadLoopB + (s32)&g_feModels[0];
+#endif
         if (place == 3 && tournamentTableStandingCount < 3) {
             continue;
         }
@@ -6344,6 +6361,9 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
                 break;
         }
 
+#ifndef NON_MATCHING
+        deadLoopB = deadLoopA + (s32)&g_modelTransforms[0] + (s32)&g_feModels[1];
+#endif
         SetSkeletonDirectionHPR(obj->skeleton, g_modelAngle, 0, 0);
 
         if (place == 1) {
@@ -6398,10 +6418,3 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
     AddRenderDisplayList(g_feRenderList, &dlStart, &g_mtxPool[startMtx]);
     return FlushSkyRenderList(g_feRenderList, glistp);
 }
-#else
-#ifdef VERSION_EU
-INCLUDE_ASM("nonmatchings/frontend", func_80066200);
-#else
-INCLUDE_ASM("nonmatchings/frontend", func_8006448C);
-#endif
-#endif
