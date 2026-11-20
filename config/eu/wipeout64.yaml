@@ -55,10 +55,13 @@ segments:
     start: 0x10F4
     vram: 0x800004F4
     bss_size: 0x60360
-    subalign: 4
+    subalign: 1
     subsegments:
       - [0x10F4, rodatabin, crt0_rodata]
-      - [0x1100, rodata, main_rodata]
+      - [0x1100, rodata, main_rodata_pre_skeleton]
+      - [0x1CB8, .rodata, skeleton]
+      - [0x1CC3, rodatabin, skeleton_rodata_pad]
+      - [0x1CD0, rodata, main_rodata_post_skeleton]
       - [0x5640, textbin, rsp/rspboot_text]
       - [0x5710, textbin, rsp/n_aspMain_text]
       - [0x6530, textbin, rsp/gspF3DLX_fifo_text]
@@ -70,7 +73,8 @@ segments:
       - [0x20E88, textbin, pad_20e88]
       - [0x20E90, asm, game_code_2]
       - [0x21024, textbin, pad_21024]
-      - [0x21030, asm, game_code_3]
+      - [0x21030, asm, game_code_3_pre_skeleton]
+      - [0x212C0, c, skeleton]
       - [0x21ACC, textbin, pad_21acc]
       - [0x21AD0, asm, game_code_4]
       - [0x76A40, asm, libultra]

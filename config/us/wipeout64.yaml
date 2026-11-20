@@ -55,10 +55,13 @@ segments:
     start: 0x10F4
     vram: 0x800004F4
     bss_size: 0x669F0
-    subalign: 4
+    subalign: 1
     subsegments:
       - [0x10F4, rodatabin, crt0_rodata]
-      - [0x1100, rodata, main_rodata]
+      - [0x1100, rodata, main_rodata_pre_skeleton]
+      - [0x1C28, .rodata, skeleton]
+      - [0x1C33, rodatabin, skeleton_rodata_pad]
+      - [0x1C40, rodata, main_rodata_post_skeleton]
       - [0x5660, textbin, rsp/rspboot_text]
       - [0x5730, textbin, rsp/n_aspMain_text]
       - [0x6550, textbin, rsp/gspF3DLX_fifo_text]
@@ -66,7 +69,14 @@ segments:
       - [0x8970, textbin, rsp/gspS2DEX_fifo_text]
       - [0x9840, c, assert]
       - [0x9848, textbin, assert_pad]
-      - [0x9850, asm, game_code]
+      - [0x9850, asm, game_code_pre_heap]
+      - [0xF51C, textbin, pad_f51c]
+      - [0xF520, asm, game_code_pre_skeleton]
+      - [0x1A380, c, skeleton]
+      - [0x1AB8C, textbin, skeleton_text_pad]
+      - [0x1AB90, asm, radscn]
+      - [0x1B804, textbin, pad_1b804]
+      - [0x1B810, asm, game_code_post_radscn]
       - [0x76CA0, asm, libultra]
       - [0x88910, databin, rsp/n_aspMain_data]
       - [0x88BD0, databin, rsp/gspF3DLX_fifo_data]

@@ -15,9 +15,17 @@ gspS2DEX_fifoTextStart = 0x80007D70;
 // Game functions
 __assert = 0x80008C40; // type:func size:0x8
 DAlloc = 0x8000E990; // type:func
+SetTransMatrix = 0x80014D94; // type:func
+SetRotMatrix = 0x80014DBC; // type:func
+MulMatrix0 = 0x800194F0; // type:func
 NewSkeleton = 0x80019780; // type:func
 SetSkeletonPosition = 0x80019808; // type:func
 SetSkeletonDirection = 0x80019820; // type:func
+SetSkeletonDirectionHPR = 0x800199B0; // type:func
+SetSkeletonDirectionRPH = 0x80019B44; // type:func
+GetSkeletonMatrix = 0x80019CE0; // type:func
+MatrixToN64Mtx = 0x80019E2C; // type:func
+SetSkeletonTransform = 0x80019F54; // type:func size:0x38
 main = 0x80065BB0; // type:func
 InitTvTiming = 0x80065C10; // type:func
 
@@ -44,5 +52,6 @@ gspS2DEX_fifoDataStart = 0x80088FD0;
 
 // System / Game globals
 osTvType = 0x80000300; // absolute:True
+g_sinTable = 0x8008AEB0;
 g_heap = 0x80099610;
 g_tvRate = 0x800CB670;
