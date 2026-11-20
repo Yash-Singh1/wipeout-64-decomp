@@ -10,8 +10,20 @@ scratch/
 *.o
 *.obj
 *.z64
+*.n64
+*.v64
 *.elf
 *.map
+*.bin
+*.eep
+
+# Python & OS / editor junk
 __pycache__/
 *.pyc
+*.pyo
+.venv/
+venv/
 .DS_Store
+*.swp
+.vscode/
+.idea/

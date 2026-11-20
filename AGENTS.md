@@ -11,7 +11,7 @@ An optional reference prototype (`orig/proto/Wipeout 64 (Europe) (Proto).n64`) m
 
 - Both `./build.sh us` and `./build.sh eu` (i.e. `./build.sh all`) must pass and print `OK ... (byte-identical)` before every commit. Never regress a matching function in either version.
 - Use `#ifdef VERSION_US` / `#ifdef VERSION_EU` only for real behavioral or layout differences between retail USA and Europe. Keep shared code clean and single-sourced.
-- Write readable C with real names and struct fields. Wipeout 64 is built on the Wipeout XL / 2097 engine; sibling Wipeout decomps in `../` can be used as reference for original engine struct layouts, algorithms, and symbol names.
+- Write readable C with real names and struct fields. Wipeout 64 is built on the Wipeout XL / 2097 engine with N64-specific additions.
 - Never commit `orig/`, `toolchains/`, `asm/`, `assets/`, or `build/`.
 - `libultra` 2.0H / `libnaudio` functions and RSP microcodes (`rspboot`, `n_aspMain`, `gspF3DLX_fifo`, `gspL3DEX_fifo`, `gspS2DEX_fifo`) stay in assembly/binary form; focus C decompilation on game translation units.
 

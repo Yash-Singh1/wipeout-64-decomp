@@ -24,13 +24,38 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLCHAIN = Path(os.environ.get("WIPEOUT64_TOOLCHAIN", ROOT / "toolchains"))
-WIBO = TOOLCHAIN / "bin" / "wibo-macos"
+
+
+def _resolve_wibo():
+    env_wibo = os.environ.get("WIPEOUT64_WIBO")
+    if env_wibo:
+        return Path(env_wibo)
+    for cand in (TOOLCHAIN / "bin" / "wibo-macos", TOOLCHAIN / "bin" / "wibo"):
+        if cand.is_file():
+            return cand
+    for cmd in ("wibo", "wine"):
+        found = shutil.which(cmd)
+        if found:
+            return Path(found)
+    return TOOLCHAIN / "bin" / "wibo-macos"
+
+
+def _resolve_docker_image():
+    env_img = os.environ.get("WIPEOUT64_IMAGE")
+    if env_img:
+        return env_img
+    if subprocess.run(["docker", "image", "inspect", "wipeout64-tools:latest"], capture_output=True).returncode == 0:
+        return "wipeout64-tools:latest"
+    return "wipeoutxl:latest"
+
+
+WIBO = _resolve_wibo()
 SN64 = TOOLCHAIN / "sn272_0006"
 CPP = SN64 / "cppn64.exe"
 CC1 = SN64 / "cc1n64.exe"
 ASN = SN64 / "asn64.exe"
 POP_IN_CONTAINER = "/work/toolchains/bin/psyq-obj-parser"
-DOCKER_IMAGE = os.environ.get("WIPEOUT64_IMAGE", "wipeoutxl:latest")
+DOCKER_IMAGE = _resolve_docker_image()
 CONTAINER_NAME = "wipeout64-cc"
 
 INCLUDE_ASM_RE = re.compile(
@@ -86,17 +111,28 @@ def docker_exec(cmd_str, input_bytes=None):
 
 
 def run_host(args, cwd=None):
-    r = subprocess.run(args, cwd=cwd, capture_output=True, text=True)
-    if r.returncode != 0:
+    clean_env = {
+        k: v
+        for k, v in os.environ.items()
+        if k in ("PATH", "HOME", "USER", "TMPDIR", "LANG", "LC_ALL", "WINEPREFIX", "WINEDEBUG")
+    }
+    for attempt in range(3):
+        r = subprocess.run(args, cwd=cwd, env=clean_env, capture_output=True, text=True)
+        if r.returncode == 0:
+            return r
         msg = (r.stdout or "") + (r.stderr or "")
-        raise RuntimeError(f"Command failed: {' '.join(map(str, args))}\n{msg}")
+        # Retry occasional silent crashes from Win32 runners (e.g. wibo-macos under Rosetta)
+        if not msg.strip() and attempt < 2:
+            continue
+        raise RuntimeError(f"Command failed (rc={r.returncode}): {' '.join(map(str, args))}\n{msg}")
     return r
 
 
 def compile_c_to_obj_bytes(src_text, src_dir, version, opt, extra_cc1, extra_cpp, save_prefix=None):
     """Compile C source text (without INCLUDE_ASM) -> big-endian ELF .o bytes."""
     ver_def = "-DVERSION_US" if version == "us" else "-DVERSION_EU"
-    with tempfile.TemporaryDirectory(prefix="wo64cc_") as tmp:
+    tmp_base = "/tmp" if os.path.isdir("/tmp") else None
+    with tempfile.TemporaryDirectory(prefix="w64_", dir=tmp_base) as tmp:
         tmp_p = Path(tmp)
         c_path = tmp_p / "in.c"
         i_path = tmp_p / "in.i"

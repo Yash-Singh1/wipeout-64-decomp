@@ -1,12 +1,10 @@
 # Wipeout 64 engine structs vs Wipeout XL / Wipeout 3
 
 Field offsets below come from the retail USA disassembly, read straight from
-`orig/us/baserom.z64`. I checked each key function against its retail Europe counterpart:
-Europe uses identical struct offsets, and only relocations, `__LINE__` arguments and PAL
-constants differ. The references are the PS1 XL headers
-(`../wipeout-xl-ps1/game/include/wipeout.h`), the PC XL headers (`../include/`) and Wipeout 3
-(`../wipeout-3/decomp/include/`). Wipeout 64 descends from XL: its layouts are XL's with
-additions, not Wipeout 3's packed ones.
+`orig/us/baserom.z64`. Each key function was verified against its retail Europe counterpart:
+Europe uses identical struct offsets, and only relocations, `__LINE__` arguments, and PAL
+constants differ. Wipeout 64 descends from the Wipeout XL / 2097 engine with N64-specific
+additions.
 
 Two engine-wide facts explain most of the differences:
 

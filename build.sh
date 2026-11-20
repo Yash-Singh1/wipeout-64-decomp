@@ -20,7 +20,13 @@ VER="$TARGET"
 CFG="config/$VER/wipeout64.yaml"
 LD_SCRIPT="build/$VER/wipeout64.ld"
 CONTAINER="wipeout64-cc"
-IMAGE="${WIPEOUT64_IMAGE:-wipeoutxl:latest}"
+if [[ -n "${WIPEOUT64_IMAGE:-}" ]]; then
+    IMAGE="$WIPEOUT64_IMAGE"
+elif docker image inspect wipeout64-tools:latest >/dev/null 2>&1; then
+    IMAGE="wipeout64-tools:latest"
+else
+    IMAGE="wipeoutxl:latest"
+fi
 
 if [[ ! -f "orig/$VER/baserom.z64" ]]; then
     echo "Missing orig/$VER/baserom.z64" >&2

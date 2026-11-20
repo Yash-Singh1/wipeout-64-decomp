@@ -2,7 +2,7 @@
 
 Complete `.o` boundary map of both retail Nintendo 64 ROMs (`orig/us/baserom.z64` `NWPE` and `orig/eu/baserom.z64` `NWPP`), built with SN64 (`cygnus-2.7.2-970404 SN32.3.7.0006` + `asn64` 2.72 + `psylink`) plus Nintendo `libultra` 2.0H / `libnaudio` and Software Creations `libmus`.
 
-Machine-readable version: [`notes/tu_map.json`](/Users/yashsingh/p/sandbox/wipeout-work/wipeout-64/notes/tu_map.json).
+Machine-readable version: [`notes/tu_map.json`](tu_map.json).
 
 ## ROM Layout Summary
 
