@@ -1742,8 +1742,6 @@ char *GetPilotName(s32 shipIdx, char *out) {
     return out;
 }
 
-#ifdef NON_MATCHING
-/* GCC 2.7.2 loop.c hoists colour=1 across all 5 AddNumber calls instead of calls 2..5 (-4 B) */
 Gfx *LeagueStandingsMenu(Gfx *glistp) {
     char buf[256];
     char nameBuf[4];
@@ -1751,7 +1749,7 @@ Gfx *LeagueStandingsMenu(Gfx *glistp) {
     u8 i;
     s32 j;
     s32 k;
-    s32 y;
+    s32 col;
 
     sprintf(buf, "%d OF %d", (u8)(frontendOptions_g.leagueRaces - frontendOptions_g.unk7C),
             frontendOptions_g.leagueRaces);
@@ -1808,27 +1806,26 @@ Gfx *LeagueStandingsMenu(Gfx *glistp) {
     for (j = count - 1; j >= count - 4 && j >= 0; j--) {
         glistp = DrawFontText(GetPilotName(g_leagueStandings[j].shipIdx, nameBuf), 61, (count - j) * 9 + 120, 8,
                               glistp);
-        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].first, 129, (count - j) * 9 + 120, 8, 1,
-                           glistp);
-        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].second, 165, (count - j) * 9 + 120, 8, 1,
-                           glistp);
-        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].third, 201, (count - j) * 9 + 120, 8, 1,
-                           glistp);
-        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].eliminations, 237, (count - j) * 9 + 120, 8, 1,
-                           glistp);
-        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].points, 273, (count - j) * 9 + 120, 8, 1,
-                           glistp);
+        col = 1;
+        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].first, 93 + col * 36, (count - j) * 9 + 120,
+                           8, 1, glistp);
+        col++;
+        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].second, 93 + col * 36, (count - j) * 9 + 120,
+                           8, 1, glistp);
+        col++;
+        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].third, 93 + col * 36, (count - j) * 9 + 120,
+                           8, 1, glistp);
+        col++;
+        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].eliminations, 93 + col * 36,
+                           (count - j) * 9 + 120, 8, 1, glistp);
+        col++;
+        glistp = AddNumber(g_leagueResults[g_leagueStandings[j].shipIdx].points, 93 + col * 36, (count - j) * 9 + 120,
+                           8, 1, glistp);
     }
 
-    return DrawMenu(g_leagueMenu, 130, 60, glistp, 1);
+    glistp = DrawMenu(g_leagueMenu, 130, 60, glistp, 1);
+    return glistp;
 }
-#else
-#ifdef VERSION_EU
-INCLUDE_ASM("nonmatchings/frontend", func_800587A8);
-#else
-INCLUDE_ASM("nonmatchings/frontend", func_80056A20);
-#endif
-#endif
 
 Gfx *BonusCategoryScreen(Gfx *glistp) {
     s32 savedTrack;
@@ -3358,16 +3355,21 @@ u8 StartupWarningAndInit(void) {
     return ret;
 }
 
-#ifdef NON_MATCHING
-/* GCC 2.7.2 cse1 carries %hi(g_menuScreen) into $s5 across if (g_startupActive) (+4 B) */
 void FrontendUpdate(void) {
     char unused[0x38]; /* unused: retail reserves 0x38 bytes of stack locals */
     N64TextureStub *dstTex;
     N64TextureStub *srcTex;
+    s32 *initPtr;
 
+    /* Empty-to-flow else arm stops cse1/cse2 from hoisting %hi(g_menuScreen) into $s5 across g_startupActive */
     if (g_menuScreen != 0) {
         osGetTime();
+    } else {
+        dstTex = NULL;
     }
+
+    /* Unused pointer preserved from retail: places %hi(g_feInitialized) ($s4) in the g_startupActive branch delay slot */
+    initPtr = &g_feInitialized;
 
     if (g_startupActive) {
         g_feDlistEnd = g_feDlistStart;
@@ -3404,17 +3406,15 @@ void FrontendUpdate(void) {
         }
     } else {
         if (g_feInitialized == 0) {
-            s32 one = 1;
-
             frontendOptions_g.trackFile = (u32)_track1File;
+            frontendOptions_g.trackNo = 1;
             frontendOptions_g.mode = 2;
             frontendOptions_g.teamClass = 0;
-            frontendOptions_g.numPlayers = one;
-            g_gameType = 0;
-            g_unk8009BA0C = one;
-            g_unk8009BA10 = 0;
-            frontendOptions_g.trackNo = one;
+            frontendOptions_g.numPlayers = 1;
             frontendOptions_g.team = 3;
+            g_gameType = 0;
+            g_unk8009BA0C = 1;
+            g_unk8009BA10 = 0;
             g_unk800AA084 = 3;
             ApplyGameConfig();
             SaveControllerConfig();
@@ -3425,7 +3425,7 @@ void FrontendUpdate(void) {
             SetMasterSfxVolume((frontendOptions_g.sfxVol * 0x7FFF) / 116);
             frontendOptions_g.allGoldAwarded = 0;
             frontendOptions_g.allGoldSeen = 0;
-            g_feInitialized = one;
+            g_feInitialized = 1;
         }
 
         if (g_bonusMusicDelay != 0 && g_menuScreen != 28 && g_menuScreen != 32 && g_menuScreen != 30 &&
@@ -3590,13 +3590,6 @@ void FrontendUpdate(void) {
 
     gSPEndDisplayList(g_feDlistEnd++);
 }
-#else
-#ifdef VERSION_EU
-INCLUDE_ASM("nonmatchings/frontend", func_8005D05C);
-#else
-INCLUDE_ASM("nonmatchings/frontend", func_8005B2D4);
-#endif
-#endif
 
 void StartAttractDemo(void) {
     s32 i;
