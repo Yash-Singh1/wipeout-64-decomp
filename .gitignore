@@ -1,0 +1,17 @@
+# Retail ROMs, prototypes, and proprietary toolchains (never commit)
+orig/
+toolchains/
+
+# Generated split output and build artifacts
+asm/
+assets/
+build/
+scratch/
+*.o
+*.obj
+*.z64
+*.elf
+*.map
+__pycache__/
+*.pyc
+.DS_Store

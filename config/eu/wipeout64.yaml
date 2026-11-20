@@ -1,0 +1,99 @@
+name: Wipeout 64 (Europe)
+sha1: 3eef8ec7d0009ee67d604aaca2bb61b7397ba862
+options:
+  basename: wipeout64
+  target_path: orig/eu/baserom.z64
+  base_path: ../..
+  platform: n64
+  compiler: GCC
+  asm_path: asm/eu
+  asset_path: assets/eu
+  src_path: src
+  build_path: build/eu
+  ld_script_path: build/eu/wipeout64.ld
+  elf_path: build/eu/wipeout64.elf
+  ld_dependencies: true
+  symbol_addrs_path: config/eu/symbol_addrs.txt
+  undefined_funcs_auto_path: build/eu/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/eu/undefined_syms_auto.txt
+  generate_asm_macros_files: true
+  create_c_files: false
+  disassemble_all: true
+  make_full_disasm_for_code: true
+  use_legacy_include_asm: false
+  migrate_rodata_to_functions: false
+  section_order: [.rodata, .text, .data, .bss]
+  subalign: 4
+  ld_align_segment_vram_end: false
+  ld_align_section_vram_end: false
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+  named_regs_for_c_funcs: false
+  gp_value: 0x0
+
+segments:
+  - name: header
+    type: header
+    start: 0x0
+
+  - name: ipl3
+    type: bin
+    start: 0x40
+
+  - name: boot
+    type: code
+    start: 0x1000
+    vram: 0x80000400
+    align: 4
+    subsegments:
+      - [0x1000, asm, crt0]
+
+  - name: main
+    type: code
+    start: 0x10F4
+    vram: 0x800004F4
+    bss_size: 0x60360
+    subalign: 4
+    subsegments:
+      - [0x10F4, rodatabin, crt0_rodata]
+      - [0x1100, rodata, main_rodata]
+      - [0x5640, textbin, rsp/rspboot_text]
+      - [0x5710, textbin, rsp/n_aspMain_text]
+      - [0x6530, textbin, rsp/gspF3DLX_fifo_text]
+      - [0x7960, textbin, rsp/gspS2DEX_fifo_text]
+      - [0x8830, asm, early_game]
+      - [0x10670, c, assert]
+      - [0x10678, textbin, assert_pad]
+      - [0x10680, asm, game_code_1]
+      - [0x20E88, textbin, pad_20e88]
+      - [0x20E90, asm, game_code_2]
+      - [0x21024, textbin, pad_21024]
+      - [0x21030, asm, game_code_3]
+      - [0x21ACC, textbin, pad_21acc]
+      - [0x21AD0, asm, game_code_4]
+      - [0x76A40, asm, libultra]
+      - [0x886B0, databin, rsp/n_aspMain_data]
+      - [0x88970, databin, rsp/gspF3DLX_fifo_data]
+      - [0x89170, databin, rsp/gspS2DEX_fifo_data]
+      - [0x894F0, data, main_data]
+      - { start: 0x98890, type: bss, vram: 0x80097C90, name: main_bss }
+
+  - name: code_pad
+    type: bin
+    start: 0x98890
+
+  - name: static_gfx
+    type: bin
+    start: 0x988C0
+
+  - name: assets
+    type: bin
+    start: 0x98B10
+
+  - name: rom_pad
+    type: bin
+    start: 0x7B63E0
+
+  - [0x800000]

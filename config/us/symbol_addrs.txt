@@ -1,0 +1,48 @@
+// Wipeout 64 (USA) symbols
+
+// Boot / crt0
+__start = 0x80000400; // type:func
+__init_ctors = 0x8000043C; // type:func
+__fini_dtors = 0x80000498; // type:func
+
+// RSP microcode text
+rspbootTextStart = 0x80004A60;
+n_aspMainTextStart = 0x80004B30;
+gspF3DLX_fifoTextStart = 0x80005950;
+gspL3DEX_fifoTextStart = 0x80006D80;
+gspS2DEX_fifoTextStart = 0x80007D70;
+
+// Game functions
+__assert = 0x80008C40; // type:func size:0x8
+DAlloc = 0x8000E990; // type:func
+NewSkeleton = 0x80019780; // type:func
+SetSkeletonPosition = 0x80019808; // type:func
+SetSkeletonDirection = 0x80019820; // type:func
+main = 0x80065BB0; // type:func
+InitTvTiming = 0x80065C10; // type:func
+
+// libultra / libnaudio functions
+alUnlink = 0x800760A0; // type:func
+alLink = 0x800760D0; // type:func
+alClose = 0x800760F4; // type:func
+alInit = 0x8007612C; // type:func
+guScaleF = 0x80076160; // type:func
+guScale = 0x800761B4; // type:func
+guRotateF = 0x80076200; // type:func
+osCreateThread = 0x80076670; // type:func
+osStartThread = 0x80076870; // type:func
+osInitialize = 0x80078F20; // type:func
+osCreateMesgQueue = 0x8007FA70; // type:func
+__osPiGetAccess = 0x8007FBC0; // type:func
+osPiRawWriteIo = 0x80087CC0; // type:func
+
+// RSP microcode data
+n_aspMainDataStart = 0x80087D10;
+gspF3DLX_fifoDataStart = 0x80087FD0;
+gspL3DEX_fifoDataStart = 0x800887D0;
+gspS2DEX_fifoDataStart = 0x80088FD0;
+
+// System / Game globals
+osTvType = 0x80000300; // absolute:True
+g_heap = 0x80099610;
+g_tvRate = 0x800CB670;
