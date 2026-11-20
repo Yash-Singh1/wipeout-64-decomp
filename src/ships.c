@@ -248,7 +248,7 @@ Gfx *DrawShips(ShipData *shipIndex, Object **shipShapes, s32 camShip, TrackCamer
                             } else if ((frontendOptions_g.numPlayers == 2 &&
                                         frontendOptions_g.aiShipsEnabled) ||
                                        (frontendOptions_g.numPlayers == 3 &&
-                                        frontendOptions_g.aiShipsEnabled && shipIndex[i].unkF4)) {
+                                        frontendOptions_g.aiShipsEnabled && shipIndex[i].activeInLeague)) {
                                 MatrixToN64Mtx(mat, &g_mtxPool[g_mtxIndex]);
                                 g_polyCount += obj->primitiveCount;
                                 if (shipIndex[i].combatAttr & SHIP_CLOAKED) {
@@ -709,13 +709,13 @@ void initShipData(TrackSection *section, ShipData *shipIndex, ConfigData *option
         shipIndex[i].electroCount = 0;
         shipIndex[i].autopilotCount = 0;
         shipIndex[i].stallCount = 0;
-        shipIndex[i].unkF4 = 0;
+        shipIndex[i].activeInLeague = 0;
         shipIndex[i].lap = 0;
         shipIndex[i].reverseLap = 0;
-        shipIndex[i].unkF0 = 0;
+        shipIndex[i].eliminations = 0;
         shipIndex[i].unkF5 = 0;
         shipIndex[i].unkF8 = -1;
-        shipIndex[i].unkFC = 0;
+        shipIndex[i].finishPosition = 0;
         for (j = 0; j < 5; j++) {
             shipIndex[i].lapTimes[j] = 0;
         }
@@ -728,7 +728,7 @@ void initShipData(TrackSection *section, ShipData *shipIndex, ConfigData *option
             (frontendOptions_g.numPlayers == 4 &&
              (i == ownShip || i == ownShip2 || i == ownShip3 || i == ownShip4))) {
             shipIndex[i].combatAttr = 0;
-            shipIndex[i].unkF4 = 1;
+            shipIndex[i].activeInLeague = 1;
         } else if (raceType == RACE_TIME_TRIAL) {
             if (i != g_demoShip) {
                 shipIndex[i].combatAttr |= SHIP_DESTROYED;
@@ -747,7 +747,7 @@ void initShipData(TrackSection *section, ShipData *shipIndex, ConfigData *option
                 (ownShip3 >= 6 && ownShip3 <= 8)) {
                 if (i == 5) {
                     shipIndex[i].combatAttr = droneSpeedGroups[i];
-                    shipIndex[i].unkF4 = 1;
+                    shipIndex[i].activeInLeague = 1;
                 } else {
                     shipIndex[i].combatAttr |= SHIP_DESTROYED;
                 }
@@ -756,7 +756,7 @@ void initShipData(TrackSection *section, ShipData *shipIndex, ConfigData *option
                     shipIndex[i].combatAttr |= SHIP_DESTROYED;
                 } else {
                     shipIndex[i].combatAttr = droneSpeedGroups[i];
-                    shipIndex[i].unkF4 = 1;
+                    shipIndex[i].activeInLeague = 1;
                 }
             }
         } else if (raceType == RACE_CHALLENGE &&
@@ -764,7 +764,7 @@ void initShipData(TrackSection *section, ShipData *shipIndex, ConfigData *option
             shipIndex[i].combatAttr |= SHIP_DESTROYED;
         } else {
             shipIndex[i].combatAttr = droneSpeedGroups[i];
-            shipIndex[i].unkF4 = 1;
+            shipIndex[i].activeInLeague = 1;
         }
 
         if ((u16)i <= 2) {
@@ -963,7 +963,7 @@ void initShipData(TrackSection *section, ShipData *shipIndex, ConfigData *option
         }
     }
 
-    if (g_unk800923F9) {
+    if (g_fourPlayerSameTeam) {
         if ((u32)ownShip3 <= 2) {
             team = 0;
         } else if ((u32)(ownShip3 - 3) <= 2) {
@@ -1208,7 +1208,7 @@ void InitPlayerShipGroups(void) {
                 shipNo = ownShip3;
                 break;
             case 3:
-                if (g_unk800923F9) {
+                if (g_fourPlayerSameTeam) {
                     shipNo = ownShip3;
                 } else {
                     shipNo = ownShip4;

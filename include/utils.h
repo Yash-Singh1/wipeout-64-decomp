@@ -107,10 +107,10 @@ typedef struct ShipData {
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ s32 padE8;
     /* 0x0EC */ s32 startY;
-    /* 0x0F0 */ s32 unkF0;
-    /* 0x0F4 */ u8 unkF4;
+    /* 0x0F0 */ s32 eliminations;
+    /* 0x0F4 */ u8 activeInLeague;
     /* 0x0F5 */ u8 unkF5[7];
-    /* 0x0FC */ s16 unkFC;
+    /* 0x0FC */ s16 finishPosition;
     /* 0x0FE */ u8 unkFE;
     /* 0x0FF */ u8 unkFF[5];
     /* 0x104 */ void (*update)(struct ShipData *ships, Object **shipShapes, s32 shipNo,

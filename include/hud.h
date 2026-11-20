@@ -61,7 +61,7 @@
 #define DrawFontText                     func_8003D388
 #define DrawFontTextYellow               func_8003D60C
 #define AddCentreText                    func_8003D8A4
-#define FontStub_800364C0                func_8003DBB0
+#define InitFontUnused                func_8003DBB0
 #define GetBlinkState                    func_8005DD5C
 #define UpdateBlink                      func_8005DD70
 #define CheckForHiScore                  func_8006D050
@@ -109,8 +109,8 @@
 #define rearLockCycle                    D_800914B0
 #define g_perfectLapFlag                 D_800914B4
 #define g_perfectLapTimer                D_800914B8
-#define g_unk80092244                    D_800917F4
-#define g_unk80092245                    D_800917F5
+#define g_resultSfxPending                    D_800917F4
+#define g_timeoutSfxPending                    D_800917F5
 #define g_raceChallenges                 D_80094194
 #define g_ttChallenges                   D_800942C8
 #define g_weaponChallenges               D_800943FC
@@ -229,7 +229,7 @@
 #define DrawFontText                     func_80035C98
 #define DrawFontTextYellow               func_80035F1C
 #define AddCentreText                    func_800361B4
-#define FontStub_800364C0                func_800364C0
+#define InitFontUnused                func_800364C0
 #define GetBlinkState                    func_8005BFD4
 #define UpdateBlink                      func_8005BFE8
 #define CheckForHiScore                  func_8006AFF0
@@ -277,8 +277,8 @@
 #define rearLockCycle                    D_80091E80
 #define g_perfectLapFlag                 D_80091E84
 #define g_perfectLapTimer                D_80091E88
-#define g_unk80092244                    D_80092244
-#define g_unk80092245                    D_80092245
+#define g_resultSfxPending                    D_80092244
+#define g_timeoutSfxPending                    D_80092245
 #define g_raceChallenges                 D_80094BE4
 #define g_ttChallenges                   D_80094D18
 #define g_weaponChallenges               D_80094E4C
@@ -520,10 +520,10 @@ typedef struct ShipData {
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ s32 padE8;
     /* 0x0EC */ s32 startY;
-    /* 0x0F0 */ s32 unkF0;
-    /* 0x0F4 */ u8 unkF4;
+    /* 0x0F0 */ s32 eliminations;
+    /* 0x0F4 */ u8 activeInLeague;
     /* 0x0F5 */ u8 unkF5[7];
-    /* 0x0FC */ s16 unkFC;
+    /* 0x0FC */ s16 finishPosition;
     /* 0x0FE */ u8 unkFE[6];
     /* 0x104 */ void (*update)();
 } ShipData; /* size = 0x108 */
@@ -666,8 +666,8 @@ extern s32 g_raceInfoOverlayArg;
 extern u8 rearLockCycle[4];
 extern u8 g_perfectLapFlag[4];
 extern u8 g_perfectLapTimer[4];
-extern u8 g_unk80092244;
-extern u8 g_unk80092245;
+extern u8 g_resultSfxPending;
+extern u8 g_timeoutSfxPending;
 extern ChallengeTarget g_raceChallenges[];
 extern ChallengeTarget g_ttChallenges[];
 extern ChallengeTarget g_weaponChallenges[];
@@ -730,7 +730,7 @@ Gfx *DrawFontNumber(s32 num, s32 x, s32 y, s32 size, s32 colour, Gfx *glistp);
 Gfx *DrawFontText(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
 Gfx *DrawFontTextYellow(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
 Gfx *AddCentreText(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
-void FontStub_800364C0(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
+void InitFontUnused(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5);
 u8 GetBlinkState(void);
 void UpdateBlink(void);
 void CheckForHiScore(ConfigData *config, ScoreData *score, ShipData *shipList, s16 shipNo, s32 flag);
@@ -762,7 +762,7 @@ Gfx *DrawPlayerHud(ShipData *shipList, uSprite *sprites1P, uSprite *spritesMP, s
 s16 GetShipPosition(ShipData *shipList, s32 shipNo);
 void copyInTempLapTimes(ShipData *shipList, s32 player);
 Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, Gfx *glistp, s32 player);
-Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 arg2, ConfigData *config,
+Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 pauseState, ConfigData *config,
                      s32 player, s32 shipNo, u32 layout, Gfx *glistp);
 void DisplayContinues(void);
 

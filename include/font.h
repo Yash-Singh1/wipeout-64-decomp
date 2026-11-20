@@ -19,7 +19,7 @@
 #define AddTextYellow                   func_8003D60C
 #define AddCentreText                   func_8003D8A4
 #define AddRightText                    func_8003DB38
-#define FontStub_800364C0               func_8003DBB0
+#define InitFontUnused               func_8003DBB0
 #define LoadFontStartupTextures         func_8003DBB8
 
 #define RegisterTextureSequence         func_80016994
@@ -55,7 +55,7 @@
 #define AddTextYellow                   func_80035F1C
 #define AddCentreText                   func_800361B4
 #define AddRightText                    func_80036448
-#define FontStub_800364C0               func_800364C0
+#define InitFontUnused               func_800364C0
 #define LoadFontStartupTextures         func_800364C8
 
 #define RegisterTextureSequence         func_8000FB74
@@ -91,7 +91,7 @@
 #define FONT_CHAR_SIZE                  6
 
 extern WADFILE *g_startupImage;
-extern s16 g_unk8008A970;
+extern s16 TextureTableCount;
 extern u8 _startupDataFile[];
 extern u8 _hudTexturesFile[];
 
@@ -131,7 +131,7 @@ Gfx *AddText(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
 Gfx *AddTextYellow(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
 Gfx *AddCentreText(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
 Gfx *AddRightText(char *text, s32 x, s32 y, s32 size, Gfx *glistp);
-void FontStub_800364C0(void);
+void InitFontUnused(void);
 void LoadFontStartupTextures(void);
 void InitFont(void);
 

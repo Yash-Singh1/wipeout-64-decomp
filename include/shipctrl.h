@@ -50,9 +50,9 @@
 #define g_shipUpdatePaused          D_8008F11C
 #define classCheckTime              D_80091130
 #define startCountdown              D_80091140
-#define g_unk80091E60               D_80091490
+#define g_steeringActive               D_80091490
 #define countdownActive             D_80089540
-#define g_unk80092234               D_800917E4
+#define g_pauseDebounceTimer               D_800917E4
 #define checkPoints                 D_800A8FC8
 #define checkPointReached           D_800A9228
 #define activeShipCount             D_800A9250
@@ -109,9 +109,9 @@
 #define g_shipUpdatePaused          D_8008FAEC
 #define classCheckTime              D_80091B00
 #define startCountdown              D_80091B10
-#define g_unk80091E60               D_80091E60
+#define g_steeringActive               D_80091E60
 #define countdownActive             D_80092000
-#define g_unk80092234               D_80092234
+#define g_pauseDebounceTimer               D_80092234
 #define checkPoints                 D_8009B9E8
 #define checkPointReached           D_8009BC48
 #define activeShipCount             D_8009BC70
@@ -138,9 +138,6 @@
 #define checkTimer3                 D_800CE6BC
 #define checkTimer4                 D_800CE6C0
 #endif
-
-#define raceLines                   g_unkAlloc9600
-#define shipRank                    g_unkAlloc60
 
 #define NO_OF_SHIPS                 15
 #define MAX_CHECKPOINTS             6
@@ -316,10 +313,10 @@ typedef struct ShipData {
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ s32 padE8;
     /* 0x0EC */ s32 startY;
-    /* 0x0F0 */ s32 unkF0;
-    /* 0x0F4 */ u8 unkF4;
+    /* 0x0F0 */ s32 eliminations;
+    /* 0x0F4 */ u8 activeInLeague;
     /* 0x0F5 */ u8 unkF5[7];
-    /* 0x0FC */ s16 unkFC;
+    /* 0x0FC */ s16 finishPosition;
     /* 0x0FE */ u8 unkFE;
     /* 0x0FF */ u8 unkFF[5];
     /* 0x104 */ void (*update)(struct ShipData *shipIndex, Object **shipShapes, s32 shipNo,
@@ -333,9 +330,9 @@ extern s16 startLinePos[];
 extern s32 g_shipUpdatePaused;
 extern s32 classCheckTime[];
 extern s32 startCountdown;
-extern s32 g_unk80091E60;
+extern s32 g_steeringActive;
 extern s8 countdownActive;
-extern s32 g_unk80092234;
+extern s32 g_pauseDebounceTimer;
 extern CheckPoints checkPoints[MAX_CHECKPOINTS];
 extern s8 checkPointReached[MAX_CHECKPOINTS][MAX_PLAYERS];
 extern s16 activeShipCount;

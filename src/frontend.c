@@ -512,7 +512,7 @@ Gfx *MainMenu(Gfx *glistp) {
         g_teamMenu[4].enabled = TRUE;
         g_teamMenu[4].hidden = FALSE;
     }
-    if (g_unk80094F7E) {
+    if (g_superComboUnlocked) {
         g_gameConfigMenu[5].enabled = TRUE;
         g_gameConfigMenu[5].hidden = FALSE;
     }
@@ -525,7 +525,7 @@ Gfx *MainMenu(Gfx *glistp) {
         frontendOptions_g.numPlayers = g_mainMenu[g_menuItem].numValues;
         SetMenuTransition(g_mainMenu[g_menuItem].nextScreen);
         g_attractTimer = 15 * FRAME_RATE;
-        frontendOptions_g.unk7C = 0;
+        frontendOptions_g.leagueRacesLeft = 0;
         if (g_gameType == 3) {
             frontendOptions_g.unk14 = frontendOptions_g.computerShips;
         } else {
@@ -535,7 +535,7 @@ Gfx *MainMenu(Gfx *glistp) {
             frontendOptions_g.ownShip[i - 1] = -1;
             frontendOptions_g.screenLayout[i - 1] = -1;
         }
-        g_unk800923F9 = 0;
+        g_fourPlayerSameTeam = 0;
     }
 
     glistp = DrawMenu(g_mainMenu, 130, 60, glistp, 1);
@@ -974,7 +974,7 @@ Gfx *TrackSelectMenu(Gfx *glistp) {
         frontendOptions_g.trackNo = g_trackMenu[g_menuItem].value;
         frontendOptions_g.trackFile = g_trackMenu[g_menuItem].trackFile;
         if (frontendOptions_g.mode == 3) {
-            if (frontendOptions_g.unk7C) {
+            if (frontendOptions_g.leagueRacesLeft) {
                 g_demoMode = 0;
                 StartGame();
             } else {
@@ -1130,7 +1130,7 @@ Gfx *GameConfigMenu(Gfx *glistp) {
     s32 y;
 
     g_gameConfigMenu[6].enabled = FALSE;
-    if (g_unk80094F7E || cheatSuperCombo) {
+    if (g_superComboUnlocked || cheatSuperCombo) {
         g_gameConfigMenu[6].enabled = TRUE;
     }
 
@@ -1364,7 +1364,7 @@ u8 CheckGoldChallengeUnlocked(MenuItem *menu, ChallengeData *challenges) {
     s32 i;
 
     unlocked = 0;
-    if (!challenges[6].unk29) {
+    if (!challenges[6].goldSeen) {
         for (i = 0; i < 6; i++) {
             if (challenges[i].award != 3) {
                 break;
@@ -1372,7 +1372,7 @@ u8 CheckGoldChallengeUnlocked(MenuItem *menu, ChallengeData *challenges) {
             if (i == 5) {
                 menu[6].enabled = TRUE;
                 menu[6].hidden = FALSE;
-                challenges[6].unk29 = TRUE;
+                challenges[6].goldSeen = TRUE;
                 unlocked = 1;
             }
         }
@@ -1751,7 +1751,7 @@ Gfx *LeagueStandingsMenu(Gfx *glistp) {
     s32 k;
     s32 col;
 
-    sprintf(buf, "%d OF %d", (u8)(frontendOptions_g.leagueRaces - frontendOptions_g.unk7C),
+    sprintf(buf, "%d OF %d", (u8)(frontendOptions_g.leagueRaces - frontendOptions_g.leagueRacesLeft),
             frontendOptions_g.leagueRaces);
     count = 0;
     glistp = CentreText("RACES COMPLETE", 100, 75, 8, 1, glistp);
@@ -1982,7 +1982,7 @@ Gfx *SuperComboChallengeTeamMenu(Gfx *glistp) {
     return glistp;
 }
 
-Gfx *FrontendStub_80057520(Gfx *glistp) {
+Gfx *MenuScreenUnused(Gfx *glistp) {
     return glistp;
 }
 
@@ -2697,7 +2697,7 @@ Gfx *QuitLeagueMenu(Gfx *glistp) {
     res = MenuControl(g_leagueMenu);
     if (g_quitLeaguePrompt == 0) {
         if (res == 1) {
-            if (frontendOptions_g.unk7C == 0) {
+            if (frontendOptions_g.leagueRacesLeft == 0) {
                 g_menuScreen = 36;
             } else {
                 frontendOptions_g.mode = 3;
@@ -2706,7 +2706,7 @@ Gfx *QuitLeagueMenu(Gfx *glistp) {
                 g_menuScreen = 3;
             }
         } else if (res == 2) {
-            if (frontendOptions_g.unk7C == 0) {
+            if (frontendOptions_g.leagueRacesLeft == 0) {
                 g_menuScreen = 1;
             } else {
                 g_quitLeaguePrompt = 1;
@@ -2777,7 +2777,7 @@ uSprite *LoadFrontendSprites(s32 cols, s32 rows, u32 kind) {
     s32 i;
     N64TextureStub *tex;
 
-    startTex = g_unk8008A970;
+    startTex = TextureTableCount;
     switch (kind) {
         case 0:
             timList = LoadCompressedTextureSequence((u32)_feSpritesCmp0);
@@ -2893,7 +2893,7 @@ void InitFrontendSprites(void) {
     g_feDlistStart = FrontendDList;
     ASSERT(FrontendDList, 5868);
 
-    g_unk8008A970 = 0;
+    TextureTableCount = 0;
     g_boxSprites0 = LoadFrontendSprites(10, 8, 0);
     g_boxSprites1 = LoadFrontendSprites(10, 8, 1);
     g_feWad = OpenWadFileNvc((u32)_feSpritesWad);
@@ -2919,7 +2919,7 @@ void PackGameAndScoresSaveData(void) {
     g_saveBuf[7] = g_gameConfigMenu[3].value;
     g_saveBuf[8] = g_gameConfigMenu[4].value;
     g_saveBuf[9] = g_gameConfigMenu[5].value;
-    if (g_unk80094F7E) {
+    if (g_superComboUnlocked) {
         g_saveBuf[5] = g_gameConfigMenu[6].value;
     } else {
         g_saveBuf[5] = 0;
@@ -3178,7 +3178,7 @@ void StartupLogosAndAutoLoad(void) {
         osContStartReadData(&g_siMsgQ);
         osContGetReadData(g_contPads);
         CleanupStartupLogos();
-        g_unk8008A9DC = 0;
+        g_frontendLoaded = 0;
         g_startupActive = 0;
     } else {
         now = osGetTime();
@@ -3222,7 +3222,7 @@ void UnlockAllChallengesCheat(void) {
         g_weaponChallengeMenu[i].enabled = TRUE;
         g_weaponChallengeMenu[i].hidden = FALSE;
     }
-    g_unk80094F7E = TRUE;
+    g_superComboUnlocked = TRUE;
     g_challengeMenu[3].hidden = FALSE;
 
     for (i = 0; i < 7; i++) {
@@ -3290,7 +3290,7 @@ u8 StartupWarningAndInit(void) {
         }
 
         if (g_startupWarningTimer == 8 * FRAME_RATE - 2) {
-            g_unk8008A970 = 600;
+            TextureTableCount = 600;
             g_heap = g_heapA = g_heapB = g_mainHeap;
             for (i = 0; i < 4; i++) {
                 g_cameras[i].camPos = NewSkeleton();
@@ -3315,7 +3315,7 @@ u8 StartupWarningAndInit(void) {
             InitRenderList(g_renderList, 0, g_animTextureCount);
             CloseWadFileNvc(g_startupImage);
             g_startupData->current = 9;
-            texIdx = g_unk8008A970;
+            texIdx = TextureTableCount;
             LoadCmpFiles(WADLoadCompressedTextureSequence(g_startupData));
             tex = g_textureTable[texIdx];
             guSprite2DInit(&g_loaderSprite, (void *)OS_K0_TO_PHYSICAL(tex->pixels),
@@ -3323,7 +3323,7 @@ u8 StartupWarningAndInit(void) {
                            tex->type != 0 ? G_IM_SIZ_8b : G_IM_SIZ_4b, 0, 0);
             CloseWadFileNvc(g_startupData);
             g_demoMode = 1;
-            g_unk800AD820 = 0;
+            g_weaponLockFlag = 0;
             g_heap = g_heapA = g_heapB = g_tempHeap;
             InitInGamePlasmaPalette();
         }
@@ -3413,9 +3413,9 @@ void FrontendUpdate(void) {
             frontendOptions_g.numPlayers = 1;
             frontendOptions_g.team = 3;
             g_gameType = 0;
-            g_unk8009BA0C = 1;
-            g_unk8009BA10 = 0;
-            g_unk800AA084 = 3;
+            g_prevTrackNo = 1;
+            g_prevTeamClass = 0;
+            g_prevTeam = 3;
             ApplyGameConfig();
             SaveControllerConfig();
             g_savedMusicTrack = frontendOptions_g.musicTrack = g_audioConfigMenu[0].value;
@@ -3557,7 +3557,7 @@ void FrontendUpdate(void) {
                 g_feDlistEnd = ControllerPakMenu(g_feDlistEnd);
                 break;
             case 23:
-                g_feDlistEnd = FrontendStub_80057520(g_feDlistEnd);
+                g_feDlistEnd = MenuScreenUnused(g_feDlistEnd);
                 break;
             case 38:
                 break;
@@ -3729,9 +3729,9 @@ void LoadFrontendModels(void) {
     ObjectStub *obj;
     WadFileStub *wad;
 
-    startTex = g_unk8008A970;
+    startTex = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_feWad));
-    InitRenderList(g_feRenderList, startTex, g_unk8008A970 - startTex);
+    InitRenderList(g_feRenderList, startTex, TextureTableCount - startTex);
 
     i = 0;
     obj = WADLoadPrm(g_feWad, g_feRenderList);
@@ -3791,9 +3791,9 @@ void LoadSpinningMedal(void) {
 
     wad = OpenWadFile((u32)_feMedalWad);
     wad->current = 10;
-    g_medalTexStart = g_unk8008A970;
+    g_medalTexStart = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(wad));
-    g_medalTexCount = g_unk8008A970 - g_medalTexStart;
+    g_medalTexCount = TextureTableCount - g_medalTexStart;
     CloseWadFile(wad);
 
     g_medalSprite = NULL;
@@ -3822,7 +3822,7 @@ void InitFrontend(void) {
     g_feDlistStart = FrontendDList;
     ASSERT(FrontendDList, 7851);
 
-    g_unk8008A970 = 0;
+    TextureTableCount = 0;
     for (i = 0; i < 4; i++) {
         SetSkeletonPosition(g_cameras[i].camPos, 0, 0, 0);
         SetSkeletonDirection(g_cameras[i].camPos, 0, 0, 0);
@@ -3831,7 +3831,7 @@ void InitFrontend(void) {
     }
 
     g_feWad = OpenWadFileNvc((u32)_feSpritesWad);
-    startTex = g_unk8008A970;
+    startTex = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_feWad));
 
     g_menuSprites = NULL;
@@ -3841,7 +3841,7 @@ void InitFrontend(void) {
 
     for (i = 0; i < 48; i++) {
         if (i == 18) {
-            g_unk800A0EE4 = startTex + 18;
+            g_font3TexStart = startTex + 18;
         }
         tex = g_textureTable[startTex + i];
         bitSize = (tex->type == 0) ? G_IM_SIZ_4b : G_IM_SIZ_8b;
@@ -3873,17 +3873,17 @@ void InitFrontend(void) {
 
 void CleanupStartupLogos(void) {
     DInit(g_tempHeap, 0x184C00);
-    g_unk8009234C = NULL;
-    g_unk80092350 = NULL;
-    g_unk80092354 = NULL;
-    g_unk80092358 = NULL;
-    g_unk8009235C = 0;
-    g_unk80092360 = 0;
-    g_unk80092364 = 0;
-    g_unk80092368 = 0;
-    g_unk8009236C = 0;
-    g_unk80092370 = 0;
-    g_unk8008A970 = 0;
+    g_challengeModelDl = NULL;
+    g_challengeModelVtx = NULL;
+    g_challengeMedalDl = NULL;
+    g_challengeMedalVtx = NULL;
+    g_podium1stDl = 0;
+    g_podium1stVtx = 0;
+    g_podium2ndDl = 0;
+    g_podium2ndVtx = 0;
+    g_podium3rdDl = 0;
+    g_podium3rdVtx = 0;
+    TextureTableCount = 0;
     g_heap = g_heapA = g_heapB = g_tempHeap;
 }
 
@@ -4240,7 +4240,7 @@ Gfx *AudioConfigMenu(Gfx *glistp) {
 
     /* Separate else arm prevents cse_skip_blocks from caching &frontendOptions_g in $s1 across musicTrack != 8 */
     if (frontendOptions_g.musicTrack != 8) {
-        artist = GetCdTrackArtist(frontendOptions_g.unk70);
+        artist = GetCdTrackArtist(frontendOptions_g.currentMusicTrack);
         sprintf(artistBuf, "[%s]", artist);
         glistp = AddCentreText(artistBuf, 160, 102, 8, glistp);
     } else {
@@ -4324,7 +4324,7 @@ void LoadAudioSliderSprites(void) {
     s32 startTex;
     s32 i;
 
-    startTex = g_unk8008A970;
+    startTex = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_feWad));
 
     for (i = 0; i < 4; i++) {
@@ -5115,10 +5115,10 @@ Gfx *MultiplayerStartMenu(Gfx *glistp) {
                 if (sameTeam[i]) {
                     if (sameIdx == 3) {
                         if (teamBase == 12) {
-                            g_unk800923F9 = 1;
+                            g_fourPlayerSameTeam = 1;
                             frontendOptions_g.ownShip[i] = 3;
                         } else {
-                            g_unk800923F9 = 1;
+                            g_fourPlayerSameTeam = 1;
                             frontendOptions_g.ownShip[i] = 12;
                         }
                     } else {
@@ -5158,7 +5158,7 @@ Gfx *MultiplayerStartMenu(Gfx *glistp) {
             g_multiSlots[p].state = 1;
         }
         g_demoMode = 0;
-        frontendOptions_g.unk7C = frontendOptions_g.leagueRaces;
+        frontendOptions_g.leagueRacesLeft = frontendOptions_g.leagueRaces;
         StartGame();
     }
 
@@ -6213,21 +6213,21 @@ Gfx *RenderChallengeMedal3D(MenuItem *menu, Dynamic *dp, s32 isChallengeList, Gf
                 obj = g_feModels[modelIdx];
 
                 if (part == 0) {
-                    if (g_unk80092354 != NULL) {
-                        DFree(g_heap, g_unk80092354);
+                    if (g_challengeMedalDl != NULL) {
+                        DFree(g_heap, g_challengeMedalDl);
                     }
-                    if (g_unk80092358 != NULL) {
-                        DFree(g_heap, g_unk80092358);
+                    if (g_challengeMedalVtx != NULL) {
+                        DFree(g_heap, g_challengeMedalVtx);
                     }
-                    BuildEnvMapDisplayList(obj, dp, modelIdx, ch->award, &g_unk80092358, (Gfx **)&g_unk80092354);
+                    BuildEnvMapDisplayList(obj, dp, modelIdx, ch->award, &g_challengeMedalVtx, (Gfx **)&g_challengeMedalDl);
                 } else {
-                    if (g_unk8009234C != NULL) {
-                        DFree(g_heap, g_unk8009234C);
+                    if (g_challengeModelDl != NULL) {
+                        DFree(g_heap, g_challengeModelDl);
                     }
-                    if (g_unk80092350 != NULL) {
-                        DFree(g_heap, g_unk80092350);
+                    if (g_challengeModelVtx != NULL) {
+                        DFree(g_heap, g_challengeModelVtx);
                     }
-                    BuildEnvMapDisplayList(obj, dp, modelIdx, ch->award, &g_unk80092350, (Gfx **)&g_unk8009234C);
+                    BuildEnvMapDisplayList(obj, dp, modelIdx, ch->award, &g_challengeModelVtx, (Gfx **)&g_challengeModelDl);
                 }
 
                 SetSkeletonDirectionHPR(obj->skeleton, g_modelAngle, g_modelTransforms[modelIdx].pitch,
@@ -6242,9 +6242,9 @@ Gfx *RenderChallengeMedal3D(MenuItem *menu, Dynamic *dp, s32 isChallengeList, Gf
                           G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
                 g_mtxCount++;
                 if (part == 0) {
-                    gSPDisplayList(dl++, g_unk80092354);
+                    gSPDisplayList(dl++, g_challengeMedalDl);
                 } else {
-                    gSPDisplayList(dl++, g_unk8009234C);
+                    gSPDisplayList(dl++, g_challengeModelDl);
                 }
             }
 
@@ -6256,14 +6256,14 @@ Gfx *RenderChallengeMedal3D(MenuItem *menu, Dynamic *dp, s32 isChallengeList, Gf
     } else {
         modelIdx = menu[g_menuItem].modelIdx;
         obj = g_feModels[modelIdx];
-        if (g_unk8009234C == NULL || g_unk80092350 == NULL || modelIdx != g_envMapCachedModel) {
-            if (g_unk8009234C != NULL) {
-                DFree(g_heap, g_unk8009234C);
+        if (g_challengeModelDl == NULL || g_challengeModelVtx == NULL || modelIdx != g_envMapCachedModel) {
+            if (g_challengeModelDl != NULL) {
+                DFree(g_heap, g_challengeModelDl);
             }
-            if (g_unk80092350 != NULL) {
-                DFree(g_heap, g_unk80092350);
+            if (g_challengeModelVtx != NULL) {
+                DFree(g_heap, g_challengeModelVtx);
             }
-            BuildEnvMapDisplayList(obj, dp, modelIdx, 3, &g_unk80092350, (Gfx **)&g_unk8009234C);
+            BuildEnvMapDisplayList(obj, dp, modelIdx, 3, &g_challengeModelVtx, (Gfx **)&g_challengeModelDl);
             g_envMapCachedModel = modelIdx;
         }
         SetSkeletonDirectionHPR(obj->skeleton, g_modelAngle, g_modelTransforms[modelIdx].pitch,
@@ -6278,7 +6278,7 @@ Gfx *RenderChallengeMedal3D(MenuItem *menu, Dynamic *dp, s32 isChallengeList, Gf
             SetSkeletonPosition(obj->skeleton, 0, g_modelTransforms[modelIdx].y, g_modelTransforms[modelIdx].z);
         }
         MatrixToN64Mtx(GetSkeletonMatrix(obj->skeleton), &g_mtxPool[g_mtxCount]);
-        AddRenderDisplayList(g_feRenderList, (Gfx **)&g_unk8009234C, &g_mtxPool[g_mtxCount]);
+        AddRenderDisplayList(g_feRenderList, (Gfx **)&g_challengeModelDl, &g_mtxPool[g_mtxCount]);
         g_mtxCount++;
         glistp = FlushSkyRenderList(g_feRenderList, glistp);
     }
@@ -6293,7 +6293,7 @@ Gfx *RenderChallengeMedal3D(MenuItem *menu, Dynamic *dp, s32 isChallengeList, Gf
  * threshold = (n_non_fixed_regs + 1) * 1 = 61 and move_movables (0x48dd88)
  * hoists a movable iff lifetime * savings * threshold >= insn_count, then
  * decrements threshold -= 3 (0x48e28f). In retail, %hi(tournamentTableStandingCount),
- * %hi(g_unk8009235C), and &g_unk80092360 stay unhoisted while &jtbl stays hoisted.
+ * %hi(g_podium1stDl), and &g_podium1stVtx stay unhoisted while &jtbl stays hoisted.
  * Under #ifndef NON_MATCHING, two flow-eliminated loop-carried expressions lower
  * threshold by 6 before tournamentTableStandingCount and by 9 before place == 1
  * (emitting zero instructions) to reproduce retail's exact hoist set.
@@ -6330,7 +6330,7 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
             continue;
         }
         shipIdx = g_leagueStandings[tournamentTableStandingCount - place].shipIdx;
-        if (g_unk800923F9 && shipIdx == ownShip4) {
+        if (g_fourPlayerSameTeam && shipIdx == ownShip4) {
             shipIdx = ownShip3;
         }
         switch (shipIdx) {
@@ -6367,36 +6367,36 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
         SetSkeletonDirectionHPR(obj->skeleton, g_modelAngle, 0, 0);
 
         if (place == 1) {
-            if (g_unk8009235C == NULL || g_unk80092360 == NULL) {
-                if (g_unk8009235C != NULL) {
-                    DFree(g_heap, g_unk8009235C);
+            if (g_podium1stDl == NULL || g_podium1stVtx == NULL) {
+                if (g_podium1stDl != NULL) {
+                    DFree(g_heap, g_podium1stDl);
                 }
-                if (g_unk80092360 != NULL) {
-                    DFree(g_heap, g_unk80092360);
+                if (g_podium1stVtx != NULL) {
+                    DFree(g_heap, g_podium1stVtx);
                 }
-                BuildEnvMapDisplayList(obj, dp, 0, 3, &g_unk80092360, &g_unk8009235C);
+                BuildEnvMapDisplayList(obj, dp, 0, 3, &g_podium1stVtx, &g_podium1stDl);
             }
             SetSkeletonPosition(obj->skeleton, 0, 0, 400);
         } else if (place == 2) {
-            if (g_unk80092364 == NULL || g_unk80092368 == NULL) {
-                if (g_unk80092364 != NULL) {
-                    DFree(g_heap, g_unk80092364);
+            if (g_podium2ndDl == NULL || g_podium2ndVtx == NULL) {
+                if (g_podium2ndDl != NULL) {
+                    DFree(g_heap, g_podium2ndDl);
                 }
-                if (g_unk80092368 != NULL) {
-                    DFree(g_heap, g_unk80092368);
+                if (g_podium2ndVtx != NULL) {
+                    DFree(g_heap, g_podium2ndVtx);
                 }
-                BuildEnvMapDisplayList(obj, dp, 0, 2, &g_unk80092368, &g_unk80092364);
+                BuildEnvMapDisplayList(obj, dp, 0, 2, &g_podium2ndVtx, &g_podium2ndDl);
             }
             SetSkeletonPosition(obj->skeleton, -380, 200, 650);
         } else if (place == 3) {
-            if (g_unk8009236C == NULL || g_unk80092370 == NULL) {
-                if (g_unk8009236C != NULL) {
-                    DFree(g_heap, g_unk8009236C);
+            if (g_podium3rdDl == NULL || g_podium3rdVtx == NULL) {
+                if (g_podium3rdDl != NULL) {
+                    DFree(g_heap, g_podium3rdDl);
                 }
-                if (g_unk80092370 != NULL) {
-                    DFree(g_heap, g_unk80092370);
+                if (g_podium3rdVtx != NULL) {
+                    DFree(g_heap, g_podium3rdVtx);
                 }
-                BuildEnvMapDisplayList(obj, dp, 0, 1, &g_unk80092370, &g_unk8009236C);
+                BuildEnvMapDisplayList(obj, dp, 0, 1, &g_podium3rdVtx, &g_podium3rdDl);
             }
             SetSkeletonPosition(obj->skeleton, 560, 410, 900);
         }
@@ -6406,11 +6406,11 @@ Gfx *RenderFinalStandings3D(Dynamic *dp, Gfx *glistp) {
         g_mtxCount++;
 
         if (place == 1) {
-            gSPDisplayList(dl++, g_unk8009235C);
+            gSPDisplayList(dl++, g_podium1stDl);
         } else if (place == 2) {
-            gSPDisplayList(dl++, g_unk80092364);
+            gSPDisplayList(dl++, g_podium2ndDl);
         } else if (place == 3) {
-            gSPDisplayList(dl++, g_unk8009236C);
+            gSPDisplayList(dl++, g_podium3rdDl);
         }
     }
 

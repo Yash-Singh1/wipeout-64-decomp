@@ -34,7 +34,7 @@ typedef struct GFXInfo {
     /* 0x7AA8 / 0x7EA8 */ OSScMsg doneMsg;
     /* 0x7AC8 / 0x7EC8 */ OSScMsg taskMsg[NUM_TASK_MSGS];
     /* 0x7BA8 / 0x7FA8 */ u16 *cfb;
-    /* 0x7BAC / 0x7FAC */ s32 unk_7BAC;
+    /* 0x7BAC / 0x7FAC */ s32 overlayDListPtr;
     /* 0x7BB0 / 0x7FB0 */ s32 mode;
     /* 0x7BB4 / 0x7FB4 */ s32 flags;
 } GFXInfo; /* size = 0x7BB8 (US) / 0x7FB8 (EU) */

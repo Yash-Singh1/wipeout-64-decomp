@@ -429,7 +429,7 @@ typedef struct RaceFrontendOptions {
     /* 0x60 */ ChallengeEntry *challengeTable;
     /* 0x64 */ void *challengeClass;
     /* 0x68 */ u8 unk68[0x14];
-    /* 0x7C */ u8 unk7C;
+    /* 0x7C */ u8 leagueRacesLeft;
 } RaceFrontendOptions;
 
 typedef struct RaceConfigData {
@@ -440,7 +440,7 @@ typedef struct RaceConfigData {
     /* 0x07 */ s8 ship2Num;
     /* 0x08 */ s8 shipClass;
     /* 0x09 */ u8 unk09[3];
-    /* 0x0C */ u8 unk0C;
+    /* 0x0C */ u8 exitCode;
     /* 0x0D */ u8 unk0D[5];
     /* 0x12 */ s16 raceInfo[4];
     /* 0x1A */ s16 complete;
@@ -476,8 +476,8 @@ typedef struct RaceShipData {
     /* 0x0BF */ u8 unkBF[0x25];
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ u8 unkE8[0x08];
-    /* 0x0F0 */ s32 unkF0;
-    /* 0x0F4 */ u8 unkF4;
+    /* 0x0F0 */ s32 eliminations;
+    /* 0x0F4 */ u8 activeInLeague;
     /* 0x0F5 */ u8 unkF5[0x0F];
     /* 0x104 */ ShipUpdateFunc update;
 } RaceShipData; /* size = 0x108 */

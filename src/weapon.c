@@ -338,9 +338,9 @@ void MissileLock(s32 shipNo, ShipData *ships, u8 weapon) {
     s32 nearShip;
 
     s = &ships[shipNo];
-    sec = g_unkAlloc9600[s->nearSecNo].distance;
+    sec = raceLines[s->nearSecNo].distance;
     if (s->targetShip != -1) {
-        diff = g_unkAlloc9600[ships[s->targetShip].nearSecNo].distance - sec;
+        diff = raceLines[ships[s->targetShip].nearSecNo].distance - sec;
         if (diff < 0) {
             diff += numTrackSections;
         }
@@ -351,7 +351,7 @@ void MissileLock(s32 shipNo, ShipData *ships, u8 weapon) {
     if (s->targetShip == -1) {
         nearShip = (s16)getShipInfrontLAP(ships, shipNo);
         if (nearShip != -1) {
-            diff = g_unkAlloc9600[ships[nearShip].nearSecNo].distance - sec;
+            diff = raceLines[ships[nearShip].nearSecNo].distance - sec;
             if (diff < 0) {
                 diff += numTrackSections;
             }
@@ -375,8 +375,8 @@ void RearMissileLock(s32 shipNo, ShipData *ships) {
     nearShip = (s16)getShipBehindLAP(ships, shipNo);
     s = &ships[shipNo];
     if (nearShip != -1) {
-        nearDistance = g_unkAlloc9600[ships[nearShip].nearSecNo].distance;
-        diff = g_unkAlloc9600[s->nearSecNo].distance - nearDistance;
+        nearDistance = raceLines[ships[nearShip].nearSecNo].distance;
+        diff = raceLines[s->nearSecNo].distance - nearDistance;
         if (diff < 0) {
             diff += numTrackSections;
         }
@@ -433,10 +433,10 @@ void InitWeapons(WeaponShape *shapes, Skeleton *camPos, WeaponData *weapons) {
     s32 i;
 
     wad = OpenWadFileNvc((u32)_startupDataFile);
-    textureStart = g_unk8008A970;
+    textureStart = TextureTableCount;
     wad->current = 18;
     LoadCmpFiles(WADLoadCompressedTextureSequence(wad));
-    InitRenderList(&weaponRenderList, textureStart, g_unk8008A970 - textureStart);
+    InitRenderList(&weaponRenderList, textureStart, TextureTableCount - textureStart);
     shapes[0].shapePtr = WADLoadPrm(wad, &weaponRenderList);
     CloseWadFileNvc(wad);
 
@@ -657,7 +657,7 @@ void InitialiseBumps(void) {
        (i) != (weapon)->owner) ||                                                                         \
       (gameType == 3 && frontendOptions_g.numPlayers == 2 && (i) != (weapon)->owner) ||                   \
       (gameType == 3 && frontendOptions_g.numPlayers == 3 &&                                              \
-       ((i) == ownShip || (i) == ownShip2 || (i) == ownShip3 || (ship)->unkF4 != 0) &&                    \
+       ((i) == ownShip || (i) == ownShip2 || (i) == ownShip3 || (ship)->activeInLeague != 0) &&                    \
        (i) != (weapon)->owner)))
 
 /* PAL (50 Hz) vs NTSC (60 Hz) weapon timers and acceleration scaling.
@@ -1186,7 +1186,7 @@ Gfx *UpdateMinigunBullet(ShipData *ships, WeaponShape *shapes, WeaponData *weapo
                 dist.vz = (ship->ppivot.vz - weapon->pos.vz) >> 3;
                 if (GetMagnitude(dist) < 100) {
                     if (!(ship->attr & 0x4000) && !(ship->combatAttr & 0x100)) {
-                        prevHits = ships[weapon->owner].unkF0;
+                        prevHits = ships[weapon->owner].eliminations;
                         DamageCollide(15, i, weapon);
                         if (i == ownShip) {
                             SetRumble(8, 0);
@@ -1201,7 +1201,7 @@ Gfx *UpdateMinigunBullet(ShipData *ships, WeaponShape *shapes, WeaponData *weapo
                             SetRumble(8, 3);
                             SetShake(20, 3);
                         }
-                        if (prevHits < ships[weapon->owner].unkF0) {
+                        if (prevHits < ships[weapon->owner].eliminations) {
                             PlayNote(0xA, 0xFF, 0xF, 0xF, 0x100);
                             if (i == weapon->target) {
                                 ships[weapon->owner].targetShip = -1;
@@ -1803,7 +1803,7 @@ Gfx *InitShipDebris(ShipData *ships, WeaponShape *shapes, WeaponData *weapon, We
             weapon->pitch = 0;
             weapon->hdg = 0;
 
-            if (g_unk800923F9 && weapon->owner == ownShip4) {
+            if (g_fourPlayerSameTeam && weapon->owner == ownShip4) {
                 team = GetShipTeam(ownShip3);
             } else {
                 team = GetShipTeam(weapon->owner);
@@ -2988,7 +2988,7 @@ void Weapon2Mine(WeaponData *weapon, WeaponData *weapons, WeaponShape *shapes, s
 s16 GetShipTeam(s32 shipNo) {
     s16 weapon;
 
-    if (g_unk800923F9 && shipNo == ownShip4) {
+    if (g_fourPlayerSameTeam && shipNo == ownShip4) {
         shipNo = ownShip3;
     }
     switch (shipNo / 3) {
@@ -3695,7 +3695,7 @@ void ScaleChallengeDamage(s32 *damage, s32 kind) {
 void DamageCollide(s32 damageType, s32 shipNo, WeaponData *weapon) {
     s32 damage;
 
-    if (ships[shipNo].unkFC == 0 &&
+    if (ships[shipNo].finishPosition == 0 &&
         (shipNo != ownShip || pauseRequests[0] == 0) &&
         (frontendOptions_g.numPlayers < 2 || shipNo != ownShip2 || pauseRequests[1] == 0) &&
         (frontendOptions_g.numPlayers < 3 || shipNo != ownShip3 || pauseRequests[2] == 0) &&
@@ -3837,10 +3837,10 @@ void DamageCollide(s32 damageType, s32 shipNo, WeaponData *weapon) {
                 }
                 if (weapon == NULL) {
                     if (damageType == 0x82) {
-                        ships[g_lastRammingShip].unkF0++;
+                        ships[g_lastRammingShip].eliminations++;
                     }
                 } else {
-                    ships[weapon->owner].unkF0++;
+                    ships[weapon->owner].eliminations++;
                 }
             }
         }

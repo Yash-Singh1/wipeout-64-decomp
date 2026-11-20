@@ -244,7 +244,7 @@ void InitTrails(void);
 void NewTrailSegment(s32 ship, VECTOR *left, VECTOR *right);
 void BuildOwnShipTrail(s32 ship, VECTOR *left, VECTOR *right);
 void DrawTrail(VECTOR *flarePos, MATRIX *mat, Trail *trail, s32 ship, s32 player);
-void DrawShipTrails(TrackCamera *camera, void *arg1, s32 player);
+void DrawShipTrails(TrackCamera *camera, void *unused, s32 player);
 void UpdateShipTrails(ShipData *shipIndex, s32 allShips);
 
 #endif /* WIPEOUT64_TRAIL_H */

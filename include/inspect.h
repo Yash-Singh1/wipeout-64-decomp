@@ -18,17 +18,17 @@
 #define _aiDamageFile           D_3E5700
 
 #ifdef VERSION_EU
-#define InspectStub_8006F540    func_800714E0
-#define InspectStub_8006F548    func_800714E8
-#define InspectStub_8006F550    func_800714F0
-#define InspectStub_8006F558    func_800714F8
-#define InspectStub_8006F560    func_80071500
-#define InspectStub_8006F568    func_80071508
-#define InspectStub_8006F570    func_80071510
+#define InspectDebugStub1    func_800714E0
+#define InspectDebugStub2    func_800714E8
+#define InspectDebugStub3    func_800714F0
+#define InspectDebugStub4    func_800714F8
+#define InspectDebugStub5    func_80071500
+#define InspectDebugStub6    func_80071508
+#define InspectDebugStub7    func_80071510
 #define InspectLoadAiDamage     func_80071518
 #define InspectLoadAiShips      func_800717A4
-#define InspectStub_8006FC38    func_80071BD8
-#define InspectStub_8006FC40    func_80071BE0
+#define InspectDebugStub8    func_80071BD8
+#define InspectDebugStub9    func_80071BE0
 
 #ifndef errorString
 #define errorString             D_800AE520
@@ -57,17 +57,17 @@
 #define g_aiBoostMaxThrust      D_80091178
 #define g_aiBoostThrustMag      D_80091188
 #else
-#define InspectStub_8006F540    func_8006F540
-#define InspectStub_8006F548    func_8006F548
-#define InspectStub_8006F550    func_8006F550
-#define InspectStub_8006F558    func_8006F558
-#define InspectStub_8006F560    func_8006F560
-#define InspectStub_8006F568    func_8006F568
-#define InspectStub_8006F570    func_8006F570
+#define InspectDebugStub1    func_8006F540
+#define InspectDebugStub2    func_8006F548
+#define InspectDebugStub3    func_8006F550
+#define InspectDebugStub4    func_8006F558
+#define InspectDebugStub5    func_8006F560
+#define InspectDebugStub6    func_8006F568
+#define InspectDebugStub7    func_8006F570
 #define InspectLoadAiDamage     func_8006F578
 #define InspectLoadAiShips      func_8006F804
-#define InspectStub_8006FC38    func_8006FC38
-#define InspectStub_8006FC40    func_8006FC40
+#define InspectDebugStub8    func_8006FC38
+#define InspectDebugStub9    func_8006FC40
 
 #ifndef errorString
 #define errorString             D_800A0F40
@@ -157,16 +157,16 @@ extern s32 g_aiBoostThrustMag[4];
 int sprintf(char *dst, const char *fmt, ...);
 void *memcpy(void *dst, const void *src, size_t len);
 
-void InspectStub_8006F540(void);
-void InspectStub_8006F548(void);
-void InspectStub_8006F550(void);
-void InspectStub_8006F558(void);
-void InspectStub_8006F560(void);
-void InspectStub_8006F568(void);
-void InspectStub_8006F570(void);
+void InspectDebugStub1(void);
+void InspectDebugStub2(void);
+void InspectDebugStub3(void);
+void InspectDebugStub4(void);
+void InspectDebugStub5(void);
+void InspectDebugStub6(void);
+void InspectDebugStub7(void);
 void InspectLoadAiDamage(void);
 void InspectLoadAiShips(void);
-void InspectStub_8006FC38(void);
-void InspectStub_8006FC40(void);
+void InspectDebugStub8(void);
+void InspectDebugStub9(void);
 
 #endif /* WIPEOUT64_INSPECT_H */

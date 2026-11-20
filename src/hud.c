@@ -17,15 +17,15 @@ void InitHud(void) {
     s32 start;
 
     g_startupData->current = 3;
-    g_font16TexStart = g_unk8008A970;
+    g_font16TexStart = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_startupData));
     g_startupData->current = 10;
-    g_font12TexStart = g_unk8008A970;
+    g_font12TexStart = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_startupData));
     g_startupData->current = 11;
-    g_font8TexStart = g_unk8008A970;
+    g_font8TexStart = TextureTableCount;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_startupData));
-    start = g_unk8008A970;
+    start = TextureTableCount;
     g_startupData->current = 12;
     LoadCmpFiles(WADLoadCompressedTextureSequence(g_startupData));
     guSprite2DInit(&g_delIconSprite, (u8 *)g_textureTable[start]->texels - K0BASE,
@@ -109,7 +109,7 @@ void InitSpeedoSprites(uSprite *sprites, uSprite *mpSprites) {
 #endif
 
 Gfx *FillSpeedo(uSprite *sprites1P, uSprite *spritesMP, ShipData *shipList, ConfigData *config,
-                   s32 arg4, s32 shipNo, u32 layout, Gfx *glistp) {
+                   s32 pauseState, s32 shipNo, u32 layout, Gfx *glistp) {
     s32 classSpeeds[4] = { 125, 167, 209, 250 };
     s32 unused[4] = { 990, 1370, 1800, 2100 };
     uSprite *sprites;
@@ -290,7 +290,7 @@ Gfx *FillSpeedo(uSprite *sprites1P, uSprite *spritesMP, ShipData *shipList, Conf
         shieldSprite->s.SubImageWidth = ratio * 42.0f;
     }
 
-    if (arg4 != -1) {
+    if (pauseState != -1) {
         gSPSprite2DBase(glistp++, OS_K0_TO_PHYSICAL(shieldSprite));
         gSPSprite2DScaleFlip(glistp++, 1 << 10, 1 << 10, 0, 0);
         gSPSprite2DDraw(glistp++, x4, y4);
@@ -1610,7 +1610,7 @@ Gfx *DrawPlayerHud(ShipData *shipList, uSprite *sprites1P, uSprite *spritesMP, s
         for (i = 0; i < 15; i++) {
             if (!(shipList[i].combatAttr & 0x8000) &&
                 shipList[i].lap < g_classLaps[config->shipClass] + 2) {
-                distDelta = shipList[i].trackDistance - ((RaceLineEntry *)g_unkAlloc9600)[shipList[i].nearTrkSect->secNo].dist;
+                distDelta = shipList[i].trackDistance - ((RaceLineEntry *)raceLines)[shipList[i].nearTrkSect->secNo].dist;
                 if (distDelta > (numTrackSections >> 1)) {
                     if (shipList[i].reverseLap == 0) {
                         shipList[i].lap++;
@@ -1699,8 +1699,8 @@ Gfx *DrawPlayerHud(ShipData *shipList, uSprite *sprites1P, uSprite *spritesMP, s
                 if (curLap < 0) {
                     curLap = 0;
                 }
-                shipList[i].distance = curLap * numTrackSections + ((RaceLineEntry *)g_unkAlloc9600)[shipList[i].nearTrkSect->secNo].dist;
-                shipList[i].trackDistance = ((RaceLineEntry *)g_unkAlloc9600)[shipList[i].nearTrkSect->secNo].dist;
+                shipList[i].distance = curLap * numTrackSections + ((RaceLineEntry *)raceLines)[shipList[i].nearTrkSect->secNo].dist;
+                shipList[i].trackDistance = ((RaceLineEntry *)raceLines)[shipList[i].nearTrkSect->secNo].dist;
             }
         }
     }
@@ -1729,7 +1729,7 @@ Gfx *DrawPlayerHud(ShipData *shipList, uSprite *sprites1P, uSprite *spritesMP, s
     }
 
     for (m = 0; m < 15; m++) {
-        if (shipList[m].unkF4 != 0 && !(shipList[m].combatAttr & 0x8000) && shipList[m].unkFC == 0) {
+        if (shipList[m].activeInLeague != 0 && !(shipList[m].combatAttr & 0x8000) && shipList[m].finishPosition == 0) {
             pos = GetShipPosition(shipList, m);
             if (pos == 1 && g_podiumLocked[0] == -1) {
                 g_podiumShips[0] = m;
@@ -1739,7 +1739,7 @@ Gfx *DrawPlayerHud(ShipData *shipList, uSprite *sprites1P, uSprite *spritesMP, s
                 g_podiumShips[2] = m;
             }
             if (shipList[m].lap > g_classLaps[config->shipClass]) {
-                shipList[m].unkFC = pos;
+                shipList[m].finishPosition = pos;
                 if (pos == 1) {
                     g_podiumLocked[0] = 1;
                 } else if (pos == 2) {
@@ -1997,10 +1997,10 @@ Gfx *DrawPlayerHud(ShipData *shipList, uSprite *sprites1P, uSprite *spritesMP, s
         if (g_gameType != 1 && (g_gameType != 6 || frontendOptions_g.challengeMode != 2)) {
             if (attractMode == 2) {
                 glistp = DrawButtonPrompt(elimIconX, elimIconY, 14, NULL, glistp);
-                glistp = AddJustifyNumber(shipList[shipNo].unkF0, elimNumX, elimNumY, 8, 1, glistp);
+                glistp = AddJustifyNumber(shipList[shipNo].eliminations, elimNumX, elimNumY, 8, 1, glistp);
             } else {
                 glistp = DrawButtonPrompt(elimIconX, elimIconY, 15, NULL, glistp);
-                glistp = DrawFontNumber(shipList[shipNo].unkF0, elimNumX, elimNumY, 8, 1, glistp);
+                glistp = DrawFontNumber(shipList[shipNo].eliminations, elimNumX, elimNumY, 8, 1, glistp);
             }
         }
 
@@ -2603,10 +2603,10 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
             if (shipList[ownShip].combatAttr & 4) {
                 glistp = CentreText("BAD LUCK", badLuckX, badLuckY, 12, 0, glistp);
                 glistp = CentreText("YOU RAN OUT OF TIME", 15, 60, 8, 0, glistp);
-                if (g_unk80092245 != 0) {
+                if (g_timeoutSfxPending != 0) {
                     PlayNote(0x38, 0xFF, 15, 15, 0x100);
                 }
-                g_unk80092245 = 0;
+                g_timeoutSfxPending = 0;
             } else if (g_shipDeathCount[ownShip] < 8) {
                 glistp = CentreText("BAD LUCK", badLuckX, badLuckY, 12, 0, glistp);
                 glistp = CentreText("YOUR SHIP WAS DESTROYED", 45, 60, 8, 0, glistp);
@@ -2615,7 +2615,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
             if (shipList[ownShip].lap >= 2) {
                 glistp = AddText("RACE STATISTICS", statsX, statsY, 8, 0, glistp);
                 glistp = AddText("ELIMINATIONS", elimLabelX, elimLabelY, 8, 0, glistp);
-                glistp = AddNumber(shipList[ownShip].unkF0, elimNumX, elimNumY, 8, 1, glistp);
+                glistp = AddNumber(shipList[ownShip].eliminations, elimNumX, elimNumY, 8, 1, glistp);
                 for (lap = 0; lap < shipList[ownShip].lap - 1; lap++) {
                     glistp = AddText("LAP", lapLabelX, lapLabelY + lap * 12, 8, 0, glistp);
                     glistp = AddNumber(lap + 1, lapNumX, lapNumY + lap * 12, 8, 0, glistp);
@@ -2693,7 +2693,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                     }
                 } else if (frontendOptions_g.challengeMode == 3) {
                     if (frontendOptions_g.challengeIndex == 6) {
-                        if ((f32)shipList[ownShip].unkF0 >= g_weaponChallenges[frontendOptions_g.challengeIndex].goldTarget1) {
+                        if ((f32)shipList[ownShip].eliminations >= g_weaponChallenges[frontendOptions_g.challengeIndex].goldTarget1) {
                             g_challengeMedalLevel = 3;
                             if (g_weaponChallenges[frontendOptions_g.challengeIndex].award < 3) {
                                 g_weaponChallenges[frontendOptions_g.challengeIndex].award = 3;
@@ -2702,21 +2702,21 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                         } else {
                             strcpy(titleBuf, "BAD LUCK");
                         }
-                    } else if ((f32)shipList[ownShip].unkF0 >= g_weaponChallenges[frontendOptions_g.challengeIndex].bronzeTarget1) {
+                    } else if ((f32)shipList[ownShip].eliminations >= g_weaponChallenges[frontendOptions_g.challengeIndex].bronzeTarget1) {
                         strcpy(titleBuf, "CONGRATULATIONS!");
-                        if ((f32)shipList[ownShip].unkF0 >= g_weaponChallenges[frontendOptions_g.challengeIndex].bronzeTarget1) {
+                        if ((f32)shipList[ownShip].eliminations >= g_weaponChallenges[frontendOptions_g.challengeIndex].bronzeTarget1) {
                             g_challengeMedalLevel = 1;
                             if (g_weaponChallenges[frontendOptions_g.challengeIndex].award < 1) {
                                 g_weaponChallenges[frontendOptions_g.challengeIndex].award = 1;
                             }
                         }
-                        if ((f32)shipList[ownShip].unkF0 >= g_weaponChallenges[frontendOptions_g.challengeIndex].silverTarget1) {
+                        if ((f32)shipList[ownShip].eliminations >= g_weaponChallenges[frontendOptions_g.challengeIndex].silverTarget1) {
                             g_challengeMedalLevel = 2;
                             if (g_weaponChallenges[frontendOptions_g.challengeIndex].award < 2) {
                                 g_weaponChallenges[frontendOptions_g.challengeIndex].award = 2;
                             }
                         }
-                        if ((f32)shipList[ownShip].unkF0 >= g_weaponChallenges[frontendOptions_g.challengeIndex].goldTarget1) {
+                        if ((f32)shipList[ownShip].eliminations >= g_weaponChallenges[frontendOptions_g.challengeIndex].goldTarget1) {
                             g_challengeMedalLevel = 3;
                             if (g_weaponChallenges[frontendOptions_g.challengeIndex].award < 3) {
                                 g_weaponChallenges[frontendOptions_g.challengeIndex].award = 3;
@@ -2728,7 +2728,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                 } else if (frontendOptions_g.challengeMode == 4) {
                     if (frontendOptions_g.challengeIndex == 6) {
                         if ((f32)g_finishPosition[0] <= g_superComboChallenges[frontendOptions_g.challengeIndex].goldTarget1 &&
-                            (f32)shipList[ownShip].unkF0 >= g_superComboChallenges[frontendOptions_g.challengeIndex].goldTarget2) {
+                            (f32)shipList[ownShip].eliminations >= g_superComboChallenges[frontendOptions_g.challengeIndex].goldTarget2) {
                             g_challengeMedalLevel = 3;
                             if (g_superComboChallenges[frontendOptions_g.challengeIndex].award < 3) {
                                 g_superComboChallenges[frontendOptions_g.challengeIndex].award = 3;
@@ -2738,24 +2738,24 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                             strcpy(titleBuf, "BAD LUCK");
                         }
                     } else if ((f32)g_finishPosition[0] <= g_superComboChallenges[frontendOptions_g.challengeIndex].bronzeTarget1 &&
-                               (f32)shipList[ownShip].unkF0 >= g_superComboChallenges[frontendOptions_g.challengeIndex].bronzeTarget2) {
+                               (f32)shipList[ownShip].eliminations >= g_superComboChallenges[frontendOptions_g.challengeIndex].bronzeTarget2) {
                         strcpy(titleBuf, "CONGRATULATIONS!");
                         if ((f32)g_finishPosition[0] <= g_superComboChallenges[frontendOptions_g.challengeIndex].bronzeTarget1 &&
-                            (f32)shipList[ownShip].unkF0 >= g_superComboChallenges[frontendOptions_g.challengeIndex].bronzeTarget2) {
+                            (f32)shipList[ownShip].eliminations >= g_superComboChallenges[frontendOptions_g.challengeIndex].bronzeTarget2) {
                             g_challengeMedalLevel = 1;
                             if (g_superComboChallenges[frontendOptions_g.challengeIndex].award < 1) {
                                 g_superComboChallenges[frontendOptions_g.challengeIndex].award = 1;
                             }
                         }
                         if ((f32)g_finishPosition[0] <= g_superComboChallenges[frontendOptions_g.challengeIndex].silverTarget1 &&
-                            (f32)shipList[ownShip].unkF0 >= g_superComboChallenges[frontendOptions_g.challengeIndex].silverTarget2) {
+                            (f32)shipList[ownShip].eliminations >= g_superComboChallenges[frontendOptions_g.challengeIndex].silverTarget2) {
                             g_challengeMedalLevel = 2;
                             if (g_superComboChallenges[frontendOptions_g.challengeIndex].award < 2) {
                                 g_superComboChallenges[frontendOptions_g.challengeIndex].award = 2;
                             }
                         }
                         if ((f32)g_finishPosition[0] <= g_superComboChallenges[frontendOptions_g.challengeIndex].goldTarget1 &&
-                            (f32)shipList[ownShip].unkF0 >= g_superComboChallenges[frontendOptions_g.challengeIndex].goldTarget2) {
+                            (f32)shipList[ownShip].eliminations >= g_superComboChallenges[frontendOptions_g.challengeIndex].goldTarget2) {
                             g_challengeMedalLevel = 3;
                             if (g_superComboChallenges[frontendOptions_g.challengeIndex].award < 3) {
                                 g_superComboChallenges[frontendOptions_g.challengeIndex].award = 3;
@@ -2827,7 +2827,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                         } else {
                             glistp = DrawFontText("GOLD", 0xE1, 0xAF, 8, glistp);
                         }
-                        if (g_unk80092244 != 0) {
+                        if (g_resultSfxPending != 0) {
                             PlayNote(0x34, 0xFF, 15, 15, 0x100);
                         }
                     } else if (g_challengeMedalLevel == 2) {
@@ -2836,7 +2836,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                         } else {
                             glistp = DrawFontText("SILVER", 0xDD, 0xAF, 8, glistp);
                         }
-                        if (g_unk80092244 != 0) {
+                        if (g_resultSfxPending != 0) {
                             PlayNote(0x35, 0xFF, 15, 15, 0x100);
                         }
                     } else if (g_challengeMedalLevel == 1) {
@@ -2845,7 +2845,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                         } else {
                             glistp = DrawFontText("BRONZE", 0xDB, 0xAF, 8, glistp);
                         }
-                        if (g_unk80092244 != 0) {
+                        if (g_resultSfxPending != 0) {
                             PlayNote(0x36, 0xFF, 15, 15, 0x100);
                         }
                     } else {
@@ -2854,7 +2854,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                         } else {
                             glistp = DrawFontText("NO AWARD", 0xD7, 0xAF, 8, glistp);
                         }
-                        if (g_unk80092244 != 0) {
+                        if (g_resultSfxPending != 0) {
                             PlayNote(0x37, 0xFF, 15, 15, 0x100);
                         }
                     }
@@ -2863,25 +2863,25 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                 switch (g_finishPosition[0]) {
                     case 1:
                         strcpy(suffixBuf, "ST");
-                        if (g_unk80092244 != 0 && g_gameType != 6) {
+                        if (g_resultSfxPending != 0 && g_gameType != 6) {
                             PlayNote(0x31, 0xFF, 15, 15, 0x100);
                         }
                         break;
                     case 2:
                         strcpy(suffixBuf, "ND");
-                        if (g_unk80092244 != 0 && g_gameType != 6) {
+                        if (g_resultSfxPending != 0 && g_gameType != 6) {
                             PlayNote(0x32, 0xFF, 15, 15, 0x100);
                         }
                         break;
                     case 3:
                         strcpy(suffixBuf, "RD");
-                        if (g_unk80092244 != 0 && g_gameType != 6) {
+                        if (g_resultSfxPending != 0 && g_gameType != 6) {
                             PlayNote(0x33, 0xFF, 15, 15, 0x100);
                         }
                         break;
                     default:
                         strcpy(suffixBuf, "TH");
-                        if (g_unk80092244 != 0 && g_gameType != 6) {
+                        if (g_resultSfxPending != 0 && g_gameType != 6) {
                             PlayNote(0x2F, 0xFF, 15, 15, 0x100);
                         }
                         break;
@@ -2891,10 +2891,10 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                     glistp = AddTime(g_savedLapTimes[0][0], 0x7B, 0x35, 16, 1, 1, glistp);
                 } else if (g_gameType == 6 && frontendOptions_g.challengeMode == 3) {
                     glistp = DrawButtonPrompt(0x8F, 0x35, 14, NULL, glistp);
-                    glistp = AddNumber(shipList[ownShip].unkF0, 0xA3, 0x37, 12, 1, glistp);
+                    glistp = AddNumber(shipList[ownShip].eliminations, 0xA3, 0x37, 12, 1, glistp);
                 } else if (g_gameType == 6 && frontendOptions_g.challengeMode == 4) {
                     glistp = DrawButtonPrompt(0xAD, 0x35, 14, NULL, glistp);
-                    glistp = AddNumber(shipList[ownShip].unkF0, 0xC1, 0x37, 12, 1, glistp);
+                    glistp = AddNumber(shipList[ownShip].eliminations, 0xC1, 0x37, 12, 1, glistp);
                     glistp = AddNumber(g_finishPosition[0], 0x76, 0x37, 12, 1, glistp);
                     glistp = AddText(suffixBuf, g_textEndX + 2, 0x37, 8, 1, glistp);
                 } else {
@@ -2905,14 +2905,14 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
                 if (g_gameType == 6) {
                     if (frontendOptions_g.challengeMode != 2) {
                         glistp = AddText("ELIMINATIONS", 0x21, 0xC3, 8, 0, glistp);
-                        glistp = AddNumber(shipList[ownShip].unkF0, 0xA3, 0xC3, 8, 1, glistp);
+                        glistp = AddNumber(shipList[ownShip].eliminations, 0xA3, 0xC3, 8, 1, glistp);
                     }
                 } else {
                     glistp = AddText("ELIMINATIONS", elimLabelX, elimLabelY, 8, 0, glistp);
-                    glistp = AddNumber(shipList[ownShip].unkF0, elimNumX, elimNumY, 8, 1, glistp);
+                    glistp = AddNumber(shipList[ownShip].eliminations, elimNumX, elimNumY, 8, 1, glistp);
                 }
             }
-            if (g_gameType == 3 && g_unk80092244 != 0) {
+            if (g_gameType == 3 && g_resultSfxPending != 0) {
                 PlayNote(0x2F, 0xFF, 15, 15, 0x100);
             }
 
@@ -2943,7 +2943,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
             }
 
             if ((g_gameType == 0 || g_gameType == 4) && g_finishPosition[0] < 4) {
-                FontStub_800364C0(0x46, 0, 0xB4, g_raceInfoOverlayArg, 0, g_raceInfoFontCtx);
+                InitFontUnused(0x46, 0, 0xB4, g_raceInfoOverlayArg, 0, g_raceInfoFontCtx);
             }
 
             if (g_gameType == 6 && frontendOptions_g.challengeMode != 2) {
@@ -3000,7 +3000,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
             }
             if (shipList[playerShip].lap >= 2) {
                 glistp = DrawFontTextYellow("ELIMINATIONS", elimLabelX, elimLabelY, 8, glistp);
-                NumberToString(shipList[playerShip].unkF0, numBuf);
+                NumberToString(shipList[playerShip].eliminations, numBuf);
                 glistp = DrawFontText(numBuf, elimNumX, elimNumY, 8, glistp);
                 glistp = DrawFontTextYellow("RACE STATISTICS", statsX, statsY, 8, glistp);
                 for (lap = 0; lap < shipList[playerShip].lap - 1; lap++) {
@@ -3059,7 +3059,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
             }
             glistp = DrawFontText(suffixBuf, suffixX, suffixY, 8, glistp);
             glistp = DrawFontTextYellow("ELIMINATIONS", elimLabelX, elimLabelY, 8, glistp);
-            NumberToString(shipList[playerShip].unkF0, numBuf);
+            NumberToString(shipList[playerShip].eliminations, numBuf);
             glistp = DrawFontText(numBuf, elimNumX, elimNumY, 8, glistp);
             glistp = DrawFontTextYellow("RACE STATISTICS", statsX, statsY, 8, glistp);
             for (lap = 0; lap < g_classLaps[config->shipClass]; lap++) {
@@ -3076,7 +3076,7 @@ Gfx *DisplayRaceInfo(ConfigData *config, ScoreData *score, ShipData *shipList, G
     return glistp;
 }
 
-Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 arg2, ConfigData *config,
+Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 pauseState, ConfigData *config,
                    s32 player, s32 shipNo, u32 layout, Gfx *glistp) {
     s32 x;
     s32 y;
@@ -3174,7 +3174,7 @@ Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 arg2, Conf
         face++;
     }
 
-    if (arg2 == -1 && g_raceModeFlag == 0 && shipList[shipNo].lap < g_classLaps[config->shipClass] + 1 &&
+    if (pauseState == -1 && g_raceModeFlag == 0 && shipList[shipNo].lap < g_classLaps[config->shipClass] + 1 &&
         shipList[shipNo].lap >= 0) {
         if (g_gameType != 1 && *timer > 0) {
             if (g_gameType != 6 || frontendOptions_g.challengeMode != 2) {
@@ -3186,7 +3186,7 @@ Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 arg2, Conf
                     if ((*timer / FRAMES_PER_TENTH) == totalSecs * 10 && mins == 0) {
                         s32 rem = 10 - totalSecs;
                         if ((frontendOptions_g.multiTimer != 0 || g_multiplayerFlag == 0) &&
-                            g_shipDeathCount[shipNo] == arg2) {
+                            g_shipDeathCount[shipNo] == pauseState) {
                             now = osGetTime();
                             if (now - g_lastCheckSfxTime > 100000) {
                                 sfxHandle = MusStartEffect(13);
@@ -3264,7 +3264,7 @@ Gfx *AlterCheckPoint(CheckPoint *checkPoints, ShipData *shipList, s32 arg2, Conf
             }
         }
 
-        if (arg2 == -1 && (shipList[shipNo].attr & 0x40)) {
+        if (pauseState == -1 && (shipList[shipNo].attr & 0x40)) {
             if (shipList[shipNo].lap > 0 && g_checkPointBannerTimer[player - 1] > 0) {
                 if ((g_checkPointFlashFrame % 30) < 21 && layout == 0) {
                     glistp = AddText("EXTENDED TIME", x, y, 8, 0, glistp);

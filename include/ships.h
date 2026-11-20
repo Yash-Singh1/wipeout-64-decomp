@@ -84,7 +84,7 @@
 #define bigGrid                     D_8008A4CA
 #define g_shipUpdatePaused          D_8008F11C
 #define g_colorGammaLut             D_80091630
-#define g_unk800923F9               D_800919A9
+#define g_fourPlayerSameTeam               D_800919A9
 #define lightSections               D_80098E60
 #define g_startDroidState           D_80098E70
 #define lightState                  D_80098F10
@@ -188,7 +188,7 @@
 #define bigGrid                     D_8008AE9A
 #define g_shipUpdatePaused          D_8008FAEC
 #define g_colorGammaLut             D_80092080
-#define g_unk800923F9               D_800923F9
+#define g_fourPlayerSameTeam               D_800923F9
 #define lightSections               D_800AE970
 #define g_startDroidState           D_800AE980
 #define lightState                  D_800BAA20
@@ -233,9 +233,6 @@
 #define UpdateDroneShipStart        func_80020C40
 #endif
 
-#define TextureTableCount           g_unk8008A970
-#define raceLines                   g_unkAlloc9600
-#define shipRank                    g_unkAlloc60
 #define _droidTexturesFile          D_25FB0
 #define _droidModelFile             D_26CB0
 
@@ -435,12 +432,12 @@ typedef struct ShipData {
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ s32 padE8;
     /* 0x0EC */ s32 startY;
-    /* 0x0F0 */ s32 unkF0;
-    /* 0x0F4 */ u8 unkF4;
+    /* 0x0F0 */ s32 eliminations;
+    /* 0x0F4 */ u8 activeInLeague;
     /* 0x0F5 */ u8 unkF5;
     /* 0x0F6 */ u8 padF6[2];
     /* 0x0F8 */ s32 unkF8;
-    /* 0x0FC */ s16 unkFC;
+    /* 0x0FC */ s16 finishPosition;
     /* 0x0FE */ u8 visible[MAX_PLAYERS];
     /* 0x102 */ u8 pad102[2];
     /* 0x104 */ void (*update)();
@@ -533,7 +530,7 @@ extern s32 ownShip4;
 extern ShipData *ships;
 extern RenderGroup *g_playerShipGroup[MAX_PLAYERS];
 extern RenderGroup *g_playerShipXluGroup[MAX_PLAYERS];
-extern u8 g_unk800923F9;
+extern u8 g_fourPlayerSameTeam;
 
 /* External helpers called by ships.c */
 int abs(int x);

@@ -49,7 +49,6 @@
 #define WADLoadCompressedTextureSequence func_80017534
 #define newRand                 func_80023FCC
 
-#define TextureTableCount       g_unk8008A970
 #define g_superWeaponActive2    D_800914AC
 #define g_podiumShips           D_80095F80
 #define particleGuard           D_80095F98
@@ -126,7 +125,6 @@
 #define WADLoadCompressedTextureSequence func_80010714
 #define newRand                 func_8001CFAC
 
-#define TextureTableCount       g_unk8008A970
 #define g_superWeaponActive2    D_80091E7C
 #define g_podiumShips           D_800969D0
 #define missileFlareCount       D_800969E8

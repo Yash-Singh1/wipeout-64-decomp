@@ -309,8 +309,6 @@
 #define ownShip4                        D_800A9F94
 #endif
 
-#define TextureTableCount               g_unk8008A970
-#define raceLines                       g_unkAlloc9600
 #define _effectTexturesFile             D_375E50
 #define _shadowTexturesFile             D_3E59A0
 #define _shadow2TexturesFile            D_3E5DC0
@@ -360,7 +358,7 @@ typedef struct FrontendOptions {
     /* 0x2C */ u8 unk2C[0x0C];
     /* 0x38 */ s32 controller[MAX_PLAYERS];
     /* 0x48 */ u8 unk48[0x13];
-    /* 0x5B */ u8 unk5B;
+    /* 0x5B */ u8 checkpoints;
 } FrontendOptions;
 
 typedef struct SVector {

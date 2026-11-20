@@ -156,8 +156,6 @@ extern FrontendOptions frontendOptions_g;
 #endif
 #define LINE_DL_LEN         1536
 
-#define TextureTableCount   g_unk8008A970
-
 /* ShipData.attr / ShipData.combatAttr flags used in UpdateRace. */
 #define SHIP_ATTR_VIEW_IN   0x0004
 #define SHIP_ATTR_RACING    0x0040
@@ -339,9 +337,9 @@ typedef union Primitive {
 #define g_raceCompleteChoice    D_80089FC8
 #define g_enteringHiScore       D_80089FFC
 #define g_startDroidTexBase     D_800912DC
-#define g_unk80092244           D_800917F4
-#define g_unk80092245           D_800917F5
-#define g_unk8009225C           D_8009180C
+#define g_resultSfxPending           D_800917F4
+#define g_timeoutSfxPending           D_800917F5
+#define g_cameraUpdated           D_8009180C
 #define g_pausePlayer           D_80091814
 #define challenges              D_80094194
 #define RaceCompleteDList       D_80095FF8
@@ -490,9 +488,9 @@ typedef union Primitive {
 #define g_raceCompleteChoice    D_8008A998
 #define g_enteringHiScore       D_8008A9CC
 #define g_startDroidTexBase     D_80091CAC
-#define g_unk80092244           D_80092244
-#define g_unk80092245           D_80092245
-#define g_unk8009225C           D_8009225C
+#define g_resultSfxPending           D_80092244
+#define g_timeoutSfxPending           D_80092245
+#define g_cameraUpdated           D_8009225C
 #define g_pausePlayer           D_80092264
 #define challenges              D_80094BE4
 #define RaceCompleteDList       D_80096A48
@@ -901,9 +899,9 @@ extern s32 noWeaponGrids;
 extern s16 g_raceCompleteChoice;
 extern s32 g_enteringHiScore;
 extern s16 g_startDroidTexBase;
-extern u8 g_unk80092244;
-extern u8 g_unk80092245;
-extern u8 g_unk8009225C;
+extern u8 g_resultSfxPending;
+extern u8 g_timeoutSfxPending;
+extern u8 g_cameraUpdated;
 extern s32 g_pausePlayer;
 extern ChallengeData challenges[];
 extern Gfx *RaceCompleteDList;

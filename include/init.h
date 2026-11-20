@@ -15,8 +15,6 @@
 #define CLUT8    1
 #define ClutType(tim) ((tim)->flags & 7)
 
-#define TextureTableCount g_unk8008A970
-
 /*
  * Temporary US/EU symbol aliases until these functions and globals are added
  * to config/{us,eu}/symbol_addrs.txt.
@@ -134,7 +132,7 @@ typedef struct CompressedTextureSequence {
     /* 0x04 */ s32 textureSize[1];
 } CompressedTextureSequence;
 
-extern s16 g_unk8008A970;
+extern s16 TextureTableCount;
 extern s32 g_texMemTotal;
 extern s32 g_multiplayerFlag;
 extern s32 g_scenePrmIndex;

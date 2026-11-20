@@ -257,7 +257,7 @@ void UpdatePlayerShipStart(ShipData *shipIndex, Object **shipShapes, s32 shipNo,
         }
     }
 
-    if (g_unk80092234 == 0 && (playerShip->attr & RACING)) {
+    if (g_pauseDebounceTimer == 0 && (playerShip->attr & RACING)) {
         SetBrake(playerShip, controller);
         SetView(playerShip, controller, shipNo);
     }
@@ -350,7 +350,7 @@ void UpdatePlayerShip(ShipData *shipIndex, Object **shipShapes, s32 shipNo,
         ship->attr &= ~ELECTROED;
     }
 
-    g_unk80091E60 = 0;
+    g_steeringActive = 0;
 
     if (abs(STICK_X(controller)) - deadZone[1] <= 0) {
         controller->stickX = 0;

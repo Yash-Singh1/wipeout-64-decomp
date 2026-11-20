@@ -56,7 +56,7 @@
 #define pitLaneSection1             D_80091218
 #define pitLaneSection2             D_80091228
 #define g_classLaps                 D_80091410
-#define g_unk800923F9               D_800919A9
+#define g_fourPlayerSameTeam               D_800919A9
 #define activeShipCount             D_800A9250
 #define shipDamage                  D_800A92C0
 #define shipClassIndex              D_800AE6A0
@@ -119,7 +119,7 @@
 #define pitLaneSection1             D_80091BE8
 #define pitLaneSection2             D_80091BF8
 #define g_classLaps                 D_80091DE0
-#define g_unk800923F9               D_800923F9
+#define g_fourPlayerSameTeam               D_800923F9
 #define activeShipCount             D_8009BC70
 #define shipDamage                  D_8009BCE0
 #define shipClassIndex              D_800A10C0
@@ -138,9 +138,7 @@
 #define startGridOrder              D_800AADE0
 #endif
 
-#define shipOrder                   g_unkAlloc60
-#define raceLines                   g_unkAlloc9600
-
+#define shipOrder                   shipRank
 /* Face.flags */
 #define TRACK_BASE                  0x01
 #define SPEED_UP                    0x20
@@ -297,7 +295,7 @@ typedef struct ShipData {
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ s32 padE8;
     /* 0x0EC */ s32 startY;
-    /* 0x0F0 */ s32 unkF0;
+    /* 0x0F0 */ s32 eliminations;
     /* 0x0F4 */ u8 unkF4[4];
     /* 0x0F8 */ s32 speedPadSection;
     /* 0x0FC */ u8 unkFC[8];
@@ -350,7 +348,7 @@ extern f32 rivalAccelScale4[4];
 extern s16 pitLaneSection1[8];
 extern s16 pitLaneSection2[8];
 extern u8 g_classLaps[];
-extern u8 g_unk800923F9;
+extern u8 g_fourPlayerSameTeam;
 
 int abs(int value);
 s32 ratan2(s32 y, s32 x);

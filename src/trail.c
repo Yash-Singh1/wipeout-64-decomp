@@ -767,7 +767,7 @@ void DrawTrail(VECTOR *flarePos, MATRIX *mat, Trail *trail, s32 ship, s32 player
     }
 }
 
-void DrawShipTrails(TrackCamera *camera, void *arg1, s32 player) {
+void DrawShipTrails(TrackCamera *camera, void *unused, s32 player) {
     VECTOR pos;
     s32 i;
     Object *obj;

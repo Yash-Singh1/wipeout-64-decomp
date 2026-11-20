@@ -45,7 +45,7 @@ s32 GetDroneShield(s32 shipNo) {
 
     team = 0;
     ship = shipNo;
-    if (g_unk800923F9 && shipNo == ownShip4) {
+    if (g_fourPlayerSameTeam && shipNo == ownShip4) {
         shipNo = ownShip3;
     }
     switch (shipNo) {
@@ -76,7 +76,7 @@ s32 GetDroneShield(s32 shipNo) {
             break;
     }
     shield = g_shipMaxShield[team];
-    if (g_unk800923F9 && ship == ownShip4) {
+    if (g_fourPlayerSameTeam && ship == ownShip4) {
         shipNo = ship;
     }
     if ((frontendOptions_g.numPlayers == 1 && shipNo != ownShip) ||

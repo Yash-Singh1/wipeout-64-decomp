@@ -82,9 +82,9 @@
 #define g_superComboChallenges   D_80094530
 #define g_velocitarUnlocked      D_800942C6
 #define g_piranhaUnlocked        D_800943FA
-#define g_unk80094F7E            D_8009452E
+#define g_superComboUnlocked            D_8009452E
 #define g_attractTimer           D_80094668
-#define g_unk800923F9            D_800919A9
+#define g_fourPlayerSameTeam            D_800919A9
 #define g_multiNumPlayers        D_800919AC
 #define g_multiSplitVertical     D_800919B4
 #define g_prevMenuButtons        D_800C53B0
@@ -172,7 +172,7 @@
 #define BonusAllGoldScreen       func_80058FD8
 #define WeaponChallengeTeamMenu  func_800590F0
 #define SuperComboChallengeTeamMenu func_800591CC
-#define FrontendStub_80057520    func_800592A8
+#define MenuScreenUnused    func_800592A8
 #define DrawMenuBox              func_8005B394
 #define DrawShipStats            func_80064580
 
@@ -281,7 +281,7 @@
 #define g_logoStartTime          D_800C53C0
 #define g_autoLoadErr            D_800C53C8
 #define g_oneSecond              D_800977D0
-#define g_unk8008A9DC            D_8008A00C
+#define g_frontendLoaded            D_8008A00C
 #define g_startupActive          D_80091979
 #define g_allChallengesCheated   D_80094662
 #define g_pakMissingAtBoot       D_80091958
@@ -292,7 +292,7 @@
 #define g_renderList             D_800C4920
 #define g_animTextureCount       D_80089FA2
 #define g_loaderSprite           D_800CE1E0
-#define g_unk800AD820            D_80097D10
+#define g_weaponLockFlag            D_80097D10
 
 #define FrontendUpdate           func_8005D05C
 #define StartAttractDemo         func_8005D968
@@ -341,26 +341,26 @@
 #define g_pakManagerInit         D_800919A8
 #define g_medalTexStart          D_80091928
 #define g_medalTexCount          D_800C53DC
-#define g_unk8009BA0C            D_800A8FEC
-#define g_unk8009BA10            D_800A8FF0
-#define g_unk800AA084            D_800B765C
+#define g_prevTrackNo            D_800A8FEC
+#define g_prevTeamClass            D_800A8FF0
+#define g_prevTeam            D_800B765C
 #define cheatfade                D_80091252
 #define cheatAllChallenges       D_80091255
 #define g_idleTimer              D_800B7618
 #define g_randSeed               D_80089FA8
 #define g_feRenderList           D_800C4950
 #define g_feModels               D_800C5A00
-#define g_unk800A0EE4            D_800AE4C4
-#define g_unk8009234C            D_800918FC
-#define g_unk80092350            D_80091900
-#define g_unk80092354            D_80091904
-#define g_unk80092358            D_80091908
-#define g_unk8009235C            D_8009190C
-#define g_unk80092360            D_80091910
-#define g_unk80092364            D_80091914
-#define g_unk80092368            D_80091918
-#define g_unk8009236C            D_8009191C
-#define g_unk80092370            D_80091920
+#define g_font3TexStart            D_800AE4C4
+#define g_challengeModelDl            D_800918FC
+#define g_challengeModelVtx            D_80091900
+#define g_challengeMedalDl            D_80091904
+#define g_challengeMedalVtx            D_80091908
+#define g_podium1stDl            D_8009190C
+#define g_podium1stVtx            D_80091910
+#define g_podium2ndDl            D_80091914
+#define g_podium2ndVtx            D_80091918
+#define g_podium3rdDl            D_8009191C
+#define g_podium3rdVtx            D_80091920
 #define g_modelAngle             D_8009197C
 #define g_modelTransforms        D_800919C4
 #define g_multiSlots             D_800C5A98
@@ -505,9 +505,9 @@
 #define g_superComboChallenges   D_80094F80
 #define g_velocitarUnlocked      D_80094D16
 #define g_piranhaUnlocked        D_80094E4A
-#define g_unk80094F7E            D_80094F7E
+#define g_superComboUnlocked            D_80094F7E
 #define g_attractTimer           D_800950B8
-#define g_unk800923F9            D_800923F9
+#define g_fourPlayerSameTeam            D_800923F9
 #define g_multiNumPlayers        D_800923FC
 #define g_multiSplitVertical     D_80092404
 #define g_prevMenuButtons        D_800C5070
@@ -595,7 +595,7 @@
 #define BonusAllGoldScreen       func_80057250
 #define WeaponChallengeTeamMenu  func_80057368
 #define SuperComboChallengeTeamMenu func_80057444
-#define FrontendStub_80057520    func_80057520
+#define MenuScreenUnused    func_80057520
 #define DrawMenuBox              func_8005960C
 #define DrawShipStats            func_8006280C
 
@@ -704,7 +704,7 @@
 #define g_logoStartTime          D_800C5080
 #define g_autoLoadErr            D_800C5088
 #define g_oneSecond              D_80098230
-#define g_unk8008A9DC            D_8008A9DC
+#define g_frontendLoaded            D_8008A9DC
 #define g_startupActive          D_800923C9
 #define g_allChallengesCheated   D_800950B2
 #define g_pakMissingAtBoot       D_800923A8
@@ -715,7 +715,7 @@
 #define g_renderList             D_800C45E0
 #define g_animTextureCount       D_8008A972
 #define g_loaderSprite           D_800CDEA0
-#define g_unk800AD820            D_800AD820
+#define g_weaponLockFlag            D_800AD820
 
 #define FrontendUpdate           func_8005B2D4
 #define StartAttractDemo         func_8005BBE0
@@ -764,26 +764,26 @@
 #define g_pakManagerInit         D_800923F8
 #define g_medalTexStart          D_80092378
 #define g_medalTexCount          D_800C509C
-#define g_unk8009BA0C            D_8009BA0C
-#define g_unk8009BA10            D_8009BA10
-#define g_unk800AA084            D_800AA084
+#define g_prevTrackNo            D_8009BA0C
+#define g_prevTeamClass            D_8009BA10
+#define g_prevTeam            D_800AA084
 #define cheatfade                D_80091C22
 #define cheatAllChallenges       D_80091C25
 #define g_idleTimer              D_800AA03C
 #define g_randSeed               D_8008A978
 #define g_feRenderList           D_800C4610
 #define g_feModels               D_800C56C0
-#define g_unk800A0EE4            D_800A0EE4
-#define g_unk8009234C            D_8009234C
-#define g_unk80092350            D_80092350
-#define g_unk80092354            D_80092354
-#define g_unk80092358            D_80092358
-#define g_unk8009235C            D_8009235C
-#define g_unk80092360            D_80092360
-#define g_unk80092364            D_80092364
-#define g_unk80092368            D_80092368
-#define g_unk8009236C            D_8009236C
-#define g_unk80092370            D_80092370
+#define g_font3TexStart            D_800A0EE4
+#define g_challengeModelDl            D_8009234C
+#define g_challengeModelVtx            D_80092350
+#define g_challengeMedalDl            D_80092354
+#define g_challengeMedalVtx            D_80092358
+#define g_podium1stDl            D_8009235C
+#define g_podium1stVtx            D_80092360
+#define g_podium2ndDl            D_80092364
+#define g_podium2ndVtx            D_80092368
+#define g_podium3rdDl            D_8009236C
+#define g_podium3rdVtx            D_80092370
 #define g_modelAngle             D_800923CC
 #define g_modelTransforms        D_80092414
 #define g_multiSlots             D_800C5758
@@ -991,7 +991,7 @@ typedef struct ChallengeData {
     /* 0x20 */ f32 bronzeTarget;
     /* 0x24 */ f32 bronzeKills;
     /* 0x28 */ u8 award;
-    /* 0x29 */ u8 unk29;
+    /* 0x29 */ u8 goldSeen;
     /* 0x2A */ u8 unlocked;
     /* 0x2B */ u8 unk2B;
 } ChallengeData; /* size = 0x2C */
@@ -1127,10 +1127,10 @@ typedef struct FrontendOptions {
     /* 0x69 */ u8 allGoldSeen;
     /* 0x6A */ u8 pad6A[2];
     /* 0x6C */ s32 musicTrack;
-    /* 0x70 */ s32 unk70;
+    /* 0x70 */ s32 currentMusicTrack;
     /* 0x74 */ s32 musicVol;
     /* 0x78 */ s32 sfxVol;
-    /* 0x7C */ u8 unk7C;
+    /* 0x7C */ u8 leagueRacesLeft;
 } FrontendOptions;
 
 typedef struct musHandleTag *musHandle;
@@ -1200,12 +1200,12 @@ extern ChallengeData g_superComboChallenges[7];
 
 extern u8 g_velocitarUnlocked;
 extern u8 g_piranhaUnlocked;
-extern u8 g_unk80094F7E;
+extern u8 g_superComboUnlocked;
 extern s32 g_attractTimer;
 extern u8 g_raceMode;
 extern s32 g_gameType;
 extern OSContPad g_firstContPad;
-extern u8 g_unk800923F9;
+extern u8 g_fourPlayerSameTeam;
 extern s32 g_multiNumPlayers;
 extern s32 g_multiSplitVertical;
 extern u16 g_prevMenuButtons;
@@ -1253,7 +1253,7 @@ extern s32 g_bonusSuperComboCheckNext;
 extern ShipDataStub *ships;
 
 extern OSMesgQueue g_siMsgQ;
-extern s16 g_unk8008A970;
+extern s16 TextureTableCount;
 extern s32 g_pakInitDelay;
 extern s32 g_pakRetries;
 extern s32 g_pakConfirm;
@@ -1314,7 +1314,7 @@ extern s32 g_startupWarningPhase;
 extern OSTime g_logoStartTime;
 extern u32 g_autoLoadErr;
 extern OSTime g_oneSecond;
-extern s32 g_unk8008A9DC;
+extern s32 g_frontendLoaded;
 extern u8 g_startupActive;
 extern u8 g_allChallengesCheated;
 extern s32 g_pakMissingAtBoot;
@@ -1325,7 +1325,7 @@ extern u8 g_raceOverlay[];
 extern u8 g_renderList[];
 extern s16 g_animTextureCount;
 extern uSprite g_loaderSprite;
-extern s32 g_unk800AD820;
+extern s32 g_weaponLockFlag;
 
 extern s32 g_feInitialized;
 extern s32 g_pakManagerActive;
@@ -1340,26 +1340,26 @@ extern s32 g_blinkCounter;
 extern u8 g_pakManagerInit;
 extern s32 g_medalTexStart;
 extern s32 g_medalTexCount;
-extern s32 g_unk8009BA0C;
-extern u8 g_unk8009BA10;
-extern s32 g_unk800AA084;
+extern s32 g_prevTrackNo;
+extern u8 g_prevTeamClass;
+extern s32 g_prevTeam;
 extern s16 cheatfade;
 extern u8 cheatAllChallenges;
 extern s16 g_idleTimer;
 extern u32 g_randSeed;
 extern u8 g_feRenderList[];
 extern ObjectStub *g_feModels[40];
-extern s16 g_unk800A0EE4;
-extern void *g_unk8009234C;
-extern void *g_unk80092350;
-extern void *g_unk80092354;
-extern void *g_unk80092358;
-extern Gfx *g_unk8009235C;
-extern void *g_unk80092360;
-extern Gfx *g_unk80092364;
-extern void *g_unk80092368;
-extern Gfx *g_unk8009236C;
-extern void *g_unk80092370;
+extern s16 g_font3TexStart;
+extern void *g_challengeModelDl;
+extern void *g_challengeModelVtx;
+extern void *g_challengeMedalDl;
+extern void *g_challengeMedalVtx;
+extern Gfx *g_podium1stDl;
+extern void *g_podium1stVtx;
+extern Gfx *g_podium2ndDl;
+extern void *g_podium2ndVtx;
+extern Gfx *g_podium3rdDl;
+extern void *g_podium3rdVtx;
 extern s32 g_modelAngle;
 extern ModelTransform g_modelTransforms[];
 extern MultiPlayerSlot g_multiSlots[4];
@@ -1579,7 +1579,7 @@ Gfx *BonusSuperComboCheck(Gfx *glistp);
 Gfx *BonusAllGoldScreen(Gfx *glistp);
 Gfx *WeaponChallengeTeamMenu(Gfx *glistp);
 Gfx *SuperComboChallengeTeamMenu(Gfx *glistp);
-Gfx *FrontendStub_80057520(Gfx *glistp);
+Gfx *MenuScreenUnused(Gfx *glistp);
 Gfx *ControllerPakMenu(Gfx *glistp);
 Gfx *QuitLeagueMenu(Gfx *glistp);
 Gfx *FinalStandingsMenu(Gfx *glistp);

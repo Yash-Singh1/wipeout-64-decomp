@@ -327,7 +327,7 @@ void QuitGame(void) {
 u8 CheckAttractQuit(RaceConfigData *config) {
     if ((g_firstContPad.button == 0x1000 && !(ships[ownShip].combatAttr & SHIP_COMBAT_DESTROYED)) ||
         attractDelayFrames == 0) {
-        config->unk0C = 99;
+        config->exitCode = 99;
         g_gameType = 99;
         if (attractDelayFrames != 0) {
             g_attractQuitFlag = 1;
@@ -669,11 +669,11 @@ Gfx *RaceComplete(void *screen, void *unused, RaceConfigData *config, s16 *choic
                     g_leagueResults[g_podiumShips[1]].secondCount++;
                     g_leagueResults[g_podiumShips[2]].thirdCount++;
                     for (k = 0; k < 15; k++) {
-                        if (shipArr[k].unkF4) {
-                            g_leagueResults[k].points += shipArr[k].unkF0;
+                        if (shipArr[k].activeInLeague) {
+                            g_leagueResults[k].points += shipArr[k].eliminations;
                         }
                     }
-                    frontendOptions_g.unk7C--;
+                    frontendOptions_g.leagueRacesLeft--;
                 }
             }
             config->highScore = 0;
@@ -891,13 +891,13 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                             *pausePlayer = -1;
                             pause->command = 2;
                             if (pause->stage == 2) {
-                                config->unk0C = 99;
+                                config->exitCode = 99;
                                 g_linkMyState = 3;
                                 g_raceEndState = 2;
                             }
                         }
                         if (pause->stage == 2) {
-                            config->unk0C = 99;
+                            config->exitCode = 99;
                             g_linkMyState = 3;
                             g_raceEndState = 2;
                             gSPEndDisplayList(PauseDListPtr++);
@@ -913,7 +913,7 @@ s32 PerformPauseOperations(RacePauseMenu *pause, void *screen, RaceConfigData *c
                             g_menuScreen = 1;
                         }
                         if (pause->stage == 2) {
-                            config->unk0C = 99;
+                            config->exitCode = 99;
                             g_linkMyState = 3;
                             g_raceEndState = 2;
                             gSPEndDisplayList(PauseDListPtr++);

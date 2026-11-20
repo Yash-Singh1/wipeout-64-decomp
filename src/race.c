@@ -33,7 +33,7 @@ void InitRaceResources(void) {
     g_startupImage = OpenWadFileNvc((u32)_startupImageFile);
     InitSpeedoSprites(g_hudTimers, g_hudLaps);
     g_startupImage->current += 2;
-    g_effectTexStart = g_unk8008A970;
+    g_effectTexStart = TextureTableCount;
     g_startupImage->current += 1;
     InitShipEffects(g_shipEffectA, g_shipEffectB);
 
@@ -52,7 +52,7 @@ void InitRaceResources(void) {
 /* Reinitializes the temporary race heap and redirects all heap pointers to it. */
 void ResetRaceHeaps(void) {
     DInit(g_tempHeap, TEMP_HEAP_SIZE);
-    g_unk8008A970 = 0;
+    TextureTableCount = 0;
     g_heap = g_heapA = g_heapB = g_tempHeap;
 }
 
@@ -75,7 +75,7 @@ void InitRace(void) {
         __assert("PauseDList", "Race.c", 1972);
     }
 
-    g_unk8008A970 = 0;
+    TextureTableCount = 0;
     startup = OpenWadFileNvc((u32)_startupDataFile);
     gameData.unk2E = 1;
     tempGameData = &gameData;
@@ -105,10 +105,10 @@ void InitRace(void) {
     g_multiplayerFlag = frontendOptions_g.numPlayers >= 2;
     g_sceneObjectCount = WADInitScene(prmObjects, &prmCount, cameras[0].camPos, &gameData, wad);
     InitSky();
-    textureStart = g_unk8008A970;
+    textureStart = TextureTableCount;
     wad->current = 4;
     LoadCmpFiles(WADLoadCompressedTextureSequence(wad));
-    g_trackTextureCount = g_unk8008A970 - textureStart;
+    g_trackTextureCount = TextureTableCount - textureStart;
     InitRenderList(g_trackRenderList, textureStart, g_trackTextureCount);
     wad->current = 1;
     WADInitFaces(wad);

@@ -11,25 +11,25 @@
 #ident "$Revision: 7.27 $"
 #ident "$Revision: 1.5 $"
 
-void InspectStub_8006F540(void) {
+void InspectDebugStub1(void) {
 }
 
-void InspectStub_8006F548(void) {
+void InspectDebugStub2(void) {
 }
 
-void InspectStub_8006F550(void) {
+void InspectDebugStub3(void) {
 }
 
-void InspectStub_8006F558(void) {
+void InspectDebugStub4(void) {
 }
 
-void InspectStub_8006F560(void) {
+void InspectDebugStub5(void) {
 }
 
-void InspectStub_8006F568(void) {
+void InspectDebugStub6(void) {
 }
 
-void InspectStub_8006F570(void) {
+void InspectDebugStub7(void) {
 }
 
 void InspectLoadAiDamage(void) {
@@ -150,8 +150,8 @@ void InspectLoadAiShips(void) {
     }
 }
 
-void InspectStub_8006FC38(void) {
+void InspectDebugStub8(void) {
 }
 
-void InspectStub_8006FC40(void) {
+void InspectDebugStub9(void) {
 }

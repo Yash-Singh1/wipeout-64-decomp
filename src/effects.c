@@ -806,7 +806,7 @@ void UpdateStartDroid(Object **shapes, ShipData *ships, CheckPoint *checkPoints,
                        g_gameMode != 1 &&
                        (g_gameMode != 6 || frontendOptions_g.challengeMedal != 2)) {
                 startDroidState[player].signType[0] = 4;
-            } else if (frontendOptions_g.unk5B == 0 && g_multiplayerFlag != 0) {
+            } else if (frontendOptions_g.checkpoints == 0 && g_multiplayerFlag != 0) {
                 startDroidState[player].signType[0] = 5;
             } else {
                 startDroidState[player].signType[0] = 6;

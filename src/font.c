@@ -430,13 +430,13 @@ Gfx *AddRightText(char *text, s32 x, s32 y, s32 size, Gfx *glistp) {
     return AddText(text, x, y, size, glistp);
 }
 
-void FontStub_800364C0(void) {
+void InitFontUnused(void) {
 }
 
 void LoadFontStartupTextures(void) {
     void *texTable;
 
-    g_fontStartTex = g_unk8008A970;
+    g_fontStartTex = TextureTableCount;
     texTable = WADLoadCompressedTextureSequence(g_startupImage);
     RegisterTextureSequence(texTable);
 }
@@ -454,7 +454,7 @@ void InitFont(void) {
     g_startupImage->current++;
     wad = OpenWadFileNvc((u32)_startupDataFile);
     wad->current = 22;
-    texIdx = g_unk8008A970;
+    texIdx = TextureTableCount;
     RegisterTextureSequence(WADLoadCompressedTextureSequence(wad));
     g_fontTexture = g_textureTable[texIdx];
 
@@ -471,7 +471,7 @@ void InitFont(void) {
 
     CloseWadFileNvc(wad);
 
-    g_hudTexStart = g_unk8008A970;
+    g_hudTexStart = TextureTableCount;
     RegisterTextureSequence(LoadCompressedTextureSequence((u32)_hudTexturesFile));
 
     tex = g_textureTable[g_hudTexStart + 19];

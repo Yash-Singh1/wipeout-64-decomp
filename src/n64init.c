@@ -121,7 +121,7 @@ void MainThreadEntry(void *arg) {
         case OS_SC_PRE_NMI_MSG:
             g_resetCount += 2;
             StopRumbleAll(-1);
-            N64InitHelper_80066100();
+            HaltOnPreNmi();
             break;
         case SC_MSG_TASK6_DONE:
             g_taskFlags[6] = 0;
@@ -148,7 +148,7 @@ void MainThreadEntry(void *arg) {
     }
 }
 
-void N64InitHelper_80066100(void) {
+void HaltOnPreNmi(void) {
     osViBlack(TRUE);
     StopAudio();
     for (;;) {
@@ -212,7 +212,7 @@ void InitN64Hardware(void) {
     guScale(&g_flipYMtx, 1.0f, -1.0f, 1.0f);
     ((void (*)(DHeapBlock *))InitFileSystem)(g_heapA);
     g_startupData = OpenWadFileNvc((u32)_startupDataFile);
-    g_unk8008A970 = 550;
+    TextureTableCount = 550;
     InitHud();
     InitFontSize(8);
     InitFontSize(12);
@@ -222,11 +222,11 @@ void InitN64Hardware(void) {
     InitFont();
     CloseWadFileNvc(g_startupImage);
 #ifdef VERSION_EU
-    g_unkAlloc60 = DAlloc(g_heap, 60, "n64init.c", 710);
-    g_unkAlloc9600 = DAlloc(g_heap, 9600, "n64init.c", 711);
+    shipRank = DAlloc(g_heap, 60, "n64init.c", 710);
+    raceLines = DAlloc(g_heap, 9600, "n64init.c", 711);
 #else
-    g_unkAlloc60 = DAlloc(g_heap, 60, "n64init.c", 705);
-    g_unkAlloc9600 = DAlloc(g_heap, 9600, "n64init.c", 706);
+    shipRank = DAlloc(g_heap, 60, "n64init.c", 705);
+    raceLines = DAlloc(g_heap, 9600, "n64init.c", 706);
 #endif
     g_heap = g_heapA = g_heapB = g_tempHeap;
     CpuInit();

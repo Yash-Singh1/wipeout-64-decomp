@@ -140,7 +140,7 @@
 #define g_droneWeaponChance3             D_800915E8
 #define previousPlayerDamage             D_80091608
 #define g_pitFade                        D_80091944
-#define g_unk800923F9                    D_800919A9
+#define g_fourPlayerSameTeam                    D_800919A9
 #define g_superComboUnlocked             D_8009452E
 #define nextParticleSlot                 D_80095FC0
 #define shieldSfx                        D_800968A8
@@ -322,7 +322,7 @@
 #define g_droneWeaponChance3             D_80091FB8
 #define previousPlayerDamage             D_80091FD8
 #define g_pitFade                        D_80092394
-#define g_unk800923F9                    D_800923F9
+#define g_fourPlayerSameTeam                    D_800923F9
 #define g_superComboUnlocked             D_80094F7E
 #define nextParticleSlot                 D_80096A08
 #define shieldSfx                        D_800972F8
@@ -583,10 +583,10 @@ typedef struct ShipData {
     /* 0x0E4 */ s32 updateCount;
     /* 0x0E8 */ s32 padE8;
     /* 0x0EC */ s32 startY;
-    /* 0x0F0 */ s32 unkF0;
-    /* 0x0F4 */ u8 unkF4;
+    /* 0x0F0 */ s32 eliminations;
+    /* 0x0F4 */ u8 activeInLeague;
     /* 0x0F5 */ u8 unkF5[7];
-    /* 0x0FC */ s16 unkFC;
+    /* 0x0FC */ s16 finishPosition;
     /* 0x0FE */ u8 unkFE;
     /* 0x0FF */ u8 unkFF[5];
     /* 0x104 */ void (*update)();
@@ -776,7 +776,7 @@ extern s32 previousPlayerDamage2;
 extern s32 previousPlayerDamage3;
 extern s32 previousPlayerDamage4;
 extern s32 g_pitFade;
-extern u8 g_unk800923F9;
+extern u8 g_fourPlayerSameTeam;
 extern u8 g_superComboUnlocked;
 extern s32 nextParticleSlot;
 extern s32 shieldSfx;
@@ -826,8 +826,8 @@ extern s32 g_weaponLockFlag;
 extern RenderList weaponRenderList;
 extern FrontendOptions frontendOptions_g;
 extern TrackData *track;
-extern RaceLine *g_unkAlloc9600;
-extern s16 g_unk8008A970;
+extern RaceLine *raceLines;
+extern s16 TextureTableCount;
 extern WADFILE *g_startupImage;
 extern uSprite g_logoSprite;
 

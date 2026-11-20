@@ -337,8 +337,8 @@ s32 UpdateRace(void) {
     }
 
     if (!allFinished) {
-        g_unk80092244 = 1;
-        g_unk80092245 = 1;
+        g_resultSfxPending = 1;
+        g_timeoutSfxPending = 1;
         if (attractDelayFrames > 0) {
             attractDelayFrames--;
             if ((g_attractMode == 1 && CheckAttractQuit(&g_raceOverlay)) ||
@@ -369,7 +369,7 @@ s32 UpdateRace(void) {
 
     if (g_pauseState.selection < 0) {
         UpdateShipTrails(ships, attractDelayFrames);
-        g_unk8009225C = 1;
+        g_cameraUpdated = 1;
         CameraUpdate(&g_cameras[0], &ships[ownShip], &rescueData[0], ownShip);
         if (frontendOptions_g.numPlayers >= 2) {
             CameraUpdate2(&g_cameras[1], &ships[ownShip2], &rescueData[1], ownShip2);
@@ -903,7 +903,7 @@ void RenderRace(s32 frameIdx) {
     g_taskFlags[2] = 18;
     gDPFullSync(glistp++);
     gSPEndDisplayList(glistp++);
-    info->unk_7BAC = (s32)glistp;
+    info->overlayDListPtr = (s32)glistp;
     Gfx2DRaceTask(glistp, info);
     UpdateEffectAnims();
     g_trackBufIdx ^= 1;
