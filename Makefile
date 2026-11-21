@@ -1,22 +1,23 @@
 VERSION ?= all
+PYTHON  ?= python3
 
 .PHONY: all us eu split clean progress
 
 all:
-	./build.sh $(VERSION)
+	$(PYTHON) tools/build.py $(VERSION)
 
 us:
-	./build.sh us
+	$(PYTHON) tools/build.py us
 
 eu:
-	./build.sh eu
+	$(PYTHON) tools/build.py eu
 
 split:
-	python3 -m splat split config/us/wipeout64.yaml
-	python3 -m splat split config/eu/wipeout64.yaml
+	$(PYTHON) -m splat split config/us/wipeout64.yaml
+	$(PYTHON) -m splat split config/eu/wipeout64.yaml
 
 progress:
-	python3 tools/progress.py
+	$(PYTHON) tools/progress.py
 
 clean:
-	rm -rf asm assets build
+	$(PYTHON) -c "import shutil; [shutil.rmtree(p, ignore_errors=True) for p in ('asm', 'assets', 'build')]"

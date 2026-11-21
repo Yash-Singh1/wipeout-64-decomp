@@ -122,7 +122,7 @@ def main():
     args = ap.parse_args()
 
     if args.verify:
-        subprocess.run([str(ROOT / "build.sh"), "all"], check=True)
+        subprocess.run([sys.executable, str(ROOT / "tools" / "build.py"), "all"], check=True)
 
     count_version("us")
     count_version("eu")
